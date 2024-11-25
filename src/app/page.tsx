@@ -3,7 +3,7 @@ export default function Home() {
     <div className="relative min-h-screen overflow-hidden">
       {/* Background Layer */}
       <iframe 
-        src="/yhghh.HTML" 
+        src="./yhghh.HTML" 
         className="fixed inset-0 w-full h-full z-0" 
         style={{
           border: 'none',
