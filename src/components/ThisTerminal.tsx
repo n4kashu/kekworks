@@ -113,17 +113,11 @@ export default function ThisTerminal() {
 
   const readReport = async (filename: string) => {
     try {
-      const response = await fetch(`/${filename}`);
-      if (!response.ok) {
-        return [`Error: Report ${filename} not found.`];
-      }
+      const response = await fetch(`/api/reports/${filename}`);
       const text = await response.text();
-      if (filename.toLowerCase().endsWith('.html')) {
-        return text.replace(/<[^>]*>/g, '').split('\n').filter(line => line.trim() !== '');
-      }
       return text.split('\n');
-    } catch (error) {
-      return [`Error reading report: ${error.message}`];
+    } catch (error: any) {
+      return [`Error reading report: ${error?.message || 'Unknown error'}`];
     }
   };
 
