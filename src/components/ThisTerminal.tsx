@@ -45,8 +45,8 @@ export default function ThisTerminal() {
   };
 
   const renderLine = (line: string, index: number) => {
-    if (line.includes('type "help"')) {
-      const parts = line.split('"help"');
+    if (line.includes('type &quot;help&quot;')) {
+      const parts = line.split('&quot;help&quot;');
       return (
         <div key={index} className="mb-1">
           {parts[0]}
@@ -54,10 +54,10 @@ export default function ThisTerminal() {
             className="text-[#39ff14] hover:text-[#50ff20] hover:underline cursor-pointer transition-colors duration-150"
             onClick={() => {
               setInput('help');
-              handleSubmit(new Event('click') as any);
+              handleSubmit({ preventDefault: () => {} } as React.FormEvent);
             }}
           >
-            "help"
+            &quot;help&quot;
           </span>
           {parts[1]}
         </div>
@@ -116,8 +116,9 @@ export default function ThisTerminal() {
       const response = await fetch(`/api/reports/${filename}`);
       const text = await response.text();
       return text.split('\n');
-    } catch (error: any) {
-      return [`Error reading report: ${error?.message || 'Unknown error'}`];
+    } catch (error: Error | unknown) {
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      return [`Error reading report: ${errorMessage}`];
     }
   };
 

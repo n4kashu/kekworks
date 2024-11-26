@@ -64,19 +64,20 @@ export default function Home() {
 
   const toggleMaximize = () => {
     if (!isMaximized) {
-      setPreviousState({
+      const currentState = {
         position: { ...position },
         size: { ...size }
-      });
+      };
+      setPreviousState(currentState);
       setPosition({ x: 0, y: 0 });
       setSize({ 
         width: window.innerWidth,
         height: window.innerHeight
       });
     } else {
-      const { position: newPosition, size: newSize } = calculateInitialPosition();
-      setPosition(newPosition);
-      setSize(newSize);
+      const prevState = previousState;
+      setPosition(prevState.position);
+      setSize(prevState.size);
     }
     setIsMaximized(!isMaximized);
   };
