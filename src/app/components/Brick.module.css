@@ -1,0 +1,11 @@
+.brick {
+  transition: all 0.3s ease;
+  border-radius: 4px;
+  opacity: 0.8;
+}
+
+.brick:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(187, 134, 252, 0.5);
+}

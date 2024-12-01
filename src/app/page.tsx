@@ -35,7 +35,7 @@ export default function Home() {
   const [isMemesisDragging, setIsMemesisDragging] = useState(false);
   const [isMemesisResizing, setIsMemesisResizing] = useState(false);
   const [memesisDragOffset, setMemesisDragOffset] = useState({ x: 0, y: 0 });
-  const [memesisWindowTitle, setMemesisWindowTitle] = useState('ANKH (The Analytical Nexus of Kek Hermeneutics)');
+  const memesisWindowTitle = 'ANKH (The Analytical Nexus of Kek Hermeneutics)';
 
   const calculateInitialPosition = () => {
     const width = Math.min(1000, window.innerWidth - 160); // Reduced width
