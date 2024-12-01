@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import ThisTerminal from '@/components/ThisTerminal';
+import GlyphTypeout from '@/app/components/GlyphTypeout';
 
 export default function Home() {
   const [isMaximized, setIsMaximized] = useState(false);
@@ -10,11 +11,11 @@ export default function Home() {
     size: { width: 0, height: 0 }
   });
   const [position, setPosition] = useState({ 
-    x: 80,
-    y: 0
+    x: 15,
+    y: 80
   });
   const [size, setSize] = useState({ 
-    width: 1000,
+    width: 500,
     height: 450 
   });
   const [isDragging, setIsDragging] = useState(false);
@@ -22,27 +23,67 @@ export default function Home() {
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const terminalRef = useRef<HTMLDivElement>(null);
 
+  const memesisRef = useRef<HTMLDivElement>(null);
+  const [memesisPosition, setMemesisPosition] = useState({ 
+    x: 15, 
+    y: 80
+  });
+  const [memesisSize, setMemesisSize] = useState({ 
+    width: 500,
+    height: 450 
+  });
+  const [isMemesisDragging, setIsMemesisDragging] = useState(false);
+  const [isMemesisResizing, setIsMemesisResizing] = useState(false);
+  const [memesisDragOffset, setMemesisDragOffset] = useState({ x: 0, y: 0 });
+  const [memesisWindowTitle, setMemesisWindowTitle] = useState('ANKH (The Analytical Nexus of Kek Hermeneutics)');
+
   const calculateInitialPosition = () => {
-    const width = window.innerWidth - 160; // 80px margins on each side
-    const height = Math.min(450, window.innerHeight * 0.45); // Increased height by 50% (from 300 to 450)
+    const width = Math.min(1000, window.innerWidth - 160); // Reduced width
+    const height = Math.min(450, window.innerHeight * 0.45);
     const x = 80;
-    // Calculate y position to maintain 80px margin from bottom
-    const y = window.innerHeight - height - 80;
-    
-    return {
-      position: { x, y },
-      size: { width, height }
-    };
+    const y = 80;
+    return { x, y, width: width / 2, height }; // Halve the width
   };
+
+  const calculateTerminalInitialPosition = () => {
+    const width = Math.min(1000, window.innerWidth - 160); // Reduced width
+    const height = Math.min(450, window.innerHeight * 0.45);
+    const x = 15; // 15px margin from left
+    const y = window.innerHeight * 0.5 + 15; // 15px margin from top of previous window
+    return { x, y, width: width / 2, height }; // Halve the width
+  };
+
+  const [initialState, setInitialState] = useState({
+    terminal: calculateTerminalInitialPosition(),
+    memesis: calculateInitialPosition()
+  });
+
+  useEffect(() => {
+    const handleResize = () => {
+      setInitialState({
+        terminal: calculateTerminalInitialPosition(),
+        memesis: calculateInitialPosition()
+      });
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Handle window resize
   useEffect(() => {
     const handleResize = () => {
       if (!isMaximized) {
-        const { position: newPosition, size: newSize } = calculateInitialPosition();
-        setPosition(newPosition);
-        setSize(newSize);
-        setPreviousState({ position: newPosition, size: newSize });
+        const { terminal } = initialState;
+        setPosition(terminal);
+        setSize({
+          width: terminal.width,
+          height: terminal.height
+        });
+        setPreviousState({ 
+          position: { x: terminal.x, y: terminal.y }, 
+          size: { width: terminal.width, height: terminal.height } 
+        });
       } else {
         setSize({ width: window.innerWidth, height: window.innerHeight });
       }
@@ -50,17 +91,53 @@ export default function Home() {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [isMaximized]);
+  }, [isMaximized, initialState]);
+
+  // Handle window resize for Memesis
+  useEffect(() => {
+    const handleResize = () => {
+      if (!isMaximized) {
+        const { memesis } = initialState;
+        setMemesisPosition(memesis);
+        setMemesisSize({
+          width: memesis.width,
+          height: memesis.height
+        });
+      } else {
+        setMemesisSize({ width: window.innerWidth, height: window.innerHeight });
+      }
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMaximized, initialState]);
 
   // Initial setup
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      const initialState = calculateInitialPosition();
-      setPosition(initialState.position);
-      setSize(initialState.size);
-      setPreviousState(initialState);
+      const { terminal, memesis } = initialState;
+      
+      // Set terminal position and size
+      setPosition(terminal);
+      setSize({
+        width: terminal.width,
+        height: terminal.height
+      });
+      
+      // Set Memesis position and size
+      setMemesisPosition(memesis);
+      setMemesisSize({
+        width: memesis.width,
+        height: memesis.height
+      });
+      
+      // Store previous state for potential maximization
+      setPreviousState({
+        position: { x: terminal.x, y: terminal.y },
+        size: { width: terminal.width, height: terminal.height }
+      });
     }
-  }, []);
+  }, [initialState]);
 
   const toggleMaximize = () => {
     if (!isMaximized) {
@@ -82,42 +159,75 @@ export default function Home() {
     setIsMaximized(!isMaximized);
   };
 
-  const handleMouseDown = (e: React.MouseEvent, action: 'drag' | 'resize') => {
-    if (isMaximized) return;
+  const handleMouseDown = (e: React.MouseEvent, windowType: 'terminal' | 'memesis', action: 'drag' | 'resize') => {
+    e.stopPropagation(); // Prevent event bubbling
+    
     if (action === 'resize') {
-      setIsResizing(true);
-    } else {
+      if (windowType === 'terminal') {
+        setIsResizing(true);
+      } else {
+        setIsMemesisResizing(true);
+      }
+      return;
+    }
+    
+    // Dragging logic
+    if (windowType === 'terminal') {
       setIsDragging(true);
       setDragOffset({
         x: e.clientX - position.x,
         y: e.clientY - position.y
       });
+    } else {
+      setIsMemesisDragging(true);
+      setMemesisDragOffset({
+        x: e.clientX - memesisPosition.x,
+        y: e.clientY - memesisPosition.y
+      });
     }
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
+    // Terminal window dragging
     if (isDragging) {
-      // Constrain dragging within viewport bounds with margins
-      const newX = Math.max(80, Math.min(window.innerWidth - size.width - 80, e.clientX - dragOffset.x));
-      const newY = Math.max(0, Math.min(window.innerHeight - size.height - 80, e.clientY - dragOffset.y));
+      const newX = Math.max(0, Math.min(window.innerWidth - size.width, e.clientX - dragOffset.x));
+      const newY = Math.max(0, Math.min(window.innerHeight - size.height, e.clientY - dragOffset.y));
       setPosition({
         x: newX,
         y: newY
       });
     }
+    
+    // Terminal window resizing
     if (isResizing) {
-      // Constrain resizing within viewport bounds with margins
-      const maxWidth = window.innerWidth - position.x - 80;
-      const maxHeight = window.innerHeight - position.y - 80;
-      const newWidth = Math.max(300, Math.min(maxWidth, e.clientX - position.x));
-      const newHeight = Math.max(300, Math.min(maxHeight, e.clientY - position.y));
+      const newWidth = Math.max(300, e.clientX - position.x);
+      const newHeight = Math.max(300, e.clientY - position.y);
       setSize({ width: newWidth, height: newHeight });
+    }
+
+    // Memesis window dragging
+    if (isMemesisDragging) {
+      const newX = Math.max(0, Math.min(window.innerWidth - memesisSize.width, e.clientX - memesisDragOffset.x));
+      const newY = Math.max(0, Math.min(window.innerHeight - memesisSize.height, e.clientY - memesisDragOffset.y));
+      setMemesisPosition({
+        x: newX,
+        y: newY
+      });
+    }
+    
+    // Memesis window resizing
+    if (isMemesisResizing) {
+      const newWidth = Math.max(300, e.clientX - memesisPosition.x);
+      const newHeight = Math.max(300, e.clientY - memesisPosition.y);
+      setMemesisSize({ width: newWidth, height: newHeight });
     }
   };
 
   const handleMouseUp = () => {
     setIsDragging(false);
     setIsResizing(false);
+    setIsMemesisDragging(false);
+    setIsMemesisResizing(false);
   };
 
   return (
@@ -128,7 +238,7 @@ export default function Home() {
       onMouseLeave={handleMouseUp}
     >
       {/* Background Layer */}
-      <div className="fixed inset-0 flex items-center justify-center" style={{ height: '66vh' }}>
+      <div className="fixed inset-0 flex items-center justify-center" >
         <iframe 
           src="./yhghh.HTML" 
           className="w-full h-full"
@@ -162,7 +272,7 @@ export default function Home() {
         {/* Title Bar */}
         <div 
           className="h-8 bg-black/30 flex items-center px-4 select-none"
-          onMouseDown={(e) => handleMouseDown(e, 'drag')}
+          onMouseDown={(e) => handleMouseDown(e, 'terminal', 'drag')}
         >
           <span className="text-[#39ff14] text-sm flex-grow">kek.works terminal</span>
           <button
@@ -182,7 +292,65 @@ export default function Home() {
         {!isMaximized && (
           <div 
             className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"
-            onMouseDown={(e) => handleMouseDown(e, 'resize')}
+            onMouseDown={(e) => handleMouseDown(e, 'terminal', 'resize')}
+            style={{
+              background: 'linear-gradient(135deg, transparent 50%, rgba(57, 255, 20, 0.2) 100%)',
+            }}
+          />
+        )}
+      </div>
+
+      {/* Memesis Window */}
+      <div 
+        ref={memesisRef}
+        className={`absolute z-10 bg-black/10 backdrop-blur-sm rounded-xl overflow-hidden
+                   shadow-[0_0_15px_rgba(57,255,20,0.15)]
+                   ${!isMaximized && isMemesisDragging ? 'cursor-grabbing' : !isMaximized ? 'cursor-grab' : ''}
+                   ${(isMemesisDragging || isMemesisResizing) ? 'select-none' : ''}`}
+        style={{
+          left: `${memesisPosition.x}px`,
+          top: `${memesisPosition.y}px`,
+          width: `${memesisSize.width}px`,
+          height: `${memesisSize.height}px`,
+          display: 'flex',
+          flexDirection: 'column'
+        }}
+      >
+        {/* Window Header */}
+        <div 
+          className="h-8 bg-black/30 flex items-center px-4 select-none"
+          onMouseDown={(e) => handleMouseDown(e, 'memesis', 'drag')}
+        >
+          <div 
+            className="window-title flex items-center justify-between w-full"
+            style={{ 
+              userSelect: 'none',
+              fontSize: 'inherit' // Use the same font size as the console
+            }}
+          >
+            {memesisWindowTitle}
+          </div>
+          <button
+            onClick={toggleMaximize}
+            className="w-6 h-6 flex items-center justify-center text-[#39ff14] hover:bg-[#39ff14]/20 rounded transition-colors"
+          >
+            {isMaximized ? '↓' : '↑'}
+          </button>
+        </div>
+
+        {/* Memesis Content */}
+        <div 
+          className="h-[calc(100%-32px)]"
+          onMouseDown={(e) => handleMouseDown(e, 'memesis', 'drag')}
+        >
+          <GlyphTypeout speed={50} maxCharacters={5000} />
+        </div>
+
+        {/* Resize Handle */}
+        {!isMaximized && (
+          <div 
+            className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"
+            onMouseDown={(e) => handleMouseDown(e, 'memesis', 'resize')}
             style={{
               background: 'linear-gradient(135deg, transparent 50%, rgba(57, 255, 20, 0.2) 100%)',
             }}
