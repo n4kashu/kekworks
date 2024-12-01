@@ -232,7 +232,7 @@ export default function Home() {
 
   return (
     <div 
-      className="relative min-h-screen overflow-hidden"
+      className="relative w-full h-screen overflow-hidden bg-black"
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
@@ -242,20 +242,16 @@ export default function Home() {
         <iframe 
           src="./yhghh.HTML" 
           className="w-full h-full"
-          style={{
-            border: 'none',
-            pointerEvents: 'none',
-            transform: 'scale(1.1)',
-            transformOrigin: 'center center'
-          }}
         />
       </div>
       
       {/* Terminal Window */}
       <div 
         ref={terminalRef}
-        className={`absolute z-10 bg-black/10 backdrop-blur-sm rounded-xl overflow-hidden
-                   shadow-[0_0_15px_rgba(57,255,20,0.15)]
+        className={`absolute z-10 bg-[#2a1a00]/20 backdrop-blur-sm rounded-xl overflow-hidden
+                   animate-pulse-border
+                   shadow-[0_0_25px_rgba(255,128,0,0.5)]
+                   border-2 border-[#ff8000]/30
                    ${!isMaximized && isDragging ? 'cursor-grabbing' : !isMaximized ? 'cursor-grab' : ''}
                    ${(isDragging || isResizing) ? 'select-none' : ''}`}
         style={{
@@ -263,6 +259,7 @@ export default function Home() {
           top: position.y,
           width: size.width,
           height: size.height,
+          zIndex: isDragging || isResizing ? 20 : 10,
           transition: isDragging || isResizing ? 'none' : 'all 0.3s ease-in-out',
           userSelect: 'none',
           WebkitUserSelect: 'none',
@@ -271,20 +268,20 @@ export default function Home() {
       >
         {/* Title Bar */}
         <div 
-          className="h-8 bg-black/30 flex items-center px-4 select-none"
+          className="h-8 bg-[#ff8000]/20 flex items-center px-4 select-none"
           onMouseDown={(e) => handleMouseDown(e, 'terminal', 'drag')}
         >
-          <span className="text-[#39ff14] text-sm flex-grow">kek.works terminal</span>
+          <span className="text-[#ffa500] text-sm flex-grow">kek.works terminal</span>
           <button
             onClick={toggleMaximize}
-            className="w-6 h-6 flex items-center justify-center text-[#39ff14] hover:bg-[#39ff14]/20 rounded transition-colors"
+            className="w-6 h-6 flex items-center justify-center text-[#ffa500] hover:bg-[#ffa500]/20 rounded transition-colors"
           >
             {isMaximized ? '↓' : '↑'}
           </button>
         </div>
 
         {/* Terminal Content */}
-        <div className="h-[calc(100%-32px)]">
+        <div className="h-[calc(100%-32px)] bg-[#2a1a00]/10">
           <ThisTerminal />
         </div>
 
@@ -294,7 +291,7 @@ export default function Home() {
             className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"
             onMouseDown={(e) => handleMouseDown(e, 'terminal', 'resize')}
             style={{
-              background: 'linear-gradient(135deg, transparent 50%, rgba(57, 255, 20, 0.2) 100%)',
+              background: 'linear-gradient(135deg, transparent 50%, rgba(255, 128, 0, 0.2) 100%)',
             }}
           />
         )}
@@ -303,8 +300,10 @@ export default function Home() {
       {/* Memesis Window */}
       <div 
         ref={memesisRef}
-        className={`absolute z-10 bg-black/10 backdrop-blur-sm rounded-xl overflow-hidden
-                   shadow-[0_0_15px_rgba(57,255,20,0.15)]
+        className={`absolute z-10 bg-[#2a1a00]/20 backdrop-blur-sm rounded-xl overflow-hidden
+                   animate-pulse-border
+                   shadow-[0_0_25px_rgba(255,128,0,0.5)]
+                   border-2 border-[#ff8000]/30
                    ${!isMaximized && isMemesisDragging ? 'cursor-grabbing' : !isMaximized ? 'cursor-grab' : ''}
                    ${(isMemesisDragging || isMemesisResizing) ? 'select-none' : ''}`}
         style={{
@@ -312,27 +311,27 @@ export default function Home() {
           top: `${memesisPosition.y}px`,
           width: `${memesisSize.width}px`,
           height: `${memesisSize.height}px`,
+          zIndex: isMemesisDragging || isMemesisResizing ? 20 : 10,
           display: 'flex',
           flexDirection: 'column'
         }}
       >
         {/* Window Header */}
         <div 
-          className="h-8 bg-black/30 flex items-center px-4 select-none"
+          className="h-8 bg-[#ff8000]/20 flex items-center px-4 select-none"
           onMouseDown={(e) => handleMouseDown(e, 'memesis', 'drag')}
         >
           <div 
-            className="window-title flex items-center justify-between w-full"
+            className="window-title flex items-center justify-between w-full text-sm text-[#ffa500]"
             style={{ 
-              userSelect: 'none',
-              fontSize: 'inherit' // Use the same font size as the console
+              userSelect: 'none'
             }}
           >
             {memesisWindowTitle}
           </div>
           <button
             onClick={toggleMaximize}
-            className="w-6 h-6 flex items-center justify-center text-[#39ff14] hover:bg-[#39ff14]/20 rounded transition-colors"
+            className="w-6 h-6 flex items-center justify-center text-[#ffa500] hover:bg-[#ffa500]/20 rounded transition-colors"
           >
             {isMaximized ? '↓' : '↑'}
           </button>
@@ -340,10 +339,10 @@ export default function Home() {
 
         {/* Memesis Content */}
         <div 
-          className="h-[calc(100%-32px)]"
+          className="h-[calc(100%-32px)] bg-[#2a1a00]/10"
           onMouseDown={(e) => handleMouseDown(e, 'memesis', 'drag')}
         >
-          <GlyphTypeout speed={50} maxCharacters={5000} />
+          <GlyphTypeout speed={50} maxCharacters={5000} fontSize="1rem" />
         </div>
 
         {/* Resize Handle */}
@@ -352,26 +351,32 @@ export default function Home() {
             className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"
             onMouseDown={(e) => handleMouseDown(e, 'memesis', 'resize')}
             style={{
-              background: 'linear-gradient(135deg, transparent 50%, rgba(57, 255, 20, 0.2) 100%)',
+              background: 'linear-gradient(135deg, transparent 50%, rgba(255, 128, 0, 0.2) 100%)',
             }}
           />
         )}
       </div>
 
-      {/* Global Styles */}
-      <style jsx global>{`
-        * {
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-        }
-        *::-webkit-scrollbar {
-          display: none;
-        }
-        .select-none * {
+      <style jsx>{`
+        .no-select {
           user-select: none !important;
           -webkit-user-select: none !important;
           -moz-user-select: none !important;
           -ms-user-select: none !important;
+        }
+        .animate-pulse-border {
+          animation: pulse-border 2s infinite;
+        }
+        @keyframes pulse-border {
+          0% {
+            border-color: #ff8000;
+          }
+          50% {
+            border-color: #ffa500;
+          }
+          100% {
+            border-color: #ff8000;
+          }
         }
       `}</style>
     </div>
