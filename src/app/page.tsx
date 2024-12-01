@@ -1,56 +1,89 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
+import dynamic from 'next/dynamic';
 import ThisTerminal from '@/components/ThisTerminal';
 import GlyphTypeout from '@/app/components/GlyphTypeout';
 
-export default function Home() {
+// Dynamically import client-side components
+const ClientHome = dynamic(() => Promise.resolve(() => {
   const [isMaximized, setIsMaximized] = useState(false);
   const [previousState, setPreviousState] = useState({
     position: { x: 80, y: 0 },
     size: { width: 0, height: 0 }
   });
-  const [position, setPosition] = useState({ 
+
+  const [position, setPosition] = useState({
     x: 15,
     y: 80
   });
-  const [size, setSize] = useState({ 
-    width: 500,
-    height: 450 
-  });
-  const [isDragging, setIsDragging] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-  const terminalRef = useRef<HTMLDivElement>(null);
 
-  const memesisRef = useRef<HTMLDivElement>(null);
-  const [memesisPosition, setMemesisPosition] = useState({ 
-    x: 15, 
+  const [memesisPosition, setMemesisPosition] = useState({
+    x: 15,
     y: 80
   });
-  const [memesisSize, setMemesisSize] = useState({ 
+
+  const [size, setSize] = useState({
     width: 500,
-    height: 450 
+    height: 450
   });
-  const [isMemesisDragging, setIsMemesisDragging] = useState(false);
+
+  const [memesisSize, setMemesisSize] = useState({
+    width: 500,
+    height: 450
+  });
+
+  const [isResizing, setIsResizing] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+
   const [isMemesisResizing, setIsMemesisResizing] = useState(false);
+  const [isMemesisDragging, setIsMemesisDragging] = useState(false);
   const [memesisDragOffset, setMemesisDragOffset] = useState({ x: 0, y: 0 });
   const memesisWindowTitle = 'ANKH (The Analytical Nexus of Kek Hermeneutics)';
+  const terminalRef = useRef<HTMLDivElement>(null);
+  const memesisRef = useRef<HTMLDivElement>(null);
 
   const calculateInitialPosition = () => {
-    const width = Math.min(1000, window.innerWidth - 160); // Reduced width
-    const height = Math.min(450, window.innerHeight * 0.45);
-    const x = 80;
-    const y = 80;
-    return { x, y, width: width / 2, height }; // Halve the width
+    if (typeof window === 'undefined') {
+      return {
+        x: 400,
+        y: 200,
+        width: 600,
+        height: 400
+      };
+    }
+
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    return {
+      x: Math.max(0, Math.min(400, windowWidth - 600)),
+      y: Math.max(0, Math.min(200, windowHeight - 400)),
+      width: Math.min(600, windowWidth * 0.7),
+      height: Math.min(400, windowHeight * 0.5)
+    };
   };
 
   const calculateTerminalInitialPosition = () => {
-    const width = Math.min(1000, window.innerWidth - 160); // Reduced width
-    const height = Math.min(450, window.innerHeight * 0.45);
-    const x = 15; // 15px margin from left
-    const y = window.innerHeight * 0.5 + 15; // 15px margin from top of previous window
-    return { x, y, width: width / 2, height }; // Halve the width
+    if (typeof window === 'undefined') {
+      return {
+        x: 80,
+        y: 0,
+        width: 600,
+        height: 400
+      };
+    }
+
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    return {
+      x: Math.max(0, Math.min(80, windowWidth - 600)),
+      y: Math.max(0, Math.min(0, windowHeight - 400)),
+      width: Math.min(600, windowWidth * 0.7),
+      height: Math.min(400, windowHeight * 0.5)
+    };
   };
 
   const [initialState, setInitialState] = useState({
@@ -59,60 +92,63 @@ export default function Home() {
   });
 
   useEffect(() => {
-    const handleResize = () => {
-      setInitialState({
-        terminal: calculateTerminalInitialPosition(),
-        memesis: calculateInitialPosition()
-      });
-    };
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        setInitialState({
+          terminal: calculateTerminalInitialPosition(),
+          memesis: calculateInitialPosition()
+        });
+      };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, []);
 
-  // Handle window resize
   useEffect(() => {
-    const handleResize = () => {
-      if (!isMaximized) {
-        const { terminal } = initialState;
-        setPosition(terminal);
-        setSize({
-          width: terminal.width,
-          height: terminal.height
-        });
-        setPreviousState({ 
-          position: { x: terminal.x, y: terminal.y }, 
-          size: { width: terminal.width, height: terminal.height } 
-        });
-      } else {
-        setSize({ width: window.innerWidth, height: window.innerHeight });
-      }
-    };
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        if (!isMaximized) {
+          const { terminal } = initialState;
+          setPosition(terminal);
+          setSize({
+            width: terminal.width,
+            height: terminal.height
+          });
+          setPreviousState({ 
+            position: { x: terminal.x, y: terminal.y }, 
+            size: { width: terminal.width, height: terminal.height } 
+          });
+        } else {
+          setSize({ width: window.innerWidth, height: window.innerHeight });
+        }
+      };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, [isMaximized, initialState]);
 
-  // Handle window resize for Memesis
   useEffect(() => {
-    const handleResize = () => {
-      if (!isMaximized) {
-        const { memesis } = initialState;
-        setMemesisPosition(memesis);
-        setMemesisSize({
-          width: memesis.width,
-          height: memesis.height
-        });
-      } else {
-        setMemesisSize({ width: window.innerWidth, height: window.innerHeight });
-      }
-    };
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        if (!isMaximized) {
+          const { memesis } = initialState;
+          setMemesisPosition(memesis);
+          setMemesisSize({
+            width: memesis.width,
+            height: memesis.height
+          });
+        } else {
+          setMemesisSize({ width: window.innerWidth, height: window.innerHeight });
+        }
+      };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }
   }, [isMaximized, initialState]);
 
-  // Initial setup
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const { terminal, memesis } = initialState;
@@ -381,4 +417,8 @@ export default function Home() {
       `}</style>
     </div>
   );
+}), { ssr: false });
+
+export default function Home() {
+  return <ClientHome />;
 }
