@@ -25,7 +25,7 @@ export default function ThisTerminal() {
       '- clear: Clear the terminal',
       '- info: Show information about The Brick',
       '- reports: Open research reports window',
-      '- ankh: Open ANKH Analytical Nexus window',
+      '- ankh: wtf is the ANKH',
       '- fuck the cli: Close all windows and watch the Brick'
     ]);
   }, []);

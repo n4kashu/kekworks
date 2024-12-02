@@ -155,19 +155,7 @@ export default function Home() {
 
         {showGlyphTypeout && (
           <ResizableDraggableWindow
-            title="ANKH-// Event listener for closing all windows
-            const handleCloseAllWindows = () => {
-              setShowReports(false);
-              setShowGlyphTypeout(false);
-              setShowTerminal(false);
-            };
-            window.addEventListener('close-all-windows', handleCloseAllWindows);
-            
-            // Update the cleanup function
-            return () => {
-              window.removeEventListener('resize', handleResize);
-              window.removeEventListener('close-all-windows', handleCloseAllWindows);
-            };"
+            title="ANKH -  Analytical Nexus of Kek Hermeneutics"
             initialWidth={layout.glyph.width}
             initialHeight={layout.glyph.height}
             initialX={layout.glyph.x}
