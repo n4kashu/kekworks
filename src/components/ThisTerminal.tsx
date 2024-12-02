@@ -178,7 +178,7 @@ export default function ThisTerminal() {
     },
     output: {
       flexGrow: 1,
-      overflowY: 'auto',
+      overflowY: 'auto' as const,
       padding: '10px',
       color: 'rgba(57, 255, 20, 1)', 
       backgroundColor: 'rgba(0,0,0,0.9)',
