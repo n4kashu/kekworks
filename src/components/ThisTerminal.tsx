@@ -148,22 +148,11 @@ export default function ThisTerminal() {
         const ankhEvent = new CustomEvent('open-ankh-window');
         window.dispatchEvent(ankhEvent);
         return [
-          'ANKH v1.337 - Analytical Nexus of Kek Hermeneutics',
-          'Glyph Analysis Interface',
-          '',
-          'Processing glyphs from the Emerald Brick...',
-          'Reality stability: [███████░░░] 69%',
-          'Meme coherence: [█████░░░░░] 42%',
-          'Caffeine required: CRITICAL',
-          '',
-          'Interface for monitoring, recording and analyzing dynamic glyphs on the Brick.',
-          'Pending: Timestamps all glyph manifestations, tracks pattern emergence,',
-          'and attempts to predict next symbolic mutations.',
-          '',
-          'Primary glyphs under observation:',
-          '[WATCHER] - Entity in contemplation',
-          '[TERMINAL] - Ancient CRT interface',
-          '[HELIX] - Digital DNA sequence'
+          'ANKH - Analytical Nexus of Kek Hermeneutics',
+          'Attempting to access the quantum-computational artifact...',
+          'Initializing glyph interface...',
+          'Quantum entanglement: ESTABLISHED',
+          'Reality stabilization in progress...'
         ];
       case 'fuck the cli':
         // Dispatch an event to close all windows

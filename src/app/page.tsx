@@ -73,9 +73,25 @@ export default function Home() {
     // Initial call
     handleResize();
 
+    // Event listener for opening ANKH window
+    const handleOpenAnkhWindow = () => {
+      setShowGlyphTypeout(true);
+    };
+    window.addEventListener('open-ankh-window', handleOpenAnkhWindow);
+
+    // Event listener for closing all windows
+    const handleCloseAllWindows = () => {
+      setShowReports(false);
+      setShowGlyphTypeout(false);
+      setShowTerminal(false);
+    };
+    window.addEventListener('close-all-windows', handleCloseAllWindows);
+
     // Cleanup
     return () => {
       window.removeEventListener('resize', handleResize);
+      window.removeEventListener('open-ankh-window', handleOpenAnkhWindow);
+      window.removeEventListener('close-all-windows', handleCloseAllWindows);
     };
   }, []);
 
