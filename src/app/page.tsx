@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import ThisTerminal from '@/components/ThisTerminal';
-import GlyphTypeout from '@/app/components/GlyphTypeout';
+// Commented out unused imports
+// import ThisTerminal from '@/components/ThisTerminal';
+// import GlyphTypeout from '@/app/components/GlyphTypeout';
 import ReportWindow from '@/app/components/ReportWindow';
 
 // Dynamically import client-side components
@@ -41,9 +43,11 @@ const ClientHome = dynamic(() => Promise.resolve(() => {
   const [isMemesisResizing, setIsMemesisResizing] = useState(false);
   const [isMemesisDragging, setIsMemesisDragging] = useState(false);
   const [memesisDragOffset, setMemesisDragOffset] = useState({ x: 0, y: 0 });
-  const memesisWindowTitle = 'ANKH (The Analytical Nexus of Kek Hermeneutics)';
-  const terminalRef = useRef<HTMLDivElement>(null);
-  const memesisRef = useRef<HTMLDivElement>(null);
+  
+  // Commented out unused variables
+  // const memesisWindowTitle = 'ANKH (The Analytical Nexus of Kek Hermeneutics)';
+  // const terminalRef = useRef<HTMLDivElement>(null);
+  // const memesisRef = useRef<HTMLDivElement>(null);
 
   const calculateInitialPosition = () => {
     if (typeof window === 'undefined') {
@@ -176,96 +180,38 @@ const ClientHome = dynamic(() => Promise.resolve(() => {
     }
   }, [initialState]);
 
-  const toggleMaximize = () => {
-    if (!isMaximized) {
-      const currentState = {
-        position: { ...position },
-        size: { ...size }
-      };
-      setPreviousState(currentState);
-      setPosition({ x: 0, y: 0 });
-      setSize({ 
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    } else {
-      const prevState = previousState;
-      setPosition(prevState.position);
-      setSize(prevState.size);
-    }
-    setIsMaximized(!isMaximized);
-  };
+  // Commented out unused functions
+  // const toggleMaximize = () => {
+  //   if (!isMaximized) {
+  //     const currentState = {
+  //       position: { ...position },
+  //       size: { ...size }
+  //     };
+  //     setPreviousState(currentState);
+  //     setPosition({ x: 0, y: 0 });
+  //     setSize({ 
+  //       width: window.innerWidth,
+  //       height: window.innerHeight
+  //     });
+  //   } else {
+  //     const prevState = previousState;
+  //     setPosition(prevState.position);
+  //     setSize(prevState.size);
+  //   }
+  //   setIsMaximized(!isMaximized);
+  // };
 
-  const handleMouseDown = (e: React.MouseEvent, windowType: 'terminal' | 'memesis', action: 'drag' | 'resize') => {
-    e.stopPropagation(); // Prevent event bubbling
-    
-    if (action === 'resize') {
-      if (windowType === 'terminal') {
-        setIsResizing(true);
-      } else {
-        setIsMemesisResizing(true);
-      }
-      return;
-    }
-    
-    // Dragging logic
-    if (windowType === 'terminal') {
-      setIsDragging(true);
-      setDragOffset({
-        x: e.clientX - position.x,
-        y: e.clientY - position.y
-      });
-    } else {
-      setIsMemesisDragging(true);
-      setMemesisDragOffset({
-        x: e.clientX - memesisPosition.x,
-        y: e.clientY - memesisPosition.y
-      });
-    }
-  };
+  // const handleMouseDown = (e: React.MouseEvent, windowType: 'terminal' | 'memesis', action: 'drag' | 'resize') => {
+  //   e.stopPropagation(); // Prevent event bubbling
+  // };
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    // Terminal window dragging
-    if (isDragging) {
-      const newX = Math.max(0, Math.min(window.innerWidth - size.width, e.clientX - dragOffset.x));
-      const newY = Math.max(0, Math.min(window.innerHeight - size.height, e.clientY - dragOffset.y));
-      setPosition({
-        x: newX,
-        y: newY
-      });
-    }
-    
-    // Terminal window resizing
-    if (isResizing) {
-      const newWidth = Math.max(300, e.clientX - position.x);
-      const newHeight = Math.max(300, e.clientY - position.y);
-      setSize({ width: newWidth, height: newHeight });
-    }
+  // const handleMouseMove = (e: React.MouseEvent) => {
+  //   // Mouse move logic
+  // };
 
-    // Memesis window dragging
-    if (isMemesisDragging) {
-      const newX = Math.max(0, Math.min(window.innerWidth - memesisSize.width, e.clientX - memesisDragOffset.x));
-      const newY = Math.max(0, Math.min(window.innerHeight - memesisSize.height, e.clientY - memesisDragOffset.y));
-      setMemesisPosition({
-        x: newX,
-        y: newY
-      });
-    }
-    
-    // Memesis window resizing
-    if (isMemesisResizing) {
-      const newWidth = Math.max(300, e.clientX - memesisPosition.x);
-      const newHeight = Math.max(300, e.clientY - memesisPosition.y);
-      setMemesisSize({ width: newWidth, height: newHeight });
-    }
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(false);
-    setIsResizing(false);
-    setIsMemesisDragging(false);
-    setIsMemesisResizing(false);
-  };
+  // const handleMouseUp = () => {
+  //   // Mouse up logic
+  // };
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
