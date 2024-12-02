@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 
 const ResizableDraggableWindow = dynamic(() => import('@/app/components/ResizableDraggableWindow'), { ssr: false });
@@ -13,99 +13,79 @@ export default function Home() {
   const [showGlyphTypeout, setShowGlyphTypeout] = useState(true);
   const [showReports, setShowReports] = useState(true);
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
-  
-  // Responsive state tracking
-  const [dimensions, setDimensions] = useState({
-    width: 1200,
-    height: 800
+
+  // State to track window size with a forced re-render mechanism
+  const [windowSize, setWindowSize] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1000,
+    height: typeof window !== 'undefined' ? window.innerHeight : 800,
+    key: Date.now()
   });
+
+  // Debounced resize handler
+  const handleResize = useCallback(() => {
+    setWindowSize(prev => ({
+      width: window.innerWidth,
+      height: window.innerHeight,
+      key: Date.now()
+    }));
+  }, []);
+
+  // Handle window resize with debounce
+  useEffect(() => {
+    const debounce = (func: () => void, delay: number) => {
+      let timeoutId: NodeJS.Timeout;
+      return () => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(func, delay);
+      };
+    };
+
+    const debouncedResize = debounce(handleResize, 100);
+
+    window.addEventListener('resize', debouncedResize);
+    return () => window.removeEventListener('resize', debouncedResize);
+  }, [handleResize]);
 
   // Responsive layout calculation
   const layout = useMemo(() => {
-    const margin = 15;
-    const availableWidth = dimensions.width - margin * 3;
-    const availableHeight = dimensions.height - margin * 3;
+    const MARGIN = 15;
+    const availableWidth = windowSize.width - MARGIN * 4; // Increased margin for better spacing
+    const availableHeight = windowSize.height - MARGIN * 4; // Increased margin for better spacing
 
-    // Top half split calculation
-    const topHeight = Math.floor(availableHeight / 2);
-    const reportsWidth = Math.floor(availableWidth / 3);
-    const glyphWidth = availableWidth - reportsWidth;
+    // Always divide into 3 equal vertical sections
+    const windowHeight = Math.floor(availableHeight / 3);
 
     return {
-      margin,
-      reports: {
-        width: reportsWidth,
-        height: topHeight,
-        x: margin,
-        y: margin
-      },
+      margin: MARGIN,
       glyph: {
-        width: glyphWidth,
-        height: topHeight,
-        x: reportsWidth + margin * 2,
-        y: margin
+        width: availableWidth,
+        height: windowHeight,
+        x: MARGIN * 2,
+        y: MARGIN * 2
+      },
+      reports: {
+        width: availableWidth,
+        height: windowHeight,
+        x: MARGIN * 2,
+        y: MARGIN * 2 + windowHeight + MARGIN
       },
       terminal: {
         width: availableWidth,
-        height: topHeight,
-        x: margin,
-        y: topHeight + margin * 2
+        height: windowHeight,
+        x: MARGIN * 2,
+        y: MARGIN * 2 + windowHeight * 2 + MARGIN * 2
       },
       fullReport: {
         width: availableWidth,
         height: availableHeight,
-        x: margin,
-        y: margin
+        x: MARGIN * 2,
+        y: MARGIN * 2
       }
     };
-  }, [dimensions]);
-
-  // Effect for tracking window resize
-  useEffect(() => {
-    // Only run on client side
-    if (typeof window !== 'undefined') {
-      const handleResize = () => {
-        setDimensions({
-          width: window.innerWidth,
-          height: window.innerHeight
-        });
-      };
-
-      // Add resize listener
-      window.addEventListener('resize', handleResize);
-
-      // Initial call
-      handleResize();
-
-      // Event listener for opening ANKH window
-      const handleOpenAnkhWindow = () => {
-        setShowGlyphTypeout(true);
-      };
-      window.addEventListener('open-ankh-window', handleOpenAnkhWindow);
-
-      // Event listener for closing all windows
-      const handleCloseAllWindows = () => {
-        setShowReports(false);
-        setShowGlyphTypeout(false);
-        setShowTerminal(false);
-      };
-      window.addEventListener('close-all-windows', handleCloseAllWindows);
-
-      // Cleanup
-      return () => {
-        window.removeEventListener('resize', handleResize);
-        window.removeEventListener('open-ankh-window', handleOpenAnkhWindow);
-        window.removeEventListener('close-all-windows', handleCloseAllWindows);
-      };
-    }
-  }, []);
+  }, [windowSize]);
 
   const handleReportOpen = (reportHtml: string) => {
     setSelectedReport(reportHtml);
-  };
-
-  const handleReportClose = () => {
-    setSelectedReport(null);
   };
 
   return (
@@ -115,7 +95,13 @@ export default function Home() {
       backgroundColor: 'black', 
       color: 'rgba(57, 255, 20, 0.56)', 
       overflow: 'hidden',
-      position: 'relative' 
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center', 
+      alignItems: 'center', 
+      padding: '0',
+      boxSizing: 'border-box'
     }}>
       {/* Background iframe */}
       <iframe
@@ -146,49 +132,86 @@ export default function Home() {
         }}
       />
 
-      {/* Windows */}
-      <div style={{ position: 'relative', zIndex: 10 }}>
-        {showReports && (
-          <ResizableDraggableWindow
-            title="Reports"
-            initialWidth={layout.reports.width}
-            initialHeight={layout.reports.height}
-            initialX={layout.reports.x}
-            initialY={layout.reports.y}
-            zIndex={10}
-          >
-            <ReportWindow onReportOpen={handleReportOpen} />
-          </ResizableDraggableWindow>
-        )}
-
+      {/* Windows Container */}
+      <div 
+        key={windowSize.key}
+        style={{ 
+          position: 'relative', 
+          zIndex: 10, 
+          width: '100%',
+          maxWidth: '1200px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center', 
+          gap: '15px',
+          height: '100%', // Ensure full height
+          overflowY: 'auto' // Allow scrolling if content overflows
+        }}
+      >
+        {/* Glyph Window - Top */}
         {showGlyphTypeout && (
           <ResizableDraggableWindow
+            key={`glyph-${windowSize.key}`}
             title="ANKH"
             initialWidth={layout.glyph.width}
             initialHeight={layout.glyph.height}
             initialX={layout.glyph.x}
             initialY={layout.glyph.y}
             zIndex={11}
+            style={{ 
+              width: '100%',
+              maxWidth: layout.glyph.width,
+              margin: '0'
+            }}
           >
             <GlyphTypeout />
           </ResizableDraggableWindow>
         )}
 
+        {/* Reports Window - Middle */}
+        {showReports && (
+          <ResizableDraggableWindow
+            key={`reports-${windowSize.key}`}
+            title="Reports"
+            initialWidth={layout.reports.width}
+            initialHeight={layout.reports.height}
+            initialX={layout.reports.x}
+            initialY={layout.reports.y}
+            zIndex={10}
+            style={{ 
+              width: '100%',
+              maxWidth: layout.reports.width,
+              margin: '0'
+            }}
+          >
+            <ReportWindow onReportOpen={handleReportOpen} />
+          </ResizableDraggableWindow>
+        )}
+
+        {/* Terminal Window - Bottom */}
         {showTerminal && (
           <ResizableDraggableWindow
+            key={`terminal-${windowSize.key}`}
             title="Terminal"
             initialWidth={layout.terminal.width}
             initialHeight={layout.terminal.height}
             initialX={layout.terminal.x}
             initialY={layout.terminal.y}
             zIndex={9}
+            style={{ 
+              width: '100%',
+              maxWidth: layout.terminal.width,
+              margin: '0'
+            }}
           >
             <ThisTerminal />
           </ResizableDraggableWindow>
         )}
 
+        {/* Full Report Overlay */}
         {selectedReport && (
           <ResizableDraggableWindow
+            key={`report-${windowSize.key}`}
             title={`Report: ${selectedReport}`}
             initialWidth={layout.fullReport.width}
             initialHeight={layout.fullReport.height}
@@ -196,6 +219,11 @@ export default function Home() {
             initialY={layout.fullReport.y}
             zIndex={12}
             onClose={() => setSelectedReport(null)}
+            style={{ 
+              width: '100%',
+              maxWidth: layout.fullReport.width,
+              margin: '0'
+            }}
           >
             <iframe 
               src={`/${selectedReport}`} 

@@ -21,6 +21,10 @@ export const metadata: Metadata = {
 export default function RootLayout({children,}: Readonly<{ children: React.ReactNode; }>) {
     return (
         <html lang="en">
+        <head>
+            <meta charSet="utf-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+        </head>
         <body className={`antialiased`}>
             <div className="min-h-screen bg-[#001800] font-mono text-[#32FF32] relative overflow-hidden flex flex-col">
                 {/* Background gradient with brighter green and dark green lines */}

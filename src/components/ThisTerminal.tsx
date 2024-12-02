@@ -26,7 +26,7 @@ export default function ThisTerminal() {
       '- info: Show information about The Brick',
       '- reports: Open research reports window',
       '- ankh: wtf is the ANKH',
-      '- fuck the cli: Close all windows and watch the Brick'
+      '- way of kek: Close all windows and watch the Brick'
     ]);
   }, []);
 
@@ -110,7 +110,7 @@ export default function ThisTerminal() {
         '- info: Show information about The Brick',
         '- reports: Open research reports window',
         '- ankh: Open ANKH Analytical Nexus window',
-        '- fuck the cli: Close all windows and watch the Brick'
+        '- way of kek: Close all windows and watch the Brick'
       ];
     }
 
@@ -154,7 +154,7 @@ export default function ThisTerminal() {
           'Quantum entanglement: ESTABLISHED',
           'Reality stabilization in progress...'
         ];
-      case 'fuck the cli':
+      case 'way of kek':
         // Dispatch an event to close all windows
         const closeEvent = new CustomEvent('close-all-windows'); 
         window.dispatchEvent(closeEvent);
