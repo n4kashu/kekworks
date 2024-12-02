@@ -25,28 +25,35 @@ const ResizableDraggableWindow: React.FC<ResizableDraggableWindowProps> = ({
   opacity = 0.8,
   style = {}
 }) => {
+  const windowStyle: React.CSSProperties = {
+    position: 'absolute',
+    top: initialY,
+    left: initialX,
+    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    border: '1px solid rgba(57, 255, 20, 0.3)',
+    margin: '0 auto', // Center the window
+    boxShadow: '0 0 10px rgba(57, 255, 20, 0.3)',
+    color: 'rgba(57, 255, 20, 0.56)',
+    width: initialWidth,
+    height: initialHeight,
+    maxWidth: '100%',
+    zIndex, 
+    opacity,
+    ...style
+  };
+
+  const responsiveStyles: React.CSSProperties = {
+    '@media (max-width: 768px)': {
+      position: 'static',
+      maxWidth: '100%',
+      margin: '10px 0'
+    } as React.CSSProperties
+  };
+
   return (
     <div 
       className="resizable-draggable-window"
-      style={{ 
-        position: 'absolute', 
-        top: initialY,
-        left: initialX,
-        width: '100%', // Full width of parent
-        maxWidth: initialWidth,
-        height: initialHeight,
-        zIndex, 
-        opacity,
-        boxShadow: '0 0 10px rgba(57, 255, 20, 0.5)',
-        border: '1px solid rgba(57, 255, 20, 0.3)',
-        margin: '0 auto', // Center the window
-        '@media (max-width: 768px)': {
-          position: 'static',
-          maxWidth: '100%',
-          margin: '10px 0'
-        },
-        ...style
-      }}
+      style={windowStyle}
     >
       <div 
         className="window-content" 
