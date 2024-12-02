@@ -128,17 +128,20 @@ export default function Home() {
         <ResizableDraggableWindow
           key={`report-${windowSize.key}`}
           title={`Report: ${selectedReport}`}
-          initialWidth={windowSize.width - 40}
-          initialHeight={windowSize.height - 40}
-          initialX={20}
-          initialY={20}
-          zIndex={12}
+          initialWidth={windowSize.width}
+          initialHeight={windowSize.height}
+          initialX={0}
+          initialY={0}
+          zIndex={1000}
           onClose={() => setSelectedReport(null)}
           style={{ 
             width: '100%',
-            maxWidth: windowSize.width - 40,
-            height: windowSize.height - 40,
-            margin: '0'
+            maxWidth: windowSize.width,
+            height: windowSize.height,
+            margin: '0',
+            position: 'absolute',
+            top: 0,
+            left: 0
           }}
         >
           <iframe 

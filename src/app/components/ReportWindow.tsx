@@ -30,7 +30,9 @@ interface ReportWindowProps {
 
 export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
   const [activeAudio, setActiveAudio] = useState<string | null>(null);
+  const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
+  const progressBarRefs = useRef<{ [key: string]: HTMLDivElement }>({});
 
   const togglePlay = (audioSrc: string) => {
     const audioElement = audioRefs.current[audioSrc];
@@ -49,13 +51,34 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
     }
   };
 
+  const handleTimeUpdate = (audioSrc: string, e: React.SyntheticEvent<HTMLAudioElement>) => {
+    const audio = e.currentTarget;
+    const progressPercentage = (audio.currentTime / audio.duration) * 100;
+    setProgress(prev => ({
+      ...prev,
+      [audioSrc]: progressPercentage
+    }));
+  };
+
+  const handleProgressBarClick = (audioSrc: string, e: React.MouseEvent<HTMLDivElement>) => {
+    const progressBar = progressBarRefs.current[audioSrc];
+    const audio = audioRefs.current[audioSrc];
+    
+    if (progressBar && audio) {
+      const rect = progressBar.getBoundingClientRect();
+      const clickPosition = (e.clientX - rect.left) / rect.width;
+      audio.currentTime = clickPosition * audio.duration;
+    }
+  };
+
   const windowTitleStyle = {
     fontWeight: 'bold',
     color: 'rgba(57, 255, 20, 1)',
     textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
     letterSpacing: '1px',
     fontSize: '1.2em',
-    margin: '0 0 15px 0'
+    margin: '0 0 15px 0',
+    cursor: 'pointer'
   };
 
   return (
@@ -70,17 +93,15 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
       {REPORTS.map((report) => (
         <div 
           key={report.id}
-          onClick={() => onReportOpen(report.html)}
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.7)', 
             borderRadius: '5px',
             border: '1px solid rgba(57, 255, 20, 0.3)', 
             padding: '15px',
             display: 'flex',
+            flexDirection: 'column',
             justifyContent: 'space-between',
-            alignItems: 'center',
             color: 'rgba(57, 255, 20, 0.9)',
-            cursor: 'pointer',
             transition: 'all 0.3s ease',
             position: 'relative'
           }}
@@ -95,45 +116,81 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
         >
           <div style={{ 
             display: 'flex', 
-            flexDirection: 'column',
-            flex: 1
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            width: '100%',
+            marginBottom: '10px'
           }}>
-            <span style={{ 
-              fontSize: '0.8em', 
-              opacity: 0.7,
-              marginBottom: '5px'
+            <div style={{ 
+              display: 'flex', 
+              flexDirection: 'column',
+              flex: 1
             }}>
-              {report.id}
-            </span>
-            <span style={windowTitleStyle}>
-              {report.title}
-            </span>
+              <span style={{ 
+                fontSize: '0.8em', 
+                opacity: 0.7,
+                marginBottom: '5px'
+              }}>
+                {report.id}
+              </span>
+              <span 
+                style={windowTitleStyle}
+                onClick={() => onReportOpen(report.html)}
+              >
+                {report.title}
+              </span>
+            </div>
+
+            <div 
+              onClick={(e) => {
+                e.stopPropagation();
+                togglePlay(`/${report.audio}`);
+              }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                marginLeft: '10px',
+                cursor: 'pointer',
+                padding: '5px',
+                borderRadius: '3px',
+                transition: 'background-color 0.3s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = 'transparent';
+              }}
+            >
+              {activeAudio === `/${report.audio}` 
+                ? '⏸' 
+                : '▶'}
+            </div>
           </div>
 
+          {/* Progress Bar */}
           <div 
-            onClick={(e) => {
-              e.stopPropagation(); // Prevent triggering the report open
-              togglePlay(`/${report.audio}`);
+            ref={(el) => {
+              if (el) progressBarRefs.current[`/${report.audio}`] = el;
             }}
+            onClick={(e) => handleProgressBarClick(`/${report.audio}`, e)}
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              marginLeft: '10px',
-              cursor: 'pointer',
-              padding: '5px',
-              borderRadius: '3px',
-              transition: 'background-color 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
+              width: '100%', 
+              height: '4px', 
+              backgroundColor: 'rgba(57, 255, 20, 0.2)',
+              borderRadius: '2px',
+              overflow: 'hidden',
+              cursor: 'pointer'
             }}
           >
-            {activeAudio === `/${report.audio}` 
-              ? '⏸' 
-              : '▶'}
+            <div 
+              style={{
+                width: `${progress[`/${report.audio}`] || 0}%`, 
+                height: '100%', 
+                backgroundColor: 'rgba(57, 255, 20, 0.8)',
+                transition: 'width 0.1s linear'
+              }}
+            />
           </div>
 
           {/* Hidden Audio Elements */}
@@ -143,6 +200,7 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
             }}
             src={`/${report.audio}`}
             style={{ display: 'none' }}
+            onTimeUpdate={(e) => handleTimeUpdate(`/${report.audio}`, e)}
           />
         </div>
       ))}
