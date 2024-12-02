@@ -70,10 +70,7 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
       {REPORTS.map((report) => (
         <div 
           key={report.id}
-          onClick={() => {
-            onReportOpen(report.html);
-            togglePlay(`/${report.audio}`);
-          }}
+          onClick={() => onReportOpen(report.html)}
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.7)', 
             borderRadius: '5px',
@@ -114,10 +111,24 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
           </div>
 
           <div 
+            onClick={(e) => {
+              e.stopPropagation(); // Prevent triggering the report open
+              togglePlay(`/${report.audio}`);
+            }}
             style={{
               display: 'flex',
               alignItems: 'center',
-              marginLeft: '10px'
+              marginLeft: '10px',
+              cursor: 'pointer',
+              padding: '5px',
+              borderRadius: '3px',
+              transition: 'background-color 0.3s ease'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = 'transparent';
             }}
           >
             {activeAudio === `/${report.audio}` 
