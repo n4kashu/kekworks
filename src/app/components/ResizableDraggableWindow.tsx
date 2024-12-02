@@ -42,14 +42,6 @@ const ResizableDraggableWindow: React.FC<ResizableDraggableWindowProps> = ({
     ...style
   };
 
-  const responsiveStyles: React.CSSProperties = {
-    '@media (max-width: 768px)': {
-      position: 'static',
-      maxWidth: '100%',
-      margin: '10px 0'
-    } as React.CSSProperties
-  };
-
   return (
     <div 
       className="resizable-draggable-window"
@@ -60,46 +52,37 @@ const ResizableDraggableWindow: React.FC<ResizableDraggableWindowProps> = ({
         style={{ 
           width: '100%', 
           height: '100%', 
-          display: 'flex', 
-          flexDirection: 'column' 
+          overflow: 'auto',
+          padding: '10px'
         }}
       >
+        {/* Window header */}
         <div 
-          className="window-title" 
+          className="window-header" 
           style={{
-            backgroundColor: 'rgba(57, 255, 20, 0.2)',
-            color: 'rgba(57, 255, 20, 0.8)',
-            padding: '5px 10px',
             display: 'flex',
             justifyContent: 'space-between',
-            alignItems: 'center'
+            alignItems: 'center',
+            marginBottom: '10px'
           }}
         >
-          <span>{title}</span>
+          <h3 style={{ margin: 0, color: 'rgba(57, 255, 20, 0.56)' }}>{title}</h3>
           {onClose && (
             <button 
               onClick={onClose}
               style={{
                 background: 'none',
-                border: 'none',
-                color: 'rgba(57, 255, 20, 0.8)',
+                border: '1px solid rgba(57, 255, 20, 0.3)',
+                color: 'rgba(57, 255, 20, 0.56)',
                 cursor: 'pointer'
               }}
             >
-              ✕
+              Close
             </button>
           )}
         </div>
-        <div 
-          className="window-body" 
-          style={{ 
-            flex: 1, 
-            overflow: 'auto',
-            backgroundColor: 'rgba(0, 0, 0, 0.7)' 
-          }}
-        >
-          {children}
-        </div>
+        
+        {children}
       </div>
     </div>
   );

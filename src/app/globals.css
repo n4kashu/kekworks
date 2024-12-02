@@ -179,3 +179,14 @@ body {
     box-sizing: border-box;
   }
 }
+
+@media (max-width: 768px) {
+  .resizable-draggable-window {
+    position: static !important;
+    margin: 10px 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    left: 0 !important;
+    top: auto !important;
+  }
+}

@@ -101,7 +101,8 @@ export default function Home() {
       justifyContent: 'center', 
       alignItems: 'center', 
       padding: '0',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      paddingBottom: '30px'
     }}>
       {/* Background iframe */}
       <iframe
