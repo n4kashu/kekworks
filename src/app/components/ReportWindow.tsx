@@ -115,10 +115,12 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = 'rgba(57, 255, 20, 0.1)';
               e.currentTarget.style.boxShadow = '0 0 10px rgba(57, 255, 20, 0.3)';
+              return null;
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.backgroundColor = 'transparent';
               e.currentTarget.style.boxShadow = 'none';
+              return null;
             }}
           >
             {report.title}

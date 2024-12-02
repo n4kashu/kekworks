@@ -1,10 +1,12 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import ResizableDraggableWindow from '@/app/components/ResizableDraggableWindow';
-import ThisTerminal from '@/components/ThisTerminal';
-import GlyphTypeout from '@/app/components/GlyphTypeout';
-import ReportWindow from '@/app/components/ReportWindow';
+import dynamic from 'next/dynamic';
+
+const ResizableDraggableWindow = dynamic(() => import('@/app/components/ResizableDraggableWindow'), { ssr: false });
+const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: false });
+const GlyphTypeout = dynamic(() => import('@/app/components/GlyphTypeout'), { ssr: false });
+const ReportWindow = dynamic(() => import('@/app/components/ReportWindow'), { ssr: false });
 
 export default function Home() {
   const [showTerminal, setShowTerminal] = useState(true);
@@ -14,8 +16,8 @@ export default function Home() {
   
   // Responsive state tracking
   const [dimensions, setDimensions] = useState({
-    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
-    height: typeof window !== 'undefined' ? window.innerHeight : 800
+    width: 1200,
+    height: 800
   });
 
   // Responsive layout calculation
@@ -60,39 +62,42 @@ export default function Home() {
 
   // Effect for tracking window resize
   useEffect(() => {
-    const handleResize = () => {
-      setDimensions({
-        width: window.innerWidth,
-        height: window.innerHeight
-      });
-    };
+    // Only run on client side
+    if (typeof window !== 'undefined') {
+      const handleResize = () => {
+        setDimensions({
+          width: window.innerWidth,
+          height: window.innerHeight
+        });
+      };
 
-    // Add resize listener
-    window.addEventListener('resize', handleResize);
+      // Add resize listener
+      window.addEventListener('resize', handleResize);
 
-    // Initial call
-    handleResize();
+      // Initial call
+      handleResize();
 
-    // Event listener for opening ANKH window
-    const handleOpenAnkhWindow = () => {
-      setShowGlyphTypeout(true);
-    };
-    window.addEventListener('open-ankh-window', handleOpenAnkhWindow);
+      // Event listener for opening ANKH window
+      const handleOpenAnkhWindow = () => {
+        setShowGlyphTypeout(true);
+      };
+      window.addEventListener('open-ankh-window', handleOpenAnkhWindow);
 
-    // Event listener for closing all windows
-    const handleCloseAllWindows = () => {
-      setShowReports(false);
-      setShowGlyphTypeout(false);
-      setShowTerminal(false);
-    };
-    window.addEventListener('close-all-windows', handleCloseAllWindows);
+      // Event listener for closing all windows
+      const handleCloseAllWindows = () => {
+        setShowReports(false);
+        setShowGlyphTypeout(false);
+        setShowTerminal(false);
+      };
+      window.addEventListener('close-all-windows', handleCloseAllWindows);
 
-    // Cleanup
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      window.removeEventListener('open-ankh-window', handleOpenAnkhWindow);
-      window.removeEventListener('close-all-windows', handleCloseAllWindows);
-    };
+      // Cleanup
+      return () => {
+        window.removeEventListener('resize', handleResize);
+        window.removeEventListener('open-ankh-window', handleOpenAnkhWindow);
+        window.removeEventListener('close-all-windows', handleCloseAllWindows);
+      };
+    }
   }, []);
 
   const handleReportOpen = (reportHtml: string) => {
@@ -104,88 +109,39 @@ export default function Home() {
   };
 
   return (
-    <main 
-      style={{ 
-        backgroundColor: 'black', 
-        height: '100vh', 
-        width: '100vw', 
-        overflow: 'hidden',
-        position: 'relative',
-        display: 'grid',
-        gridTemplateRows: 'repeat(2, 1fr)',
-        gap: `${layout.margin}px`
-      }}
-    >
-      {/* Background iframe */}
-      <iframe
-        src="/yhghh.html"
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          border: 'none',
-          zIndex: 0,
-          backgroundColor: 'black'
-        }}
-      />
+    <div style={{ 
+      height: '100vh', 
+      width: '100vw', 
+      backgroundColor: 'black', 
+      color: 'rgba(57, 255, 20, 0.56)', 
+      overflow: 'hidden' 
+    }}>
+      {showReports && (
+        <ResizableDraggableWindow
+          title="Reports"
+          initialWidth={layout.reports.width}
+          initialHeight={layout.reports.height}
+          initialX={layout.reports.x}
+          initialY={layout.reports.y}
+          zIndex={10}
+        >
+          <ReportWindow onReportOpen={handleReportOpen} />
+        </ResizableDraggableWindow>
+      )}
 
-      {/* Background glow effect */}
-      <div
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          background: 'radial-gradient(circle at center, rgba(57, 255, 20, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%)',
-          pointerEvents: 'none',
-          zIndex: 1
-        }}
-      />
+      {showGlyphTypeout && (
+        <ResizableDraggableWindow
+          title="ANKH"
+          initialWidth={layout.glyph.width}
+          initialHeight={layout.glyph.height}
+          initialX={layout.glyph.x}
+          initialY={layout.glyph.y}
+          zIndex={11}
+        >
+          <GlyphTypeout />
+        </ResizableDraggableWindow>
+      )}
 
-      {/* Top row grid */}
-      <div 
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 2fr',
-          gap: `${layout.margin}px`,
-          zIndex: 10
-        }}
-      >
-        {showReports && (
-          <ResizableDraggableWindow
-            title="Research Reports"
-            initialWidth={layout.reports.width}
-            initialHeight={layout.reports.height}
-            initialX={layout.reports.x}
-            initialY={layout.reports.y}
-            onClose={() => setShowReports(false)}
-            zIndex={15}
-            opacity={0.8}
-          >
-            <ReportWindow onReportOpen={handleReportOpen} />
-          </ResizableDraggableWindow>
-        )}
-
-        {showGlyphTypeout && (
-          <ResizableDraggableWindow
-            title="ANKH -  Analytical Nexus of Kek Hermeneutics"
-            initialWidth={layout.glyph.width}
-            initialHeight={layout.glyph.height}
-            initialX={layout.glyph.x}
-            initialY={layout.glyph.y}
-            onClose={() => setShowGlyphTypeout(false)}
-            zIndex={10}
-            opacity={0.8}
-          >
-            <GlyphTypeout maxCharacters={5000} speed={100} />
-          </ResizableDraggableWindow>
-        )}
-      </div>
-
-      {/* Bottom row */}
       {showTerminal && (
         <ResizableDraggableWindow
           title="Terminal"
@@ -193,9 +149,7 @@ export default function Home() {
           initialHeight={layout.terminal.height}
           initialX={layout.terminal.x}
           initialY={layout.terminal.y}
-          onClose={() => setShowTerminal(false)}
-          zIndex={5}
-          opacity={0.8}
+          zIndex={9}
         >
           <ThisTerminal />
         </ResizableDraggableWindow>
@@ -203,26 +157,25 @@ export default function Home() {
 
       {selectedReport && (
         <ResizableDraggableWindow
-          title="Report Viewer"
+          title={`Report: ${selectedReport}`}
           initialWidth={layout.fullReport.width}
           initialHeight={layout.fullReport.height}
           initialX={layout.fullReport.x}
           initialY={layout.fullReport.y}
-          onClose={handleReportClose}
-          zIndex={100}
-          opacity={0.8}
+          zIndex={12}
+          onClose={() => setSelectedReport(null)}
         >
-          <iframe
-            src={`/${selectedReport}`}
-            style={{
-              width: '100%',
-              height: '100%',
-              border: 'none',
-              backgroundColor: 'rgba(0, 0, 0, 0.2)'
-            }}
+          <iframe 
+            src={`/${selectedReport}`} 
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              border: 'none', 
+              backgroundColor: 'rgba(0,0,0,0.7)' 
+            }} 
           />
         </ResizableDraggableWindow>
       )}
-    </main>
+    </div>
   );
 }
