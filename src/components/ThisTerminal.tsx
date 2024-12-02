@@ -23,11 +23,10 @@ export default function ThisTerminal() {
       'Available commands:',
       '- help: Show this help menu',
       '- clear: Clear the terminal',
-      '- info: Show information about this terminal',
-      '- mint: Mint a new NFT',
-      '- what_the_brick: Show what the brick is',
-      '- reports: List available reports',
-      '- read <filename>: Read a report file'
+      '- info: Show information about The Brick',
+      '- reports: Open research reports window',
+      '- ankh: Open ANKH Analytical Nexus window',
+      '- fuck the cli: Close all windows and watch the Brick'
     ]);
   }, []);
 
@@ -100,28 +99,6 @@ export default function ThisTerminal() {
     );
   };
 
-  const listReports = async () => {
-    return [
-      'Available Reports:',
-      '- report_001.html',
-      '- repot_002.txt',
-      '',
-      'To read a report, type: read <filename>',
-      'Example: read report_001.html'
-    ];
-  };
-
-  const readReport = async (filename: string) => {
-    try {
-      const response = await fetch(`/api/reports/${filename}`);
-      const text = await response.text();
-      return text.split('\n');
-    } catch (error: Error | unknown) {
-      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-      return [`Error reading report: ${errorMessage}`];
-    }
-  };
-
   const handleCommand = async (cmd: string): Promise<string[]> => {
     const command = cmd.trim().toLowerCase();
 
@@ -130,17 +107,11 @@ export default function ThisTerminal() {
         'Available commands:',
         '- help: Show this help menu',
         '- clear: Clear the terminal',
-        '- info: Show information about this terminal',
-        '- mint: Mint a new NFT',
-        '- what_the_brick: Show what the brick is',
-        '- reports: List available reports',
-        '- read <filename>: Read a report file'
+        '- info: Show information about The Brick',
+        '- reports: Open research reports window',
+        '- ankh: Open ANKH Analytical Nexus window',
+        '- fuck the cli: Close all windows and watch the Brick'
       ];
-    }
-
-    if (command.startsWith('read ')) {
-      const filename = cmd.trim().substring(5);
-      return await readReport(filename);
     }
 
     switch(command) {
@@ -151,27 +122,60 @@ export default function ThisTerminal() {
         return [];
       case 'info':
         return [
-          'kek.works research terminal v0.1',
-          'System Status: ONLINE',
-          'Network: SECURE',
-          'Uptime: 42:13:37'
-        ];
-      case 'mint':
-        return [
-          'MINTING SEQUENCE INITIATED',
-          'Preparing quantum encryption...',
-          'Generating unique hash...',
-          'MINT COMPLETE'
-        ];
-      case 'what_the_brick':
-        return [
-          '⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛',
-          'BRICK PROTOCOL ACTIVATED',
-          'CLASSIFIED INFORMATION DETECTED',
-          '⬛⬛⬛⬛⬛⬛⬛⬛⬛⬛'
+          '=================================',
+          'KEK.WORKS RESEARCH TERMINAL v1.337',
+          '=================================',
+          '',
+          'Welcome to the Emerald Brick research database. ',
+          'Current caffeine levels: CRITICAL',
+          '',
+          'The Brick: A quantum-computational artifact manifesting as Emerald_Brick.exe after the Ritual of Lulz. Features three primary glyphs depicting a watcher, CRT terminal, and DNA helix. Known to induce enlightenment through weaponized irony.',
+          '',
+          'WARNING: Extended research may result in:',
+          '- Spontaneous enlightenment',
+          '- Understanding ancient memes',
+          '- Quantum humor syndrome',
+          '- Uncontrollable mutation of reality perception',
+          '- Severe RedBull dependency'
         ];
       case 'reports':
-        return await listReports();
+        // Dispatch an event to open the reports window
+        const reportsEvent = new CustomEvent('open-reports-window');
+        window.dispatchEvent(reportsEvent);
+        return ['Opening research reports window...'];
+      case 'ankh':
+        // Dispatch an event to open the ANKH window
+        const ankhEvent = new CustomEvent('open-ankh-window');
+        window.dispatchEvent(ankhEvent);
+        return [
+          'ANKH v1.337 - Analytical Nexus of Kek Hermeneutics',
+          'Glyph Analysis Interface',
+          '',
+          'Processing glyphs from the Emerald Brick...',
+          'Reality stability: [███████░░░] 69%',
+          'Meme coherence: [█████░░░░░] 42%',
+          'Caffeine required: CRITICAL',
+          '',
+          'Interface for monitoring, recording and analyzing dynamic glyphs on the Brick.',
+          'Pending: Timestamps all glyph manifestations, tracks pattern emergence,',
+          'and attempts to predict next symbolic mutations.',
+          '',
+          'Primary glyphs under observation:',
+          '[WATCHER] - Entity in contemplation',
+          '[TERMINAL] - Ancient CRT interface',
+          '[HELIX] - Digital DNA sequence'
+        ];
+      case 'fuck the cli':
+        // Dispatch an event to close all windows
+        const closeEvent = new CustomEvent('close-all-windows');
+        window.dispatchEvent(closeEvent);
+        return [
+          'Closing all windows...',
+          'Preparing to commune with the Brick...',
+          'Reality recalibration in progress...',
+          '...',
+          'Enjoy the Emerald Enlightenment.'
+        ];
       default:
         return [`Unknown command: ${cmd}`];
     }

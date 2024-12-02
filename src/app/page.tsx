@@ -1,245 +1,224 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
-import dynamic from 'next/dynamic';
-// Commented out unused imports
-// import ThisTerminal from '@/components/ThisTerminal';
-// import GlyphTypeout from '@/app/components/GlyphTypeout';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
+import ResizableDraggableWindow from '@/app/components/ResizableDraggableWindow';
+import ThisTerminal from '@/components/ThisTerminal';
+import GlyphTypeout from '@/app/components/GlyphTypeout';
 import ReportWindow from '@/app/components/ReportWindow';
 
-// Dynamically import client-side components
-const ClientHome = dynamic(() => Promise.resolve(() => {
-  const [isMaximized, setIsMaximized] = useState(false);
-  const [previousState, setPreviousState] = useState({
-    position: { x: 80, y: 0 },
-    size: { width: 0, height: 0 }
-  });
-
-  const [position, setPosition] = useState({
-    x: 15,
-    y: 80
-  });
-
-  const [memesisPosition, setMemesisPosition] = useState({
-    x: 15,
-    y: 80
-  });
-
-  const [size, setSize] = useState({
-    width: 500,
-    height: 450
-  });
-
-  const [memesisSize, setMemesisSize] = useState({
-    width: 500,
-    height: 450
-  });
-
-  const [isResizing, setIsResizing] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-
-  const [isMemesisResizing, setIsMemesisResizing] = useState(false);
-  const [isMemesisDragging, setIsMemesisDragging] = useState(false);
-  const [memesisDragOffset, setMemesisDragOffset] = useState({ x: 0, y: 0 });
+export default function Home() {
+  const [showTerminal, setShowTerminal] = useState(true);
+  const [showGlyphTypeout, setShowGlyphTypeout] = useState(true);
+  const [showReports, setShowReports] = useState(true);
+  const [selectedReport, setSelectedReport] = useState<string | null>(null);
   
-  // Commented out unused variables
-  // const memesisWindowTitle = 'ANKH (The Analytical Nexus of Kek Hermeneutics)';
-  // const terminalRef = useRef<HTMLDivElement>(null);
-  // const memesisRef = useRef<HTMLDivElement>(null);
-
-  const calculateInitialPosition = () => {
-    if (typeof window === 'undefined') {
-      return {
-        x: 400,
-        y: 200,
-        width: 600,
-        height: 400
-      };
-    }
-
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-
-    return {
-      x: Math.max(0, Math.min(400, windowWidth - 600)),
-      y: Math.max(0, Math.min(200, windowHeight - 400)),
-      width: Math.min(600, windowWidth * 0.7),
-      height: Math.min(400, windowHeight * 0.5)
-    };
-  };
-
-  const calculateTerminalInitialPosition = () => {
-    if (typeof window === 'undefined') {
-      return {
-        x: 80,
-        y: 0,
-        width: 600,
-        height: 400
-      };
-    }
-
-    const windowWidth = window.innerWidth;
-    const windowHeight = window.innerHeight;
-
-    return {
-      x: Math.max(0, Math.min(80, windowWidth - 600)),
-      y: Math.max(0, Math.min(0, windowHeight - 400)),
-      width: Math.min(600, windowWidth * 0.7),
-      height: Math.min(400, windowHeight * 0.5)
-    };
-  };
-
-  const [initialState, setInitialState] = useState({
-    terminal: calculateTerminalInitialPosition(),
-    memesis: calculateInitialPosition()
+  // Responsive state tracking
+  const [dimensions, setDimensions] = useState({
+    width: typeof window !== 'undefined' ? window.innerWidth : 1200,
+    height: typeof window !== 'undefined' ? window.innerHeight : 800
   });
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const handleResize = () => {
-        setInitialState({
-          terminal: calculateTerminalInitialPosition(),
-          memesis: calculateInitialPosition()
-        });
-      };
+  // Responsive layout calculation
+  const layout = useMemo(() => {
+    const margin = 15;
+    const availableWidth = dimensions.width - margin * 3;
+    const availableHeight = dimensions.height - margin * 3;
 
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }
+    // Top half split calculation
+    const topHeight = Math.floor(availableHeight / 2);
+    const reportsWidth = Math.floor(availableWidth / 3);
+    const glyphWidth = availableWidth - reportsWidth;
+
+    return {
+      margin,
+      reports: {
+        width: reportsWidth,
+        height: topHeight,
+        x: margin,
+        y: margin
+      },
+      glyph: {
+        width: glyphWidth,
+        height: topHeight,
+        x: reportsWidth + margin * 2,
+        y: margin
+      },
+      terminal: {
+        width: availableWidth,
+        height: topHeight,
+        x: margin,
+        y: topHeight + margin * 2
+      },
+      fullReport: {
+        width: availableWidth,
+        height: availableHeight,
+        x: margin,
+        y: margin
+      }
+    };
+  }, [dimensions]);
+
+  // Effect for tracking window resize
+  useEffect(() => {
+    const handleResize = () => {
+      setDimensions({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    };
+
+    // Add resize listener
+    window.addEventListener('resize', handleResize);
+
+    // Initial call
+    handleResize();
+
+    // Cleanup
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const handleResize = () => {
-        if (!isMaximized) {
-          const { terminal } = initialState;
-          setPosition(terminal);
-          setSize({
-            width: terminal.width,
-            height: terminal.height
-          });
-          setPreviousState({ 
-            position: { x: terminal.x, y: terminal.y }, 
-            size: { width: terminal.width, height: terminal.height } 
-          });
-        } else {
-          setSize({ width: window.innerWidth, height: window.innerHeight });
-        }
-      };
+  const handleReportOpen = (reportHtml: string) => {
+    setSelectedReport(reportHtml);
+  };
 
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }
-  }, [isMaximized, initialState]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const handleResize = () => {
-        if (!isMaximized) {
-          const { memesis } = initialState;
-          setMemesisPosition(memesis);
-          setMemesisSize({
-            width: memesis.width,
-            height: memesis.height
-          });
-        } else {
-          setMemesisSize({ width: window.innerWidth, height: window.innerHeight });
-        }
-      };
-
-      window.addEventListener('resize', handleResize);
-      return () => window.removeEventListener('resize', handleResize);
-    }
-  }, [isMaximized, initialState]);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const { terminal, memesis } = initialState;
-      
-      // Set terminal position and size
-      setPosition(terminal);
-      setSize({
-        width: terminal.width,
-        height: terminal.height
-      });
-      
-      // Set Memesis position and size
-      setMemesisPosition(memesis);
-      setMemesisSize({
-        width: memesis.width,
-        height: memesis.height
-      });
-      
-      // Store previous state for potential maximization
-      setPreviousState({
-        position: { x: terminal.x, y: terminal.y },
-        size: { width: terminal.width, height: terminal.height }
-      });
-    }
-  }, [initialState]);
-
-  // Commented out unused functions
-  // const toggleMaximize = () => {
-  //   if (!isMaximized) {
-  //     const currentState = {
-  //       position: { ...position },
-  //       size: { ...size }
-  //     };
-  //     setPreviousState(currentState);
-  //     setPosition({ x: 0, y: 0 });
-  //     setSize({ 
-  //       width: window.innerWidth,
-  //       height: window.innerHeight
-  //     });
-  //   } else {
-  //     const prevState = previousState;
-  //     setPosition(prevState.position);
-  //     setSize(prevState.size);
-  //   }
-  //   setIsMaximized(!isMaximized);
-  // };
-
-  // const handleMouseDown = (e: React.MouseEvent, windowType: 'terminal' | 'memesis', action: 'drag' | 'resize') => {
-  //   e.stopPropagation(); // Prevent event bubbling
-  // };
-
-  // const handleMouseMove = (e: React.MouseEvent) => {
-  //   // Mouse move logic
-  // };
-
-  // const handleMouseUp = () => {
-  //   // Mouse up logic
-  // };
+  const handleReportClose = () => {
+    setSelectedReport(null);
+  };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <ReportWindow />
-      {/* Commented out existing windows
-      <ThisTerminal 
-        position={position}
-        size={size}
-        isMaximized={isMaximized}
-      />
-      <div 
-        className="memesis-window"
+    <main 
+      style={{ 
+        backgroundColor: 'black', 
+        height: '100vh', 
+        width: '100vw', 
+        overflow: 'hidden',
+        position: 'relative',
+        display: 'grid',
+        gridTemplateRows: 'repeat(2, 1fr)',
+        gap: `${layout.margin}px`
+      }}
+    >
+      {/* Background iframe */}
+      <iframe
+        src="/yhghh.html"
         style={{
           position: 'absolute',
-          left: `${memesisPosition.x}px`,
-          top: `${memesisPosition.y}px`,
-          width: `${memesisSize.width}px`,
-          height: `${memesisSize.height}px`
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          zIndex: 0,
+          backgroundColor: 'black'
+        }}
+      />
+
+      {/* Background glow effect */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'radial-gradient(circle at center, rgba(57, 255, 20, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%)',
+          pointerEvents: 'none',
+          zIndex: 1
+        }}
+      />
+
+      {/* Top row grid */}
+      <div 
+        style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 2fr',
+          gap: `${layout.margin}px`,
+          zIndex: 10
         }}
       >
-        <h2>{memesisWindowTitle}</h2>
-        <GlyphTypeout />
+        {showReports && (
+          <ResizableDraggableWindow
+            title="Research Reports"
+            initialWidth={layout.reports.width}
+            initialHeight={layout.reports.height}
+            initialX={layout.reports.x}
+            initialY={layout.reports.y}
+            onClose={() => setShowReports(false)}
+            zIndex={15}
+            opacity={0.8}
+          >
+            <ReportWindow onReportOpen={handleReportOpen} />
+          </ResizableDraggableWindow>
+        )}
+
+        {showGlyphTypeout && (
+          <ResizableDraggableWindow
+            title="ANKH-// Event listener for closing all windows
+            const handleCloseAllWindows = () => {
+              setShowReports(false);
+              setShowGlyphTypeout(false);
+              setShowTerminal(false);
+            };
+            window.addEventListener('close-all-windows', handleCloseAllWindows);
+            
+            // Update the cleanup function
+            return () => {
+              window.removeEventListener('resize', handleResize);
+              window.removeEventListener('close-all-windows', handleCloseAllWindows);
+            };"
+            initialWidth={layout.glyph.width}
+            initialHeight={layout.glyph.height}
+            initialX={layout.glyph.x}
+            initialY={layout.glyph.y}
+            onClose={() => setShowGlyphTypeout(false)}
+            zIndex={10}
+            opacity={0.8}
+          >
+            <GlyphTypeout maxCharacters={5000} speed={100} />
+          </ResizableDraggableWindow>
+        )}
       </div>
-      */}
+
+      {/* Bottom row */}
+      {showTerminal && (
+        <ResizableDraggableWindow
+          title="Terminal"
+          initialWidth={layout.terminal.width}
+          initialHeight={layout.terminal.height}
+          initialX={layout.terminal.x}
+          initialY={layout.terminal.y}
+          onClose={() => setShowTerminal(false)}
+          zIndex={5}
+          opacity={0.8}
+        >
+          <ThisTerminal />
+        </ResizableDraggableWindow>
+      )}
+
+      {selectedReport && (
+        <ResizableDraggableWindow
+          title="Report Viewer"
+          initialWidth={layout.fullReport.width}
+          initialHeight={layout.fullReport.height}
+          initialX={layout.fullReport.x}
+          initialY={layout.fullReport.y}
+          onClose={handleReportClose}
+          zIndex={100}
+          opacity={0.8}
+        >
+          <iframe
+            src={`/${selectedReport}`}
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 'none',
+              backgroundColor: 'rgba(0, 0, 0, 0.2)'
+            }}
+          />
+        </ResizableDraggableWindow>
+      )}
     </main>
   );
-}), { ssr: false });
-
-export default function Home() {
-  return <ClientHome />;
 }
