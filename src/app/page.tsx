@@ -114,68 +114,101 @@ export default function Home() {
       width: '100vw', 
       backgroundColor: 'black', 
       color: 'rgba(57, 255, 20, 0.56)', 
-      overflow: 'hidden' 
+      overflow: 'hidden',
+      position: 'relative' 
     }}>
-      {showReports && (
-        <ResizableDraggableWindow
-          title="Reports"
-          initialWidth={layout.reports.width}
-          initialHeight={layout.reports.height}
-          initialX={layout.reports.x}
-          initialY={layout.reports.y}
-          zIndex={10}
-        >
-          <ReportWindow onReportOpen={handleReportOpen} />
-        </ResizableDraggableWindow>
-      )}
+      {/* Background iframe */}
+      <iframe
+        src="/yhghh.HTML"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          border: 'none',
+          zIndex: 0,
+          backgroundColor: 'black'
+        }}
+      />
 
-      {showGlyphTypeout && (
-        <ResizableDraggableWindow
-          title="ANKH"
-          initialWidth={layout.glyph.width}
-          initialHeight={layout.glyph.height}
-          initialX={layout.glyph.x}
-          initialY={layout.glyph.y}
-          zIndex={11}
-        >
-          <GlyphTypeout />
-        </ResizableDraggableWindow>
-      )}
+      {/* Background glow effect */}
+      <div
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          background: 'radial-gradient(circle at center, rgba(57, 255, 20, 0.1) 0%, rgba(0, 0, 0, 0.9) 100%)',
+          pointerEvents: 'none',
+          zIndex: 1
+        }}
+      />
 
-      {showTerminal && (
-        <ResizableDraggableWindow
-          title="Terminal"
-          initialWidth={layout.terminal.width}
-          initialHeight={layout.terminal.height}
-          initialX={layout.terminal.x}
-          initialY={layout.terminal.y}
-          zIndex={9}
-        >
-          <ThisTerminal />
-        </ResizableDraggableWindow>
-      )}
+      {/* Windows */}
+      <div style={{ position: 'relative', zIndex: 10 }}>
+        {showReports && (
+          <ResizableDraggableWindow
+            title="Reports"
+            initialWidth={layout.reports.width}
+            initialHeight={layout.reports.height}
+            initialX={layout.reports.x}
+            initialY={layout.reports.y}
+            zIndex={10}
+          >
+            <ReportWindow onReportOpen={handleReportOpen} />
+          </ResizableDraggableWindow>
+        )}
 
-      {selectedReport && (
-        <ResizableDraggableWindow
-          title={`Report: ${selectedReport}`}
-          initialWidth={layout.fullReport.width}
-          initialHeight={layout.fullReport.height}
-          initialX={layout.fullReport.x}
-          initialY={layout.fullReport.y}
-          zIndex={12}
-          onClose={() => setSelectedReport(null)}
-        >
-          <iframe 
-            src={`/${selectedReport}`} 
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              border: 'none', 
-              backgroundColor: 'rgba(0,0,0,0.7)' 
-            }} 
-          />
-        </ResizableDraggableWindow>
-      )}
+        {showGlyphTypeout && (
+          <ResizableDraggableWindow
+            title="ANKH"
+            initialWidth={layout.glyph.width}
+            initialHeight={layout.glyph.height}
+            initialX={layout.glyph.x}
+            initialY={layout.glyph.y}
+            zIndex={11}
+          >
+            <GlyphTypeout />
+          </ResizableDraggableWindow>
+        )}
+
+        {showTerminal && (
+          <ResizableDraggableWindow
+            title="Terminal"
+            initialWidth={layout.terminal.width}
+            initialHeight={layout.terminal.height}
+            initialX={layout.terminal.x}
+            initialY={layout.terminal.y}
+            zIndex={9}
+          >
+            <ThisTerminal />
+          </ResizableDraggableWindow>
+        )}
+
+        {selectedReport && (
+          <ResizableDraggableWindow
+            title={`Report: ${selectedReport}`}
+            initialWidth={layout.fullReport.width}
+            initialHeight={layout.fullReport.height}
+            initialX={layout.fullReport.x}
+            initialY={layout.fullReport.y}
+            zIndex={12}
+            onClose={() => setSelectedReport(null)}
+          >
+            <iframe 
+              src={`/${selectedReport}`} 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                border: 'none', 
+                backgroundColor: 'rgba(0,0,0,0.7)' 
+              }} 
+            />
+          </ResizableDraggableWindow>
+        )}
+      </div>
     </div>
   );
 }
