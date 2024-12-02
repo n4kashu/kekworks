@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import ThisTerminal from '@/components/ThisTerminal';
 import GlyphTypeout from '@/app/components/GlyphTypeout';
+import ReportWindow from '@/app/components/ReportWindow';
 
 // Dynamically import client-side components
 const ClientHome = dynamic(() => Promise.resolve(() => {
@@ -267,155 +268,29 @@ const ClientHome = dynamic(() => Promise.resolve(() => {
   };
 
   return (
-    <div 
-      className="relative w-full h-screen overflow-hidden bg-black"
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-    >
-      {/* Background Layer */}
-      <div className="fixed inset-0 flex items-center justify-center" >
-        <iframe 
-          src="./yhghh.HTML" 
-          className="w-full h-full"
-        />
-      </div>
-      
-      {/* Terminal Window */}
+    <main className="flex min-h-screen flex-col items-center justify-between p-24">
+      <ReportWindow />
+      {/* Commented out existing windows
+      <ThisTerminal 
+        position={position}
+        size={size}
+        isMaximized={isMaximized}
+      />
       <div 
-        ref={terminalRef}
-        className={`absolute z-10 bg-[#2a1a00]/20 backdrop-blur-sm rounded-xl overflow-hidden
-                   animate-pulse-border
-                   shadow-[0_0_25px_rgba(255,128,0,0.5)]
-                   border-2 border-[#ff8000]/30
-                   ${!isMaximized && isDragging ? 'cursor-grabbing' : !isMaximized ? 'cursor-grab' : ''}
-                   ${(isDragging || isResizing) ? 'select-none' : ''}`}
+        className="memesis-window"
         style={{
-          left: position.x,
-          top: position.y,
-          width: size.width,
-          height: size.height,
-          zIndex: isDragging || isResizing ? 20 : 10,
-          transition: isDragging || isResizing ? 'none' : 'all 0.3s ease-in-out',
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
-          msUserSelect: 'none'
-        }}
-      >
-        {/* Title Bar */}
-        <div 
-          className="h-8 bg-[#ff8000]/20 flex items-center px-4 select-none"
-          onMouseDown={(e) => handleMouseDown(e, 'terminal', 'drag')}
-        >
-          <span className="text-[#ffa500] text-sm flex-grow">kek.works terminal</span>
-          <button
-            onClick={toggleMaximize}
-            className="w-6 h-6 flex items-center justify-center text-[#ffa500] hover:bg-[#ffa500]/20 rounded transition-colors"
-          >
-            {isMaximized ? '↓' : '↑'}
-          </button>
-        </div>
-
-        {/* Terminal Content */}
-        <div className="h-[calc(100%-32px)] bg-[#2a1a00]/10">
-          <ThisTerminal />
-        </div>
-
-        {/* Resize Handle */}
-        {!isMaximized && (
-          <div 
-            className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"
-            onMouseDown={(e) => handleMouseDown(e, 'terminal', 'resize')}
-            style={{
-              background: 'linear-gradient(135deg, transparent 50%, rgba(255, 128, 0, 0.2) 100%)',
-            }}
-          />
-        )}
-      </div>
-
-      {/* Memesis Window */}
-      <div 
-        ref={memesisRef}
-        className={`absolute z-10 bg-[#2a1a00]/20 backdrop-blur-sm rounded-xl overflow-hidden
-                   animate-pulse-border
-                   shadow-[0_0_25px_rgba(255,128,0,0.5)]
-                   border-2 border-[#ff8000]/30
-                   ${!isMaximized && isMemesisDragging ? 'cursor-grabbing' : !isMaximized ? 'cursor-grab' : ''}
-                   ${(isMemesisDragging || isMemesisResizing) ? 'select-none' : ''}`}
-        style={{
+          position: 'absolute',
           left: `${memesisPosition.x}px`,
           top: `${memesisPosition.y}px`,
           width: `${memesisSize.width}px`,
-          height: `${memesisSize.height}px`,
-          zIndex: isMemesisDragging || isMemesisResizing ? 20 : 10,
-          display: 'flex',
-          flexDirection: 'column'
+          height: `${memesisSize.height}px`
         }}
       >
-        {/* Window Header */}
-        <div 
-          className="h-8 bg-[#ff8000]/20 flex items-center px-4 select-none"
-          onMouseDown={(e) => handleMouseDown(e, 'memesis', 'drag')}
-        >
-          <div 
-            className="window-title flex items-center justify-between w-full text-sm text-[#ffa500]"
-            style={{ 
-              userSelect: 'none'
-            }}
-          >
-            {memesisWindowTitle}
-          </div>
-          <button
-            onClick={toggleMaximize}
-            className="w-6 h-6 flex items-center justify-center text-[#ffa500] hover:bg-[#ffa500]/20 rounded transition-colors"
-          >
-            {isMaximized ? '↓' : '↑'}
-          </button>
-        </div>
-
-        {/* Memesis Content */}
-        <div 
-          className="h-[calc(100%-32px)] bg-[#2a1a00]/10"
-          onMouseDown={(e) => handleMouseDown(e, 'memesis', 'drag')}
-        >
-          <GlyphTypeout speed={50} maxCharacters={5000} fontSize="1rem" />
-        </div>
-
-        {/* Resize Handle */}
-        {!isMaximized && (
-          <div 
-            className="absolute bottom-0 right-0 w-4 h-4 cursor-nwse-resize"
-            onMouseDown={(e) => handleMouseDown(e, 'memesis', 'resize')}
-            style={{
-              background: 'linear-gradient(135deg, transparent 50%, rgba(255, 128, 0, 0.2) 100%)',
-            }}
-          />
-        )}
+        <h2>{memesisWindowTitle}</h2>
+        <GlyphTypeout />
       </div>
-
-      <style jsx>{`
-        .no-select {
-          user-select: none !important;
-          -webkit-user-select: none !important;
-          -moz-user-select: none !important;
-          -ms-user-select: none !important;
-        }
-        .animate-pulse-border {
-          animation: pulse-border 2s infinite;
-        }
-        @keyframes pulse-border {
-          0% {
-            border-color: #ff8000;
-          }
-          50% {
-            border-color: #ffa500;
-          }
-          100% {
-            border-color: #ff8000;
-          }
-        }
-      `}</style>
-    </div>
+      */}
+    </main>
   );
 }), { ssr: false });
 
