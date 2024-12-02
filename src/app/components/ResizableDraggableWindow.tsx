@@ -42,6 +42,14 @@ const ResizableDraggableWindow: React.FC<ResizableDraggableWindowProps> = ({
     ...style
   };
 
+  const windowTitleStyle = {
+    fontWeight: 'bold',
+    color: 'rgba(57, 255, 20, 1)',
+    textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
+    letterSpacing: '1px',
+    fontSize: '1em'
+  };
+
   return (
     <div 
       className="resizable-draggable-window"
@@ -52,8 +60,10 @@ const ResizableDraggableWindow: React.FC<ResizableDraggableWindowProps> = ({
         style={{ 
           width: '100%', 
           height: '100%', 
-          overflow: 'auto',
-          padding: '10px'
+          display: 'flex',
+          flexDirection: 'column',
+          padding: '10px',
+          boxSizing: 'border-box'
         }}
       >
         {/* Window header */}
@@ -63,10 +73,11 @@ const ResizableDraggableWindow: React.FC<ResizableDraggableWindowProps> = ({
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            marginBottom: '10px'
+            marginBottom: '10px',
+            flexShrink: 0
           }}
         >
-          <h3 style={{ margin: 0, color: 'rgba(57, 255, 20, 0.56)' }}>{title}</h3>
+          <h3 style={windowTitleStyle}>{title}</h3>
           {onClose && (
             <button 
               onClick={onClose}
@@ -82,7 +93,17 @@ const ResizableDraggableWindow: React.FC<ResizableDraggableWindowProps> = ({
           )}
         </div>
         
-        {children}
+        {/* Content area */}
+        <div 
+          style={{ 
+            flex: 1, 
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column'
+          }}
+        >
+          {children}
+        </div>
       </div>
     </div>
   );

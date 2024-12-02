@@ -52,8 +52,8 @@ export default function Home() {
     const availableWidth = windowSize.width - MARGIN * 4; // Increased margin for better spacing
     const availableHeight = windowSize.height - MARGIN * 4; // Increased margin for better spacing
 
-    // Always divide into 3 equal vertical sections
-    const windowHeight = Math.floor(availableHeight / 3);
+    // Always divide into 3 equal vertical sections with some padding
+    const windowHeight = Math.floor(availableHeight / 3) - MARGIN;
 
     return {
       margin: MARGIN,
@@ -101,8 +101,7 @@ export default function Home() {
       justifyContent: 'center', 
       alignItems: 'center', 
       padding: '0',
-      boxSizing: 'border-box',
-      paddingBottom: '30px'
+      boxSizing: 'border-box'
     }}>
       {/* Background iframe */}
       <iframe
@@ -145,8 +144,8 @@ export default function Home() {
           flexDirection: 'column',
           alignItems: 'center', 
           gap: '15px',
-          height: '100%', // Ensure full height
-          overflowY: 'auto' // Allow scrolling if content overflows
+          height: '100%', 
+          overflowY: 'hidden' 
         }}
       >
         {/* Glyph Window - Top */}

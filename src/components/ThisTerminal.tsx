@@ -24,7 +24,6 @@ export default function ThisTerminal() {
       '- help: Show this help menu',
       '- clear: Clear the terminal',
       '- info: Show information about The Brick',
-      '- reports: Open research reports window',
       '- ankh: wtf is the ANKH',
       '- way of kek: Close all windows and watch the Brick'
     ]);
@@ -77,20 +76,6 @@ export default function ThisTerminal() {
         </div>
       );
     }
-    // For report files
-    if (line.startsWith('- report_') || line.startsWith('- repot_')) {
-      const filename = line.replace('- ', '');
-      return (
-        <div key={index} className="whitespace-pre-wrap break-words">
-          <span 
-            className="cursor-pointer hover:text-[#50ff20] hover:underline"
-            onClick={() => executeCommand(`read ${filename}`)}
-          >
-            {line}
-          </span>
-        </div>
-      );
-    }
     // Default rendering
     return (
       <div key={index} className="whitespace-pre-wrap break-words">
@@ -108,7 +93,6 @@ export default function ThisTerminal() {
         '- help: Show this help menu',
         '- clear: Clear the terminal',
         '- info: Show information about The Brick',
-        '- reports: Open research reports window',
         '- ankh: Open ANKH Analytical Nexus window',
         '- way of kek: Close all windows and watch the Brick'
       ];
@@ -138,11 +122,6 @@ export default function ThisTerminal() {
           '- Uncontrollable mutation of reality perception',
           '- Severe RedBull dependency'
         ];
-      case 'reports':
-        // Dispatch an event to open the reports window
-        const reportsEvent = new CustomEvent('open-reports-window');
-        window.dispatchEvent(reportsEvent);
-        return ['Opening research reports window...'];
       case 'ankh':
         // Dispatch an event to open the ANKH window
         const ankhEvent = new CustomEvent('open-ankh-window');
@@ -186,60 +165,76 @@ export default function ThisTerminal() {
     setInput('');
   };
 
+  const terminalStyles = {
+    container: {
+      backgroundColor: 'black',
+      color: 'rgba(57, 255, 20, 1)', 
+      fontFamily: 'monospace',
+      fontSize: '14px',
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column' as const,
+      overflow: 'hidden',
+    },
+    output: {
+      flexGrow: 1,
+      overflowY: 'auto',
+      padding: '10px',
+      color: 'rgba(57, 255, 20, 1)', 
+      backgroundColor: 'rgba(0,0,0,0.9)',
+    },
+    input: {
+      display: 'flex',
+      alignItems: 'center',
+      padding: '10px',
+      backgroundColor: 'rgba(0,0,0,0.9)',
+      color: 'rgba(57, 255, 20, 1)', 
+    },
+    prompt: {
+      marginRight: '10px',
+      color: 'rgba(57, 255, 20, 1)', 
+    },
+    inputField: {
+      flexGrow: 1,
+      backgroundColor: 'transparent',
+      border: 'none',
+      color: 'rgba(57, 255, 20, 1)', 
+      outline: 'none',
+      fontFamily: 'monospace',
+      fontSize: '14px',
+    }
+  };
+
   return (
-    <div 
-      className="w-full h-full bg-black/10 backdrop-blur-sm
-                 text-[#39ff14] font-['Source Code Pro',ui-monospace,monospace] text-base
-                 transition-all duration-300 ease-in-out"
-      style={{
-        overflow: 'hidden',
-        animation: 'flicker 0.5s infinite alternate, breathe 3s infinite alternate'
-      }}
-    >
+    <div style={terminalStyles.container}>
+      {/* Output area */}
       <div 
         ref={outputRef}
-        className="h-[calc(100%-40px)] overflow-auto px-[15px] py-[15px]"
-        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+        style={terminalStyles.output}
       >
         {output.map((line, index) => renderLine(line, index))}
       </div>
-      <form onSubmit={handleSubmit} className="mt-2 px-[15px] flex items-center">
-        <span className="mr-2">anon@this:~$</span>
-        <input 
+
+      {/* Command input area - always visible */}
+      <div 
+        style={terminalStyles.input}
+      >
+        <span style={terminalStyles.prompt}>anon@this:~$</span>
+        <input
           ref={inputRef}
           type="text"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          className="w-full bg-transparent outline-none"
-          placeholder="enter command..."
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleSubmit(e);
+            }
+          }}
+          style={terminalStyles.inputField}
+          placeholder="Type your command..."
+          autoFocus
         />
-      </form>
-
-      {/* Global Styles */}
-      <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;500&display=swap');
-        
-        @keyframes breathe {
-          0% { opacity: 0.7; }
-          100% { opacity: 0.9; }
-        }
-        @keyframes flicker {
-          0%, 100% { text-shadow: 0 0 4px #39ff14, 0 0 11px #39ff14, 0 0 19px #39ff14; }
-          33% { text-shadow: 0 0 4px #39ff14, 0 0 10px #39ff14, 0 0 18px #39ff14; }
-          66% { text-shadow: 0 0 4px #39ff14, 0 0 12px #39ff14, 0 0 20px #39ff14; }
-        }
-        * {
-          scrollbar-width: none;
-          -ms-overflow-style: none;
-        }
-        *::-webkit-scrollbar {
-          display: none;
-        }
-        input {
-          font-size: 1rem;
-          font-family: 'Source Code Pro', ui-monospace, monospace;
-        }
-      `}</style>
+      </div>
     </div>
   );
 }

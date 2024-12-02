@@ -49,82 +49,81 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
     }
   };
 
+  const windowTitleStyle = {
+    fontWeight: 'bold',
+    color: 'rgba(57, 255, 20, 1)',
+    textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
+    letterSpacing: '1px',
+    fontSize: '1.2em',
+    margin: '0 0 15px 0'
+  };
+
   return (
-    <div style={{ height: '100%', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+    <div style={{ 
+      height: '100%', 
+      display: 'flex', 
+      flexDirection: 'column', 
+      gap: '10px',
+      padding: '10px',
+      boxSizing: 'border-box'
+    }}>
       {REPORTS.map((report) => (
         <div 
           key={report.id}
+          onClick={() => {
+            onReportOpen(report.html);
+            togglePlay(`/${report.audio}`);
+          }}
           style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
             borderRadius: '5px',
-            border: '1px solid rgba(57, 255, 20, 0.2)',
+            border: '1px solid rgba(57, 255, 20, 0.3)', 
             padding: '15px',
             display: 'flex',
-            flexDirection: 'column'
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            color: 'rgba(57, 255, 20, 0.9)',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease',
+            position: 'relative'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(57, 255, 20, 0.1)';
+            e.currentTarget.style.boxShadow = '0 0 10px rgba(57, 255, 20, 0.3)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+            e.currentTarget.style.boxShadow = 'none';
           }}
         >
           <div style={{ 
-            marginBottom: '10px', 
-            fontSize: '0.9em', 
-            opacity: 0.7,
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
+            display: 'flex', 
+            flexDirection: 'column',
+            flex: 1
           }}>
-            <span>{report.id}</span>
-            <div 
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '10px'
-              }}
-            >
-              {/* Play/Pause Button */}
-              <button
-                onClick={() => togglePlay(`/${report.audio}`)}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: activeAudio === `/${report.audio}` ? '#39ff14' : 'inherit',
-                  cursor: 'pointer',
-                  fontSize: '1.2em',
-                  transition: 'color 0.3s ease'
-                }}
-              >
-                {activeAudio === `/${report.audio}` 
-                  ? '⏸' 
-                  : '▶'}
-              </button>
-            </div>
+            <span style={{ 
+              fontSize: '0.8em', 
+              opacity: 0.7,
+              marginBottom: '5px'
+            }}>
+              {report.id}
+            </span>
+            <span style={windowTitleStyle}>
+              {report.title}
+            </span>
           </div>
-          
-          <button
-            onClick={() => onReportOpen(report.html)}
+
+          <div 
             style={{
-              width: '100%',
-              padding: '10px',
-              marginBottom: '10px',
-              backgroundColor: 'transparent',
-              border: '1px solid rgba(57, 255, 20, 0.56)',
-              color: 'inherit',
-              cursor: 'pointer',
-              borderRadius: '5px',
-              textShadow: 'inherit',
-              transition: 'all 0.3s ease'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = 'rgba(57, 255, 20, 0.1)';
-              e.currentTarget.style.boxShadow = '0 0 10px rgba(57, 255, 20, 0.3)';
-              return null;
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = 'transparent';
-              e.currentTarget.style.boxShadow = 'none';
-              return null;
+              display: 'flex',
+              alignItems: 'center',
+              marginLeft: '10px'
             }}
           >
-            {report.title}
-          </button>
+            {activeAudio === `/${report.audio}` 
+              ? '⏸' 
+              : '▶'}
+          </div>
 
           {/* Hidden Audio Elements */}
           <audio
