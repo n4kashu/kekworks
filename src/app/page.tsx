@@ -4,9 +4,13 @@ import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 
 const ResizableDraggableWindow = dynamic(() => import('@/app/components/ResizableDraggableWindow'), { ssr: false });
+const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: false });
+const GlyphTypeout = dynamic(() => import('@/app/components/GlyphTypeout'), { ssr: false });
 const ReportWindow = dynamic(() => import('@/app/components/ReportWindow'), { ssr: false });
 
 export default function Home() {
+  const [showTerminal] = useState(false);
+  const [showGlyphTypeout] = useState(false);
   const [showReports, setShowReports] = useState(true);
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
 
@@ -62,26 +66,63 @@ export default function Home() {
       boxSizing: 'border-box'
     }}>
       {/* Disable background iframe */}
-      {/* Disable glyph and terminal */}
-      {/* Show only reports window in full screen */}
-      <ResizableDraggableWindow
-        key={`reports-${windowSize.key}`}
-        title="Reports"
-        initialWidth={windowSize.width - 40}
-        initialHeight={windowSize.height - 40}
-        initialX={20}
-        initialY={20}
-        zIndex={10}
-        style={{ 
-          width: '100%',
-          maxWidth: windowSize.width - 40,
-          height: windowSize.height - 40,
-          margin: '0'
-        }}
-      >
-        <ReportWindow onReportOpen={handleReportOpen} />
-      </ResizableDraggableWindow>
-
+      {showTerminal && (
+        <ResizableDraggableWindow
+          key={`terminal-${windowSize.key}`}
+          title="Terminal"
+          initialWidth={windowSize.width - 40}
+          initialHeight={windowSize.height - 40}
+          initialX={20}
+          initialY={20}
+          zIndex={8}
+          style={{ 
+            width: '100%',
+            maxWidth: windowSize.width - 40,
+            height: windowSize.height - 40,
+            margin: '0'
+          }}
+        >
+          <ThisTerminal />
+        </ResizableDraggableWindow>
+      )}
+      {showGlyphTypeout && (
+        <ResizableDraggableWindow
+          key={`glyph-${windowSize.key}`}
+          title="Glyph Typeout"
+          initialWidth={windowSize.width - 40}
+          initialHeight={windowSize.height - 40}
+          initialX={20}
+          initialY={20}
+          zIndex={9}
+          style={{ 
+            width: '100%',
+            maxWidth: windowSize.width - 40,
+            height: windowSize.height - 40,
+            margin: '0'
+          }}
+        >
+          <GlyphTypeout />
+        </ResizableDraggableWindow>
+      )}
+      {showReports && (
+        <ResizableDraggableWindow
+          key={`reports-${windowSize.key}`}
+          title="Reports"
+          initialWidth={windowSize.width - 40}
+          initialHeight={windowSize.height - 40}
+          initialX={20}
+          initialY={20}
+          zIndex={10}
+          style={{ 
+            width: '100%',
+            maxWidth: windowSize.width - 40,
+            height: windowSize.height - 40,
+            margin: '0'
+          }}
+        >
+          <ReportWindow onReportOpen={handleReportOpen} />
+        </ResizableDraggableWindow>
+      )}
       {/* Full Report Overlay */}
       {selectedReport && (
         <ResizableDraggableWindow
