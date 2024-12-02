@@ -4,9 +4,9 @@ declare module 'react-resizable' {
   export interface ResizableProps {
     width: number;
     height: number;
-    onResize?: (e: React.SyntheticEvent, data: { size: { width: number, height: number } }) => any;
-    onResizeStart?: (e: React.SyntheticEvent, data: { size: { width: number, height: number } }) => any;
-    onResizeStop?: (e: React.SyntheticEvent, data: { size: { width: number, height: number } }) => any;
+    onResize?: (e: React.SyntheticEvent, data: { size: { width: number, height: number } }) => void;
+    onResizeStart?: (e: React.SyntheticEvent, data: { size: { width: number, height: number } }) => void;
+    onResizeStop?: (e: React.SyntheticEvent, data: { size: { width: number, height: number } }) => void;
     children?: React.ReactNode;
     className?: string;
     minConstraints?: [number, number];

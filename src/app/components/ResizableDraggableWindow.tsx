@@ -28,7 +28,7 @@ const ResizableDraggableWindow: React.FC<ResizableDraggableWindowProps> = ({
 }) => {
   const [size, setSize] = useState({ width: initialWidth, height: initialHeight });
 
-  const handleResize = (event: any, { size }: any) => {
+  const handleResize = (event: React.SyntheticEvent, { size }: { size: { width: number, height: number } }) => {
     setSize(size);
   };
 

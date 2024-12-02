@@ -156,7 +156,7 @@ export default function ThisTerminal() {
         ];
       case 'fuck the cli':
         // Dispatch an event to close all windows
-        const closeEvent = new CustomEvent('close-all-windows');
+        const closeEvent = new CustomEvent('close-all-windows'); 
         window.dispatchEvent(closeEvent);
         return [
           'Closing all windows...',
