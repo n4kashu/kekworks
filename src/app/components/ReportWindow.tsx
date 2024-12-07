@@ -21,6 +21,12 @@ const REPORTS = [
     html: 'report_003.html',
     audio: 'report_003_TemporalAnalysisOfTheEmeraldBrick.mp3',
     title: 'Temporal Analysis of The Emerald Brick'
+  },
+  {
+    id: 'report_004',
+    html: 'report_004.html',
+    audio: 'report_004_QuantumMemeticAnalysisReport.mp3',
+    title: 'Quantum Memetic Analysis Report'
   }
 ];
 
