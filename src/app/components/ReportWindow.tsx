@@ -27,6 +27,12 @@ const REPORTS = [
     html: 'report_004.html',
     audio: 'report_004_QuantumMemeticAnalysisReport.mp3',
     title: 'Quantum Memetic Analysis Report'
+  },
+  {
+    id: 'report_005',
+    html: 'report_005.html',
+    audio: 'report_005_TechnicalImplementationReport.mp3',
+    title: 'Technical Implementation Report'
   }
 ];
 
