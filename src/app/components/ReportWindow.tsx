@@ -33,6 +33,12 @@ const REPORTS = [
     html: 'report_005.html',
     audio: 'report_005_TechnicalImplementationReport.mp3',
     title: 'Technical Implementation Report'
+  },
+  {
+    id: 'report_006',
+    html: 'report_006.html',
+    audio: 'report_006_KevinInside.mp3',
+    title: 'Kevin Inside'
   }
 ];
 
