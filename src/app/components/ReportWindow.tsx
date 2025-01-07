@@ -54,7 +54,7 @@ interface ReportWindowProps {
 
 export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
   const [activeAudio, setActiveAudio] = useState<string | null>(null);
-  const [progress, setProgress] = useState<{ [key: string]: number }>([]);
+  const [progress, setProgress] = useState<{ [key: string]: number }>({});
   const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
   const progressBarRefs = useRef<{ [key: string]: HTMLDivElement }>({});
 
@@ -78,10 +78,10 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
   const handleTimeUpdate = (audioSrc: string, e: React.SyntheticEvent<HTMLAudioElement>) => {
     const audio = e.currentTarget;
     const progressPercentage = (audio.currentTime / audio.duration) * 100;
-    setProgress(prev => ([
+    setProgress(prev => ({
       ...prev,
       [audioSrc]: progressPercentage
-    ]));
+    }));
   };
 
   const handleProgressBarClick = (audioSrc: string, e: React.MouseEvent<HTMLDivElement>) => {
