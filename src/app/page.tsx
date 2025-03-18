@@ -8,6 +8,7 @@ const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: f
 const GlyphTypeout = dynamic(() => import('@/app/components/GlyphTypeout'), { ssr: false });
 const ReportWindow = dynamic(() => import('@/app/components/ReportWindow'), { ssr: false });
 const Brick = dynamic(() => import('@/app/components/Brick'), { ssr: false });
+const Navbar = dynamic(() => import('@/app/components/Navbar'), { ssr: false });
 
 export default function Home() {
   const [showTerminal] = useState(false);
@@ -65,8 +66,12 @@ export default function Home() {
       justifyContent: 'flex-start', 
       alignItems: 'center', 
       padding: '0',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      paddingTop: '60px' // Add padding to account for fixed navbar
     }}>
+      {/* Navbar */}
+      <Navbar />
+      
       {/* Top half for Brick - now displaying yhghh.HTML in iframe */}
       {showBrick && (
         <div style={{
