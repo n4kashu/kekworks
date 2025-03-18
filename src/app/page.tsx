@@ -57,38 +57,34 @@ export default function Home() {
       color: 'rgba(57, 255, 20, 0.56)', 
       overflow: 'hidden',
       position: 'relative',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start', 
-      alignItems: 'center', 
       padding: '0',
       boxSizing: 'border-box',
-      paddingTop: '60px' // Add padding to account for fixed navbar
     }}>
-      {/* Full-page background iframe */}
+      {/* Navbar - positioned fixed at top */}
       <div style={{
         position: 'fixed',
         top: 0,
         left: 0,
-        width: '100vw',
-        height: '100vh',
-        zIndex: -1,
-        overflow: 'hidden'
+        width: '100%',
+        zIndex: 100
       }}>
-        <iframe 
-          src="/yhghh.HTML" 
-          style={{ 
-            width: '100%', 
-            height: '100%', 
-            border: 'none',
-            backgroundColor: 'transparent'
-          }}
-          title="The Emerald Brick Of KEK"
-        />
+        <Navbar />
       </div>
       
-      {/* Navbar - now appearing on top of the iframe background */}
-      <Navbar />
+      {/* Full-page iframe displaying the brick */}
+      <iframe 
+        src="/yhghh.HTML" 
+        style={{ 
+          width: '100%', 
+          height: '100%', 
+          border: 'none',
+          backgroundColor: 'transparent',
+          position: 'absolute',
+          top: 0,
+          left: 0
+        }}
+        title="The Emerald Brick Of KEK"
+      />
       
       {/* Main content area - now empty but could contain other components in the future */}
       <div style={{
