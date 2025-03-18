@@ -110,9 +110,10 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
       height: '100%', 
       display: 'flex', 
       flexDirection: 'column', 
-      gap: '10px',
+      gap: '12px',
       padding: '10px',
-      boxSizing: 'border-box'
+      boxSizing: 'border-box',
+      overflow: 'auto'
     }}>
       {REPORTS.map((report) => (
         <div 
@@ -173,17 +174,23 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
               style={{
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
+                width: '30px',
+                height: '30px',
                 marginLeft: '10px',
                 cursor: 'pointer',
                 padding: '5px',
-                borderRadius: '3px',
-                transition: 'background-color 0.3s ease'
+                borderRadius: '50%',
+                border: '1px solid rgba(57, 255, 20, 0.3)',
+                transition: 'all 0.3s ease'
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
+                e.currentTarget.style.transform = 'scale(1.1)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = 'transparent';
+                e.currentTarget.style.transform = 'scale(1)';
               }}
             >
               {activeAudio === `/${report.audio}` 

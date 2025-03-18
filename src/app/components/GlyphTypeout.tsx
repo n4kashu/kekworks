@@ -83,7 +83,7 @@ export default function GlyphTypeout({
   return (
     <div 
       ref={containerRef}
-      className="overflow-hidden h-full"
+      className="overflow-hidden h-full w-full flex-grow"
       style={{
         fontFamily: '"Hieratic Numerals", monospace',
         fontWeight: 'normal',
@@ -99,7 +99,8 @@ export default function GlyphTypeout({
         textShadow: '0 0 5px rgba(157, 201, 20, 0.69), 0 0 10px rgba(157, 257, 20, 0.69), 0 0 15px rgba(157, 25, 20, 0.69), 0 0 20px rgba(157, 255, 20, 0.69)',
         animation: 'glowAnimation 2s ease-in-out infinite',
         userSelect: 'none',
-        cursor: 'default'
+        cursor: 'default',
+        boxSizing: 'border-box'
       }}
     >
       {glyphs.join('')}
