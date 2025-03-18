@@ -81,9 +81,15 @@ export default function Home() {
           backgroundColor: 'transparent',
           position: 'absolute',
           top: 0,
-          left: 0
+          left: 0,
+          marginTop: '60px', 
+          transform: 'scale(0.7)', 
+          transformOrigin: 'center center', 
+          pointerEvents: 'auto' 
         }}
         title="The Emerald Brick Of KEK"
+        allowFullScreen={true} 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
       />
       
       {/* Main content area - now empty but could contain other components in the future */}
@@ -91,7 +97,9 @@ export default function Home() {
         width: '100%',
         height: 'calc(100% - 60px)', 
         position: 'relative',
-        zIndex: 1
+        zIndex: 1,
+        marginTop: '60px',
+        pointerEvents: 'none' 
       }}>
         {/* This area is now empty but visible on top of the background */}
       </div>
