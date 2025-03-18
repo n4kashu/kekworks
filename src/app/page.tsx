@@ -65,44 +65,40 @@ export default function Home() {
       boxSizing: 'border-box',
       paddingTop: '60px' // Add padding to account for fixed navbar
     }}>
-      {/* Navbar */}
+      {/* Full-page background iframe */}
+      <div style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: -1,
+        overflow: 'hidden'
+      }}>
+        <iframe 
+          src="/yhghh.HTML" 
+          style={{ 
+            width: '100%', 
+            height: '100%', 
+            border: 'none',
+            backgroundColor: 'transparent'
+          }}
+          title="The Emerald Brick Of KEK"
+        />
+      </div>
+      
+      {/* Navbar - now appearing on top of the iframe background */}
       <Navbar />
       
-      {/* Main content - yhghh.HTML in iframe, now full-height */}
-      {showBrick && (
-        <div style={{
-          width: '100%',
-          height: 'calc(100% - 60px)', // Full height minus navbar
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '20px',
-          boxSizing: 'border-box'
-        }}>
-          <div style={{
-            width: '100%',
-            height: '100%',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor: 'rgba(0, 0, 0, 0.2)',
-            borderRadius: '10px',
-            border: '1px solid rgba(57, 255, 20, 0.3)',
-            overflow: 'hidden'
-          }}>
-            <iframe 
-              src="/yhghh.HTML" 
-              style={{ 
-                width: '100%', 
-                height: '100%', 
-                border: 'none',
-                backgroundColor: 'transparent'
-              }}
-              title="The Emerald Brick Of KEK"
-            />
-          </div>
-        </div>
-      )}
+      {/* Main content area - now empty but could contain other components in the future */}
+      <div style={{
+        width: '100%',
+        height: 'calc(100% - 60px)', 
+        position: 'relative',
+        zIndex: 1
+      }}>
+        {/* This area is now empty but visible on top of the background */}
+      </div>
       
       {/* Terminal (hidden) */}
       {showTerminal && (
