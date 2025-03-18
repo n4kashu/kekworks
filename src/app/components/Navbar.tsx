@@ -50,19 +50,6 @@ const Navbar: React.FC = () => {
             Home
           </div>
         </Link>
-        <Link href="/reports">
-          <div style={{
-            color: 'rgba(57, 255, 20, 0.8)',
-            cursor: 'pointer',
-            padding: '5px 10px',
-            borderRadius: '4px',
-            transition: 'all 0.3s ease',
-            border: '1px solid rgba(57, 255, 20, 0.3)',
-            fontSize: '0.9rem',
-          }} className="nav-item">
-            Reports
-          </div>
-        </Link>
         <Link href="/brick-research">
           <div style={{
             color: 'rgba(57, 255, 20, 0.8)',

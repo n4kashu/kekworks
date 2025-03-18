@@ -1,12 +1,19 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 const GlyphTypeout = dynamic(() => import('@/app/components/GlyphTypeout'), { ssr: false });
+const ReportWindow = dynamic(() => import('@/app/components/ReportWindow'), { ssr: false });
 const Navbar = dynamic(() => import('@/app/components/Navbar'), { ssr: false });
 
 export default function BrickResearchPage() {
+  const [selectedReport, setSelectedReport] = useState<string | null>(null);
+
+  const handleReportOpen = (reportHtml: string) => {
+    setSelectedReport(reportHtml);
+  };
+
   return (
     <div style={{ 
       height: '100vh', 
@@ -30,19 +37,20 @@ export default function BrickResearchPage() {
       <div style={{
         width: '100%',
         height: 'calc(100% - 60px)',
-        padding: '40px',
-        boxSizing: 'border-box'
+        padding: '20px',
+        boxSizing: 'border-box',
+        overflow: 'auto'
       }}>
         <div style={{
           width: '100%',
-          height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: '40px'
+          gap: '20px'
         }}>
           {/* Glyph Typeout Section */}
           <div style={{
             flex: 1,
+            minHeight: '300px',
             backgroundColor: 'rgba(0, 0, 0, 0.7)',
             borderRadius: '10px',
             border: '1px solid rgba(57, 255, 20, 0.3)',
@@ -60,7 +68,7 @@ export default function BrickResearchPage() {
             }}>
               Brick Analysis Data
             </div>
-            <div style={{ height: 'calc(100% - 50px)', overflow: 'hidden' }}>
+            <div style={{ height: '250px', overflow: 'hidden' }}>
               <GlyphTypeout speed={30} fontSize="1.1rem" />
             </div>
           </div>
@@ -103,8 +111,85 @@ export default function BrickResearchPage() {
               </p>
             </div>
           </div>
+          
+          {/* Reports Section */}
+          <div style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            borderRadius: '10px',
+            border: '1px solid rgba(57, 255, 20, 0.3)',
+            padding: '20px',
+            boxSizing: 'border-box',
+            minHeight: '300px'
+          }}>
+            <div style={{
+              fontWeight: 'bold',
+              color: 'rgba(57, 255, 20, 1)',
+              textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
+              letterSpacing: '1px',
+              fontSize: '1.2em',
+              marginBottom: '15px'
+            }}>
+              Research Reports
+            </div>
+            <div style={{ height: '250px', overflow: 'hidden' }}>
+              <ReportWindow onReportOpen={handleReportOpen} />
+            </div>
+          </div>
         </div>
       </div>
+      
+      {/* Full Report Overlay */}
+      {selectedReport && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          zIndex: 1000,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '20px',
+          boxSizing: 'border-box'
+        }}>
+          <div style={{
+            width: '90%',
+            height: '90%',
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            borderRadius: '10px',
+            border: '1px solid rgba(57, 255, 20, 0.3)',
+            boxShadow: '0 0 30px rgba(57, 255, 20, 0.4)',
+            overflow: 'hidden',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              zIndex: 1001,
+              padding: '5px 10px',
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              borderRadius: '5px',
+              border: '1px solid rgba(57, 255, 20, 0.3)',
+              color: 'rgba(57, 255, 20, 0.8)',
+              cursor: 'pointer'
+            }} onClick={() => setSelectedReport(null)}>
+              Close
+            </div>
+            <iframe 
+              src={`/${selectedReport}`} 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                border: 'none', 
+                backgroundColor: 'rgba(0,0,0,0.7)' 
+              }} 
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
