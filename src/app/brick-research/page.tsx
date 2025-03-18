@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 const GlyphTypeout = dynamic(() => import('@/app/components/GlyphTypeout'), { ssr: false });
@@ -9,6 +9,23 @@ const Navbar = dynamic(() => import('@/app/components/Navbar'), { ssr: false });
 
 export default function BrickResearchPage() {
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const handleReportOpen = (reportHtml: string) => {
     setSelectedReport(reportHtml);
@@ -28,7 +45,7 @@ export default function BrickResearchPage() {
       alignItems: 'center', 
       padding: '0',
       boxSizing: 'border-box',
-      paddingTop: '60px' // Add padding to account for fixed navbar
+      paddingTop: isMobile ? '50px' : '60px' // Adjust padding based on device
     }}>
       {/* Navbar */}
       <Navbar />
@@ -37,7 +54,7 @@ export default function BrickResearchPage() {
       <div style={{
         width: '100%',
         height: 'calc(100% - 60px)',
-        padding: '20px',
+        padding: isMobile ? '10px' : '20px',
         boxSizing: 'border-box',
         overflow: 'auto'
       }}>
@@ -45,16 +62,16 @@ export default function BrickResearchPage() {
           width: '100%',
           display: 'flex',
           flexDirection: 'column',
-          gap: '20px'
+          gap: isMobile ? '15px' : '20px'
         }}>
           {/* Glyph Typeout Section */}
           <div style={{
             flex: 1,
-            minHeight: '300px',
+            minHeight: isMobile ? '200px' : '300px',
             backgroundColor: 'rgba(0, 0, 0, 0.7)',
             borderRadius: '10px',
             border: '1px solid rgba(57, 255, 20, 0.3)',
-            padding: '20px',
+            padding: isMobile ? '15px' : '20px',
             boxSizing: 'border-box',
             overflow: 'hidden'
           }}>
@@ -63,13 +80,13 @@ export default function BrickResearchPage() {
               color: 'rgba(57, 255, 20, 1)',
               textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
               letterSpacing: '1px',
-              fontSize: '1.5em',
-              marginBottom: '20px'
+              fontSize: isMobile ? '1.2em' : '1.5em',
+              marginBottom: isMobile ? '15px' : '20px'
             }}>
               Brick Analysis Data
             </div>
-            <div style={{ height: '250px', overflow: 'hidden' }}>
-              <GlyphTypeout speed={30} fontSize="1.1rem" />
+            <div style={{ height: isMobile ? '170px' : '250px', overflow: 'hidden' }}>
+              <GlyphTypeout speed={30} fontSize={isMobile ? "0.9rem" : "1.1rem"} />
             </div>
           </div>
           
@@ -78,7 +95,7 @@ export default function BrickResearchPage() {
             backgroundColor: 'rgba(0, 0, 0, 0.7)',
             borderRadius: '10px',
             border: '1px solid rgba(57, 255, 20, 0.3)',
-            padding: '20px',
+            padding: isMobile ? '15px' : '20px',
             boxSizing: 'border-box',
           }}>
             <div style={{
@@ -86,15 +103,15 @@ export default function BrickResearchPage() {
               color: 'rgba(57, 255, 20, 1)',
               textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
               letterSpacing: '1px',
-              fontSize: '1.2em',
-              marginBottom: '15px'
+              fontSize: isMobile ? '1.1em' : '1.2em',
+              marginBottom: isMobile ? '10px' : '15px'
             }}>
               About Brick Research
             </div>
             <div style={{
               color: 'rgba(57, 255, 20, 0.8)',
               lineHeight: '1.6',
-              fontSize: '1rem'
+              fontSize: isMobile ? '0.9rem' : '1rem'
             }}>
               <p>
                 The Emerald Brick of KEK exhibits unique properties that defy conventional physics. 
@@ -117,21 +134,21 @@ export default function BrickResearchPage() {
             backgroundColor: 'rgba(0, 0, 0, 0.7)',
             borderRadius: '10px',
             border: '1px solid rgba(57, 255, 20, 0.3)',
-            padding: '20px',
+            padding: isMobile ? '15px' : '20px',
             boxSizing: 'border-box',
-            minHeight: '300px'
+            minHeight: isMobile ? '220px' : '300px'
           }}>
             <div style={{
               fontWeight: 'bold',
               color: 'rgba(57, 255, 20, 1)',
               textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
               letterSpacing: '1px',
-              fontSize: '1.2em',
-              marginBottom: '15px'
+              fontSize: isMobile ? '1.1em' : '1.2em',
+              marginBottom: isMobile ? '10px' : '15px'
             }}>
               Research Reports
             </div>
-            <div style={{ height: '250px', overflow: 'hidden' }}>
+            <div style={{ height: isMobile ? '170px' : '250px', overflow: 'hidden' }}>
               <ReportWindow onReportOpen={handleReportOpen} />
             </div>
           </div>
@@ -151,12 +168,12 @@ export default function BrickResearchPage() {
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          padding: '20px',
+          padding: isMobile ? '10px' : '20px',
           boxSizing: 'border-box'
         }}>
           <div style={{
-            width: '90%',
-            height: '90%',
+            width: isMobile ? '95%' : '90%',
+            height: isMobile ? '95%' : '90%',
             backgroundColor: 'rgba(0, 0, 0, 0.9)',
             borderRadius: '10px',
             border: '1px solid rgba(57, 255, 20, 0.3)',
@@ -174,7 +191,8 @@ export default function BrickResearchPage() {
               borderRadius: '5px',
               border: '1px solid rgba(57, 255, 20, 0.3)',
               color: 'rgba(57, 255, 20, 0.8)',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              fontSize: isMobile ? '0.8rem' : '1rem'
             }} onClick={() => setSelectedReport(null)}>
               Close
             </div>

@@ -55,8 +55,25 @@ interface ReportWindowProps {
 export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
   const [activeAudio, setActiveAudio] = useState<string | null>(null);
   const [progress, setProgress] = useState<{ [key: string]: number }>({});
+  const [isMobile, setIsMobile] = useState(false);
   const audioRefs = useRef<{ [key: string]: HTMLAudioElement }>({});
   const progressBarRefs = useRef<{ [key: string]: HTMLDivElement }>({});
+
+  // Mobile detection
+  useEffect(() => {
+    const checkIfMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add event listener for window resize
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, []);
 
   const togglePlay = (audioSrc: string) => {
     const audioElement = audioRefs.current[audioSrc];
@@ -100,7 +117,7 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
     color: 'rgba(57, 255, 20, 1)',
     textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
     letterSpacing: '1px',
-    fontSize: '1.2em',
+    fontSize: isMobile ? '1em' : '1.2em',
     margin: '0 0 15px 0',
     cursor: 'pointer'
   };
@@ -110,8 +127,8 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
       height: '100%', 
       display: 'flex', 
       flexDirection: 'column', 
-      gap: '12px',
-      padding: '10px',
+      gap: isMobile ? '8px' : '12px',
+      padding: isMobile ? '5px' : '10px',
       boxSizing: 'border-box',
       overflow: 'auto'
     }}>
@@ -122,7 +139,7 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
             backgroundColor: 'rgba(0, 0, 0, 0.7)', 
             borderRadius: '5px',
             border: '1px solid rgba(57, 255, 20, 0.3)', 
-            padding: '15px',
+            padding: isMobile ? '10px' : '15px',
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'space-between',
@@ -144,7 +161,7 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
             justifyContent: 'space-between',
             alignItems: 'center',
             width: '100%',
-            marginBottom: '10px'
+            marginBottom: isMobile ? '5px' : '10px'
           }}>
             <div style={{ 
               display: 'flex', 
@@ -152,9 +169,9 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
               flex: 1
             }}>
               <span style={{ 
-                fontSize: '0.8em', 
+                fontSize: isMobile ? '0.7em' : '0.8em', 
                 opacity: 0.7,
-                marginBottom: '5px'
+                marginBottom: isMobile ? '3px' : '5px'
               }}>
                 {report.id}
               </span>
@@ -175,8 +192,8 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                width: '30px',
-                height: '30px',
+                width: isMobile ? '25px' : '30px',
+                height: isMobile ? '25px' : '30px',
                 marginLeft: '10px',
                 cursor: 'pointer',
                 padding: '5px',
@@ -199,39 +216,35 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
             </div>
           </div>
 
-          {/* Progress Bar */}
-          <div 
-            ref={(el) => {
-              if (el) progressBarRefs.current[`/${report.audio}`] = el;
-            }}
+          <div
+            ref={(el) => { el && (progressBarRefs.current[`/${report.audio}`] = el); }}
             onClick={(e) => handleProgressBarClick(`/${report.audio}`, e)}
             style={{
-              width: '100%', 
-              height: '4px', 
-              backgroundColor: 'rgba(57, 255, 20, 0.2)',
+              backgroundColor: 'rgba(57, 255, 20, 0.1)',
+              height: '4px',
               borderRadius: '2px',
-              overflow: 'hidden',
-              cursor: 'pointer'
+              cursor: 'pointer',
+              marginBottom: '5px',
+              position: 'relative'
             }}
           >
-            <div 
+            <div
               style={{
-                width: `${progress[`/${report.audio}`] || 0}%`, 
-                height: '100%', 
-                backgroundColor: 'rgba(57, 255, 20, 0.8)',
+                backgroundColor: 'rgba(57, 255, 20, 0.7)',
+                height: '100%',
+                borderRadius: '2px',
+                width: `${progress[`/${report.audio}`] || 0}%`,
                 transition: 'width 0.1s linear'
               }}
             />
           </div>
 
-          {/* Hidden Audio Elements */}
           <audio
-            ref={(el) => {
-              if (el) audioRefs.current[`/${report.audio}`] = el;
-            }}
             src={`/${report.audio}`}
-            style={{ display: 'none' }}
+            ref={(el) => { el && (audioRefs.current[`/${report.audio}`] = el); }}
             onTimeUpdate={(e) => handleTimeUpdate(`/${report.audio}`, e)}
+            onEnded={() => setActiveAudio(null)}
+            style={{ display: 'none' }}
           />
         </div>
       ))}
