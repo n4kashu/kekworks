@@ -7,11 +7,13 @@ const ResizableDraggableWindow = dynamic(() => import('@/app/components/Resizabl
 const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: false });
 const GlyphTypeout = dynamic(() => import('@/app/components/GlyphTypeout'), { ssr: false });
 const ReportWindow = dynamic(() => import('@/app/components/ReportWindow'), { ssr: false });
+const Brick = dynamic(() => import('@/app/components/Brick'), { ssr: false });
 
 export default function Home() {
   const [showTerminal] = useState(false);
-  const [showGlyphTypeout] = useState(false);
-  const [showReports, setShowReports] = useState(true);
+  const [showGlyphTypeout] = useState(true);
+  const [showReports] = useState(true);
+  const [showBrick] = useState(true);
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
 
   // State to track window size with a forced re-render mechanism
@@ -62,107 +64,185 @@ export default function Home() {
       flexDirection: 'column',
       justifyContent: 'flex-start', 
       alignItems: 'center', 
-      padding: '20px',
-      boxSizing: 'border-box',
-      gap: '20px'
+      padding: '0',
+      boxSizing: 'border-box'
     }}>
-      {/* Main content container with grid layout */}
+      {/* Top half for Brick */}
+      {showBrick && (
+        <div style={{
+          width: '100%',
+          height: '50%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '20px',
+          boxSizing: 'border-box'
+        }}>
+          <div style={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
+            borderRadius: '10px',
+            border: '1px solid rgba(57, 255, 20, 0.3)'
+          }}>
+            <Brick size={100} color="#32CD32" />
+          </div>
+        </div>
+      )}
+      
+      {/* Bottom half split between reports and glyph typeout */}
       <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gridGap: '20px',
         width: '100%',
-        maxWidth: '1600px',
-        height: 'calc(100% - 40px)',
-        margin: '0 auto'
+        height: '50%',
+        display: 'flex',
+        flexDirection: 'row',
+        boxSizing: 'border-box'
       }}>
-        {showTerminal && (
-          <ResizableDraggableWindow
-            key={`terminal-${windowSize.key}`}
-            title="Terminal"
-            initialWidth={Math.min(600, windowSize.width * 0.45)}
-            initialHeight={Math.min(500, windowSize.height * 0.6)}
-            initialX={windowSize.width * 0.1}
-            initialY={windowSize.height * 0.1}
-            zIndex={8}
-            style={{ 
-              width: Math.min(600, windowSize.width * 0.45),
-              height: Math.min(500, windowSize.height * 0.6),
-              margin: '0'
-            }}
-          >
-            <ThisTerminal />
-          </ResizableDraggableWindow>
-        )}
-        
-        {showGlyphTypeout && (
-          <ResizableDraggableWindow
-            key={`glyph-${windowSize.key}`}
-            title="Glyph Typeout"
-            initialWidth={Math.min(500, windowSize.width * 0.4)}
-            initialHeight={Math.min(400, windowSize.height * 0.5)}
-            initialX={windowSize.width * 0.5}
-            initialY={windowSize.height * 0.15}
-            zIndex={9}
-            style={{ 
-              width: Math.min(500, windowSize.width * 0.4),
-              height: Math.min(400, windowSize.height * 0.5),
-              margin: '0'
-            }}
-          >
-            <GlyphTypeout fontSize="0.9rem" />
-          </ResizableDraggableWindow>
-        )}
-        
+        {/* Left half - Reports */}
         {showReports && (
-          <ResizableDraggableWindow
-            key={`reports-${windowSize.key}`}
-            title="Reports"
-            initialWidth={Math.min(650, windowSize.width * 0.5)}
-            initialHeight={Math.min(600, windowSize.height * 0.7)}
-            initialX={windowSize.width * 0.25}
-            initialY={windowSize.height * 0.15}
-            zIndex={10}
-            style={{ 
-              width: Math.min(650, windowSize.width * 0.5),
-              height: Math.min(600, windowSize.height * 0.7),
-              margin: '0'
-            }}
-          >
-            <ReportWindow onReportOpen={handleReportOpen} />
-          </ResizableDraggableWindow>
+          <div style={{
+            width: '50%',
+            height: '100%',
+            padding: '20px',
+            boxSizing: 'border-box'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              borderRadius: '10px',
+              border: '1px solid rgba(57, 255, 20, 0.3)',
+              padding: '10px',
+              boxSizing: 'border-box',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                fontWeight: 'bold',
+                color: 'rgba(57, 255, 20, 1)',
+                textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
+                letterSpacing: '1px',
+                fontSize: '1.2em',
+                marginBottom: '10px'
+              }}>
+                Reports
+              </div>
+              <div style={{ height: 'calc(100% - 30px)', overflow: 'hidden' }}>
+                <ReportWindow onReportOpen={handleReportOpen} />
+              </div>
+            </div>
+          </div>
+        )}
+        
+        {/* Right half - Glyph Typeout */}
+        {showGlyphTypeout && (
+          <div style={{
+            width: '50%',
+            height: '100%',
+            padding: '20px',
+            boxSizing: 'border-box'
+          }}>
+            <div style={{
+              width: '100%',
+              height: '100%',
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              borderRadius: '10px',
+              border: '1px solid rgba(57, 255, 20, 0.3)',
+              padding: '10px',
+              boxSizing: 'border-box',
+              overflow: 'hidden'
+            }}>
+              <div style={{
+                fontWeight: 'bold',
+                color: 'rgba(57, 255, 20, 1)',
+                textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
+                letterSpacing: '1px',
+                fontSize: '1.2em',
+                marginBottom: '10px'
+              }}>
+                Glyph Typeout
+              </div>
+              <div style={{ height: 'calc(100% - 30px)', overflow: 'hidden' }}>
+                <GlyphTypeout speed={30} fontSize="0.9rem" />
+              </div>
+            </div>
+          </div>
         )}
       </div>
       
-      {/* Full Report Overlay */}
-      {selectedReport && (
+      {/* Terminal (hidden) */}
+      {showTerminal && (
         <ResizableDraggableWindow
-          key={`report-${windowSize.key}`}
-          title={`Report: ${selectedReport}`}
-          initialWidth={Math.min(windowSize.width * 0.9, 1200)}
-          initialHeight={Math.min(windowSize.height * 0.9, 800)}
-          initialX={(windowSize.width - Math.min(windowSize.width * 0.9, 1200)) / 2}
-          initialY={(windowSize.height - Math.min(windowSize.height * 0.9, 800)) / 2}
-          zIndex={1000}
-          onClose={() => setSelectedReport(null)}
+          key={`terminal-${windowSize.key}`}
+          title="Terminal"
+          initialWidth={Math.min(600, windowSize.width * 0.45)}
+          initialHeight={Math.min(500, windowSize.height * 0.6)}
+          initialX={windowSize.width * 0.1}
+          initialY={windowSize.height * 0.1}
+          zIndex={8}
           style={{ 
-            width: Math.min(windowSize.width * 0.9, 1200),
-            height: Math.min(windowSize.height * 0.9, 800),
-            margin: '0',
-            position: 'fixed',
-            boxShadow: '0 0 30px rgba(57, 255, 20, 0.4)'
+            width: Math.min(600, windowSize.width * 0.45),
+            height: Math.min(500, windowSize.height * 0.6),
+            margin: '0'
           }}
         >
-          <iframe 
-            src={`/${selectedReport}`} 
-            style={{ 
-              width: '100%', 
-              height: '100%', 
-              border: 'none', 
-              backgroundColor: 'rgba(0,0,0,0.7)' 
-            }} 
-          />
+          <ThisTerminal />
         </ResizableDraggableWindow>
+      )}
+      
+      {/* Full Report Overlay */}
+      {selectedReport && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          zIndex: 1000,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          padding: '20px',
+          boxSizing: 'border-box'
+        }}>
+          <div style={{
+            width: '90%',
+            height: '90%',
+            backgroundColor: 'rgba(0, 0, 0, 0.9)',
+            borderRadius: '10px',
+            border: '1px solid rgba(57, 255, 20, 0.3)',
+            boxShadow: '0 0 30px rgba(57, 255, 20, 0.4)',
+            overflow: 'hidden',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              top: '10px',
+              right: '10px',
+              zIndex: 1001,
+              padding: '5px 10px',
+              backgroundColor: 'rgba(0, 0, 0, 0.8)',
+              borderRadius: '5px',
+              border: '1px solid rgba(57, 255, 20, 0.3)',
+              color: 'rgba(57, 255, 20, 0.8)',
+              cursor: 'pointer'
+            }} onClick={() => setSelectedReport(null)}>
+              Close
+            </div>
+            <iframe 
+              src={`/${selectedReport}`} 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                border: 'none', 
+                backgroundColor: 'rgba(0,0,0,0.7)' 
+              }} 
+            />
+          </div>
+        </div>
       )}
     </div>
   );
