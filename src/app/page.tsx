@@ -5,15 +5,11 @@ import dynamic from 'next/dynamic';
 
 const ResizableDraggableWindow = dynamic(() => import('@/app/components/ResizableDraggableWindow'), { ssr: false });
 const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: false });
-const GlyphTypeout = dynamic(() => import('@/app/components/GlyphTypeout'), { ssr: false });
-const ReportWindow = dynamic(() => import('@/app/components/ReportWindow'), { ssr: false });
 const Brick = dynamic(() => import('@/app/components/Brick'), { ssr: false });
 const Navbar = dynamic(() => import('@/app/components/Navbar'), { ssr: false });
 
 export default function Home() {
   const [showTerminal] = useState(false);
-  const [showGlyphTypeout] = useState(true);
-  const [showReports] = useState(true);
   const [showBrick] = useState(true);
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
 
@@ -72,11 +68,11 @@ export default function Home() {
       {/* Navbar */}
       <Navbar />
       
-      {/* Top half for Brick - now displaying yhghh.HTML in iframe */}
+      {/* Main content - yhghh.HTML in iframe, now full-height */}
       {showBrick && (
         <div style={{
           width: '100%',
-          height: '50%',
+          height: 'calc(100% - 60px)', // Full height minus navbar
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -107,85 +103,6 @@ export default function Home() {
           </div>
         </div>
       )}
-      
-      {/* Bottom half split between reports and glyph typeout */}
-      <div style={{
-        width: '100%',
-        height: '50%',
-        display: 'flex',
-        flexDirection: 'row',
-        boxSizing: 'border-box'
-      }}>
-        {/* Left half - Reports */}
-        {showReports && (
-          <div style={{
-            width: '50%',
-            height: '100%',
-            padding: '20px',
-            boxSizing: 'border-box'
-          }}>
-            <div style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(0, 0, 0, 0.7)',
-              borderRadius: '10px',
-              border: '1px solid rgba(57, 255, 20, 0.3)',
-              padding: '10px',
-              boxSizing: 'border-box',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                fontWeight: 'bold',
-                color: 'rgba(57, 255, 20, 1)',
-                textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
-                letterSpacing: '1px',
-                fontSize: '1.2em',
-                marginBottom: '10px'
-              }}>
-                Reports
-              </div>
-              <div style={{ height: 'calc(100% - 30px)', overflow: 'hidden' }}>
-                <ReportWindow onReportOpen={handleReportOpen} />
-              </div>
-            </div>
-          </div>
-        )}
-        
-        {/* Right half - Glyph Typeout */}
-        {showGlyphTypeout && (
-          <div style={{
-            width: '50%',
-            height: '100%',
-            padding: '20px',
-            boxSizing: 'border-box'
-          }}>
-            <div style={{
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(0, 0, 0, 0.7)',
-              borderRadius: '10px',
-              border: '1px solid rgba(57, 255, 20, 0.3)',
-              padding: '10px',
-              boxSizing: 'border-box',
-              overflow: 'hidden'
-            }}>
-              <div style={{
-                fontWeight: 'bold',
-                color: 'rgba(57, 255, 20, 1)',
-                textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
-                letterSpacing: '1px',
-                fontSize: '1.2em',
-                marginBottom: '10px'
-              }}>
-                Glyph Typeout
-              </div>
-              <div style={{ height: 'calc(100% - 30px)', overflow: 'hidden' }}>
-                <GlyphTypeout speed={30} fontSize="0.9rem" />
-              </div>
-            </div>
-          </div>
-        )}
-      </div>
       
       {/* Terminal (hidden) */}
       {showTerminal && (
