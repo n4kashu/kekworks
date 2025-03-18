@@ -6,7 +6,6 @@ import dynamic from 'next/dynamic';
 const Navbar = dynamic(() => import('@/app/components/Navbar'), { ssr: false });
 const GlyphTypeout = dynamic(() => import('@/app/components/GlyphTypeout'), { ssr: false });
 const ReportWindow = dynamic(() => import('@/app/components/ReportWindow'), { ssr: false });
-const BaseWindow = dynamic(() => import('@/app/components/BaseWindow'), { ssr: false });
 
 export default function BrickResearchPage() {
   const [windowSize, setWindowSize] = useState({
@@ -69,44 +68,104 @@ export default function BrickResearchPage() {
         marginTop: '60px', // Match navbar height
         boxSizing: 'border-box',
         display: 'flex',
-        position: 'relative'
+        flexDirection: 'column',
+        position: 'relative',
+        padding: '20px',
+        overflow: 'auto'
       }}>
-        {/* Left side - GlyphTypeout */}
+        {/* Top section - GlyphTypeout (1/3 of the height) */}
         <div style={{
-          width: '50%', 
-          height: '100%',
+          width: '100%',
+          height: '33%',
+          marginBottom: '20px',
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          borderRadius: '10px',
+          border: '1px solid rgba(57, 255, 20, 0.3)',
           padding: '20px',
           boxSizing: 'border-box',
-          overflowY: 'auto'
+          overflow: 'hidden'
         }}>
-          <BaseWindow 
-            title="KEK Glyph Analysis" 
-            initialPosition={{ x: 0, y: 0 }}
-            initialSize={{ width: 500, height: 600 }}
-          >
-            <div style={{ height: '100%' }}>
-              <GlyphTypeout />
-            </div>
-          </BaseWindow>
+          <div style={{
+            fontWeight: 'bold',
+            color: 'rgba(57, 255, 20, 1)',
+            textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
+            letterSpacing: '1px',
+            fontSize: '1.5em',
+            marginBottom: '20px'
+          }}>
+            Brick Analysis Data
+          </div>
+          <div style={{ height: 'calc(100% - 40px)', overflow: 'hidden' }}>
+            <GlyphTypeout />
+          </div>
         </div>
         
-        {/* Right side - Report Window */}
+        {/* Middle section - Info about research */}
         <div style={{
-          width: '50%', 
-          height: '100%',
+          width: '100%',
+          marginBottom: '20px',
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          borderRadius: '10px',
+          border: '1px solid rgba(57, 255, 20, 0.3)',
           padding: '20px',
           boxSizing: 'border-box',
-          overflowY: 'auto'
         }}>
-          <BaseWindow 
-            title="Reports" 
-            initialPosition={{ x: 0, y: 0 }}
-            initialSize={{ width: 500, height: 600 }}
-          >
-            <div style={{ height: '100%' }}>
-              <ReportWindow onReportOpen={handleReportOpen} />
-            </div>
-          </BaseWindow>
+          <div style={{
+            fontWeight: 'bold',
+            color: 'rgba(57, 255, 20, 1)',
+            textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
+            letterSpacing: '1px',
+            fontSize: '1.2em',
+            marginBottom: '15px'
+          }}>
+            About Brick Research
+          </div>
+          <div style={{
+            color: 'rgba(57, 255, 20, 0.8)',
+            lineHeight: '1.6',
+            fontSize: '1rem'
+          }}>
+            <p>
+              The Emerald Brick of KEK exhibits unique properties that defy conventional physics. 
+              This research module continuously analyzes the brick&apos;s hieroglyphic emanations and translates 
+              them into readable patterns.
+            </p>
+            <p>
+              Research suggests the glyphs may contain encoded information related to the brick&apos;s 
+              origin and purpose. Our systems continuously monitor and decode these patterns in real-time.
+            </p>
+            <p>
+              <strong>Warning:</strong> Prolonged exposure to the glyph patterns may induce altered states of consciousness. 
+              Research staff are advised to limit viewing sessions to 30-minute intervals.
+            </p>
+          </div>
+        </div>
+        
+        {/* Bottom section - Reports */}
+        <div style={{
+          width: '100%',
+          flex: 1,
+          backgroundColor: 'rgba(0, 0, 0, 0.7)',
+          borderRadius: '10px',
+          border: '1px solid rgba(57, 255, 20, 0.3)',
+          padding: '20px',
+          boxSizing: 'border-box',
+          minHeight: '250px',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            fontWeight: 'bold',
+            color: 'rgba(57, 255, 20, 1)',
+            textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
+            letterSpacing: '1px',
+            fontSize: '1.2em',
+            marginBottom: '15px'
+          }}>
+            Research Reports
+          </div>
+          <div style={{ height: 'calc(100% - 40px)', overflow: 'hidden' }}>
+            <ReportWindow onReportOpen={handleReportOpen} />
+          </div>
         </div>
         
         {/* Selected Report Modal (conditionally rendered) */}
