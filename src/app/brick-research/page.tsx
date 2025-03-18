@@ -79,8 +79,14 @@ export default function BrickResearchPage() {
           boxSizing: 'border-box',
           overflowY: 'auto'
         }}>
-          <BaseWindow title="KEK Glyph Analysis" style={{ height: '100%' }}>
-            <GlyphTypeout />
+          <BaseWindow 
+            title="KEK Glyph Analysis" 
+            initialPosition={{ x: 0, y: 0 }}
+            initialSize={{ width: 500, height: 600 }}
+          >
+            <div style={{ height: '100%' }}>
+              <GlyphTypeout />
+            </div>
           </BaseWindow>
         </div>
         
@@ -92,8 +98,14 @@ export default function BrickResearchPage() {
           boxSizing: 'border-box',
           overflowY: 'auto'
         }}>
-          <BaseWindow title="Reports" style={{ height: '100%' }}>
-            <ReportWindow onReportOpen={handleReportOpen} />
+          <BaseWindow 
+            title="Reports" 
+            initialPosition={{ x: 0, y: 0 }}
+            initialSize={{ width: 500, height: 600 }}
+          >
+            <div style={{ height: '100%' }}>
+              <ReportWindow onReportOpen={handleReportOpen} />
+            </div>
           </BaseWindow>
         </div>
         
