@@ -67,7 +67,7 @@ export default function Home() {
       padding: '0',
       boxSizing: 'border-box'
     }}>
-      {/* Top half for Brick */}
+      {/* Top half for Brick - now displaying yhghh.HTML in iframe */}
       {showBrick && (
         <div style={{
           width: '100%',
@@ -86,9 +86,19 @@ export default function Home() {
             alignItems: 'center',
             backgroundColor: 'rgba(0, 0, 0, 0.2)',
             borderRadius: '10px',
-            border: '1px solid rgba(57, 255, 20, 0.3)'
+            border: '1px solid rgba(57, 255, 20, 0.3)',
+            overflow: 'hidden'
           }}>
-            <Brick size={100} color="#32CD32" />
+            <iframe 
+              src="/yhghh.HTML" 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                border: 'none',
+                backgroundColor: 'transparent'
+              }}
+              title="The Emerald Brick Of KEK"
+            />
           </div>
         </div>
       )}
