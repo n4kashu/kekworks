@@ -90,11 +90,11 @@ export default function BrickResearchPage() {
             }}>
               <p>
                 The Emerald Brick of KEK exhibits unique properties that defy conventional physics. 
-                This research module continuously analyzes the brick's hieroglyphic emanations and translates 
+                This research module continuously analyzes the brick&apos;s hieroglyphic emanations and translates 
                 them into readable patterns.
               </p>
               <p>
-                Research suggests the glyphs may contain encoded information related to the brick's 
+                Research suggests the glyphs may contain encoded information related to the brick&apos;s 
                 origin and purpose. Our systems continuously monitor and decode these patterns in real-time.
               </p>
               <p>
