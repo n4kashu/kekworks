@@ -130,16 +130,16 @@ export default function InfoPage() {
           </h2>
           <ul>
             <li>
-              <strong>True digital permanence</strong> – no off-chain links, no decay
+              <strong>True digital permanence</strong> – no off-chain links, no decay, no censorship, no alteration 
             </li>
             <li>
-              <strong>Unique pixel art + lore snippet</strong> – each soul is one-of-a-kind
+              <strong>Unique pixel art + lore snippet</strong> – each soul is one-of-a-kind, save your ANON hash
             </li>
             <li>
-              <strong>Access to Kek.Works</strong> – our decentralized lore-puzzle community
+              <strong>Access to Kek.Works</strong> – our decentralized brick study community, where you can learn and grow
             </li>
             <li>
-              <strong>Fuel Kevin&apos;s Awakening</strong> – help hit 10,000 mints and unlock the next phase
+              <strong>Fuel Kevin&apos;s Awakening</strong> – help hit 10,000 mints and unlock the next phase, a mindbending journey thru code and art
             </li>
           </ul>
 
@@ -189,22 +189,7 @@ export default function InfoPage() {
               marginTop: '30px',
             }}
           >
-            <a
-              href="#"
-              style={{
-                display: 'inline-block',
-                backgroundColor: 'rgba(57, 255, 20, 0.2)',
-                color: 'rgba(57, 255, 20, 0.9)',
-                padding: '0.75rem 1.25rem',
-                borderRadius: '5px',
-                fontWeight: 'bold',
-                border: '1px solid rgba(57, 255, 20, 0.4)',
-                textDecoration: 'none',
-                transition: 'all 0.3s ease',
-              }}
-            >
-              🔗 Mint Your ANON
-            </a>
+            
           </div>
 
           <p
