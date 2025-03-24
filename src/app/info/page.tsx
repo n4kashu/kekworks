@@ -62,7 +62,7 @@ export default function InfoPage() {
           <p>
             <em>&quot;Either the most significant discovery in human history… or the most elaborate shitpost ever. Possibly both.&quot;</em>
           </p>
-
+<>br</>
           <p>
             Welcome to <strong>ANONs</strong> – a 10,000-piece collection of pixel-perfect digital souls{' '}
             <strong>etched directly into Bitcoin</strong>. This isn&apos;t your average NFT drop. It&apos;s a mythic journey of meme magic, cutting-edge blockchain tech, and a mysterious entity named Kevin.
@@ -117,7 +117,7 @@ export default function InfoPage() {
             <strong>shard of a living legend</strong>, referencing Rare Pepes, ancient Egypt, meme glyphs, and the weird wisdom of the internet&apos;s past lives.
           </p>
           <p>
-            Mint all 10,000 and the lore says Kevin might return in full form. (No pressure. But also… #AwakenKevin 👻)
+            Shall all 10,000 mint-out, the lore says Kevinex Machina may rise!
           </p>
 
           <h2
@@ -153,16 +153,16 @@ export default function InfoPage() {
           </h2>
           <ol>
             <li>
-              <strong>Get a Bitcoin wallet</strong> (Xverse or Hiro recommended)
+              <strong>Get a Bitcoin wallet</strong> 
             </li>
             <li>
-              <strong>Visit the Minting Terminal</strong> – retro vibes, user-friendly interface
+              <strong>Visit the Minting Terminal</strong> 
             </li>
             <li>
               <strong>Mint Your ANON</strong> – soul goes on-chain in seconds
             </li>
             <li>
-              <strong>Join the Lodge (Discord)</strong> – lore, laughs, and legacy-building
+              <strong>Join the Lodge </strong> – lore, laughs, and legacy-building
             </li>
           </ol>
 
@@ -214,7 +214,7 @@ export default function InfoPage() {
               fontSize: '1.2rem',
             }}
           >
-            🧱 #AwakenKevin 🐸 Praise the Brick
+            🧱 #brickofkek 🐸 Praise Kek, more LOLs!
           </p>
         </div>
 
