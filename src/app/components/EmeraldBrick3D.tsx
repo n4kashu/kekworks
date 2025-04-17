@@ -223,7 +223,7 @@ const EmeraldBrick3D: React.FC = () => {
       <div className={styles.brick} ref={brickRef} style={{ userSelect: 'none' }}>
         {/* Front Face */}
         <div className={`${styles.face} ${styles.front}`}>
-          <svg width="600" height="1000" ref={el => (facesRef.current[0] = el)}>
+          <svg width="600" height="1000" ref={el => { facesRef.current[0] = el; }}>
             <defs>
               <filter id="glow">
                 <feGaussianBlur stdDeviation="2" result="coloredBlur" />
@@ -253,35 +253,35 @@ const EmeraldBrick3D: React.FC = () => {
         </div>
         {/* Back Face */}
         <div className={`${styles.face} ${styles.back}`}>
-          <svg width="600" height="1000" ref={el => (facesRef.current[1] = el)}>
+          <svg width="600" height="1000" ref={el => { facesRef.current[1] = el; }}>
             <rect x="15" y="15" width="600" height="1000" fill="none" stroke="rgba(0,255,0,0.1)" strokeWidth="2" />
             <g></g>
           </svg>
         </div>
         {/* Left Face */}
         <div className={`${styles.face} ${styles.left}`}>
-          <svg width="300" height="1000" ref={el => (facesRef.current[2] = el)}>
+          <svg width="300" height="1000" ref={el => { facesRef.current[2] = el; }}>
             <rect x="15" y="15" width="300" height="1000" fill="none" stroke="rgba(0,255,0,0.1)" strokeWidth="2" />
             <g></g>
           </svg>
         </div>
         {/* Right Face */}
         <div className={`${styles.face} ${styles.right}`}>
-          <svg width="300" height="1000" ref={el => (facesRef.current[3] = el)}>
+          <svg width="300" height="1000" ref={el => { facesRef.current[3] = el; }}>
             <rect x="15" y="15" width="300" height="1000" fill="none" stroke="rgba(0,255,0,0.1)" strokeWidth="2" />
             <g></g>
           </svg>
         </div>
         {/* Top Face */}
         <div className={`${styles.face} ${styles.top}`}>
-          <svg width="600" height="300" ref={el => (facesRef.current[4] = el)}>
+          <svg width="600" height="300" ref={el => { facesRef.current[4] = el; }}>
             <rect x="15" y="15" width="600" height="300" fill="none" stroke="rgba(0,255,0,0.1)" strokeWidth="2" />
             <g></g>
           </svg>
         </div>
         {/* Bottom Face */}
         <div className={`${styles.face} ${styles.bottom}`}>
-          <svg width="600" height="300" ref={el => (facesRef.current[5] = el)}>
+          <svg width="600" height="300" ref={el => { facesRef.current[5] = el; }}>
             <rect x="15" y="15" width="600" height="300" fill="none" stroke="rgba(0,255,0,0.1)" strokeWidth="2" />
             <g></g>
           </svg>
