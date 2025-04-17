@@ -198,7 +198,9 @@ const EmeraldBrick3D: React.FC = () => {
     }
     function onDblClick() {
       autoRotate.current = !autoRotate.current;
-      brick.style.cursor = autoRotate.current ? 'default' : 'grab';
+      if (brick) {
+        brick.style.cursor = autoRotate.current ? 'default' : 'grab';
+      }
       if (autoRotate.current) {
         isDragging.current = false;
         lastAutoRotateY.current = rotation.current.y;
