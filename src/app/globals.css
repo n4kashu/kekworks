@@ -1,4 +1,11 @@
-﻿@tailwind base;
+@font-face {
+  font-family: 'Hieratic Numerals';
+  src: url('/HieraticNumerals-vKgA.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@tailwind base;
 @tailwind components;
 @tailwind utilities;
 
