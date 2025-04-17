@@ -2,6 +2,7 @@
 
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
+import styles from './Home.module.css';
 
 const ResizableDraggableWindow = dynamic(() => import('@/app/components/ResizableDraggableWindow'), { ssr: false });
 const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: false });
@@ -50,16 +51,7 @@ export default function Home() {
   };
 
   return (
-    <div style={{ 
-      height: '100vh', 
-      width: '100vw', 
-      backgroundColor: 'black', 
-      color: 'rgba(57, 255, 20, 0.56)', 
-      overflow: 'hidden',
-      position: 'relative',
-      padding: '0',
-      boxSizing: 'border-box',
-    }}>
+    <div className={styles.mainContainer}>
       {/* Navbar - positioned fixed at top */}
       <div style={{
         position: 'fixed',
@@ -70,27 +62,16 @@ export default function Home() {
       }}>
         <Navbar />
       </div>
-      
       {/* Full-page iframe displaying the brick */}
-      <iframe 
-        src="/yhghh.HTML" 
-        style={{ 
-          width: '100%', 
-          height: '100%', 
-          border: 'none',
-          backgroundColor: 'transparent',
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          marginTop: '60px', 
-          transform: 'scale(0.7)', 
-          transformOrigin: 'center center', 
-          pointerEvents: 'auto' 
-        }}
-        title="The Emerald Brick Of KEK"
-        allowFullScreen={true} 
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-      />
+      <div className={styles.iframeContainer}>
+        <iframe
+          src="/yhghh.HTML"
+          className={styles.responsiveIframe}
+          title="The Emerald Brick Of KEK"
+          allowFullScreen={true}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        />
+      </div>
       
       {/* Main content area - now empty but could contain other components in the future */}
       <div style={{
