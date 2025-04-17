@@ -177,7 +177,9 @@ const EmeraldBrick3D: React.FC = () => {
       if (!autoRotate.current) {
         isDragging.current = true;
         startCoords.current = { x: e.pageX - rotation.current.y, y: e.pageY - rotation.current.x };
-        brick.style.cursor = 'grabbing';
+        if (brick) {
+          brick.style.cursor = 'grabbing';
+        }
       }
     }
     function onMouseMove(e: MouseEvent) {
