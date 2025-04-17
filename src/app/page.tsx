@@ -3,6 +3,7 @@
 import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './Home.module.css';
+import EmeraldBrick3D from './components/EmeraldBrick3D';
 
 const ResizableDraggableWindow = dynamic(() => import('@/app/components/ResizableDraggableWindow'), { ssr: false });
 const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: false });
@@ -62,16 +63,8 @@ export default function Home() {
       }}>
         <Navbar />
       </div>
-      {/* Full-page iframe displaying the brick */}
-      <div className={styles.iframeContainer}>
-        <iframe
-          src="/yhghh.HTML"
-          className={styles.responsiveIframe}
-          title="The Emerald Brick Of KEK"
-          allowFullScreen={true}
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        />
-      </div>
+      {/* 3D Emerald Brick React Component */}
+      <EmeraldBrick3D />
       
       {/* Main content area - now empty but could contain other components in the future */}
       <div style={{
