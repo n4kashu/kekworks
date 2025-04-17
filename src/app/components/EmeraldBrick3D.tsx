@@ -5,7 +5,12 @@ import styles from './EmeraldBrick3D.module.css';
 
 // --- TextAnimator (from original HTML) ---
 class TextAnimator {
-  characters: Map<SVGElement, any>;
+  characters: Map<SVGElement, {
+    startTime: number;
+    currentChar: string | null;
+    opacity: number;
+    fadeDirection: number;
+  }>;
   maxOpacity = 0.99;
   minOpacity = 0.01;
   animationDuration = 5000;
@@ -32,7 +37,7 @@ class TextAnimator {
         element.textContent = getRandomCharacter();
         data.currentChar = element.textContent;
       }
-      (element as any).style.opacity = opacity;
+      (element as SVGElement).style.opacity = opacity.toString();
     });
   }
 }
@@ -129,11 +134,11 @@ const EmeraldBrick3D: React.FC = () => {
         const green = 200 + Math.sin(t * 0.7) * 55;
         const opacity = 0.69 + Math.sin(t * 0.3) * 0.3;
         const glow = 0.99 + Math.sin(t * 0.6) * 0.4;
-        (gaussianBlur as any).setAttribute('stdDeviation', 2 + Math.sin(t * 0.4) * 2);
-        (feFlood as any).setAttribute('flood-opacity', 0.5 + Math.sin(t * 0.3) * 0.3);
+        (gaussianBlur as SVGElement).setAttribute('stdDeviation', String(2 + Math.sin(t * 0.4) * 2));
+        (feFlood as SVGElement).setAttribute('flood-opacity', String(0.5 + Math.sin(t * 0.3) * 0.3));
         logoPaths.forEach(path => {
-          (path as any).style.fill = `rgba(0, ${green}, 0, ${opacity})`;
-          (path as any).style.filter = `drop-shadow(0 0 ${15 + glow * 20}px rgba(0, 255, 0, ${glow}))`;
+          (path as SVGElement).setAttribute('fill', `rgba(0, ${green}, 0, ${opacity})`);
+          (path as SVGElement).setAttribute('filter', `drop-shadow(0 0 ${15 + glow * 20}px rgba(0, 255, 0, ${glow}))`);
         });
       }
       // Animate face glows
