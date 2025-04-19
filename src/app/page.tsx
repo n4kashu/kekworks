@@ -46,6 +46,22 @@ export default function Home() {
     return () => window.removeEventListener('resize', debouncedResize);
   }, [handleResize]);
 
+  // SSR-safe dynamic scaling for the brick
+  const [brickScale, setBrickScale] = React.useState(0.6);
+  React.useEffect(() => {
+    function computeScale() {
+      if (typeof window !== 'undefined') {
+        const h = window.innerHeight;
+        if (h < 600) setBrickScale(0.32);
+        else if (h < 800) setBrickScale(0.45);
+        else setBrickScale(0.6);
+      }
+    }
+    computeScale();
+    window.addEventListener('resize', computeScale);
+    return () => window.removeEventListener('resize', computeScale);
+  }, []);
+
   const handleReportOpen = (reportHtml: string) => {
     setSelectedReport(reportHtml);
   };
@@ -64,51 +80,32 @@ export default function Home() {
         {/* If your Navbar is a component, import and render it here, e.g. <Navbar /> */}
       </div>
       {/* Brick + Quote Section */}
-      {(() => {
-        // SSR-safe dynamic scaling for the brick
-        const [brickScale, setBrickScale] = React.useState(0.6);
-        React.useEffect(() => {
-          function computeScale() {
-            if (typeof window !== 'undefined') {
-              const h = window.innerHeight;
-              if (h < 600) setBrickScale(0.32);
-              else if (h < 800) setBrickScale(0.45);
-              else setBrickScale(0.6);
-            }
-          }
-          computeScale();
-          window.addEventListener('resize', computeScale);
-          return () => window.removeEventListener('resize', computeScale);
-        }, []);
-        return (
-          <div
-            style={{
-              width: '100%',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              boxSizing: 'border-box',
-              minHeight: 0,
-            }}
-          >
-            <div className={styles.glowingQuote} style={{ marginTop: 20 }}>
-              “In the beginning, there was chaos, and from chaos came laughter. And from laughter emerged the Brick, and the Brick was green, and it was good.”
-            </div>
-            <div
-              style={{
-                marginTop: 20,
-                transform: `scale(${brickScale})`,
-                transformOrigin: 'top center',
-                display: 'inline-block',
-                transition: 'transform 0.3s',
-              }}
-            >
-              <EmeraldBrick3D />
-            </div>
-          </div>
-        );
-      })()}
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          boxSizing: 'border-box',
+          minHeight: 0,
+        }}
+      >
+        <div className={styles.glowingQuote} style={{ marginTop: 20 }}>
+          “In the beginning, there was chaos, and from chaos came laughter. And from laughter emerged the Brick, and the Brick was green, and it was good.”
+        </div>
+        <div
+          style={{
+            marginTop: 20,
+            transform: `scale(${brickScale})`,
+            transformOrigin: 'top center',
+            display: 'inline-block',
+            transition: 'transform 0.3s',
+          }}
+        >
+          <EmeraldBrick3D />
+        </div>
+      </div>
       {/* Main content area - now empty but could contain other components in the future */}
       <div style={{
         width: '100%',
