@@ -12,6 +12,8 @@
   overflow: hidden;
   perspective: 5000px;
   background: transparent;
+  margin-top: 70px; /* leave space for navbar */
+  box-sizing: border-box;
 }
 
 .brick {
@@ -21,7 +23,8 @@
   transform-style: preserve-3d;
   cursor: default;
   transition: transform 0.1s ease;
-  transform: rotateX(15deg) rotateY(45deg) scale(0.3);
+  /* Move 20px down and scale to 58% (80% of 0.72) */
+  transform:  rotateX(15deg) rotateY(45deg) scale(0.58);
 }
 
 .face {
@@ -101,16 +104,19 @@
 
 @media (max-width: 800px) {
   .brick {
-    transform: rotateX(15deg) rotateY(45deg) scale(0.19);
+    /* 80% of 0.19 = 0.152 */
+    transform:  rotateX(15deg) rotateY(45deg) scale(0.152);
   }
 }
 @media (max-width: 600px) {
   .brick {
-    transform: rotateX(15deg) rotateY(45deg) scale(0.13);
+    /* 80% of 0.13 = 0.104 */
+    transform:  rotateX(15deg) rotateY(45deg) scale(0.104);
   }
 }
 @media (max-width: 400px) {
   .brick {
-    transform: rotateX(15deg) rotateY(45deg) scale(0.08);
+    /* 80% of 0.08 = 0.064 */
+    transform:  rotateX(15deg) rotateY(45deg) scale(0.064);
   }
 }

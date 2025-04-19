@@ -8,7 +8,6 @@ import EmeraldBrick3D from './components/EmeraldBrick3D';
 const ResizableDraggableWindow = dynamic(() => import('@/app/components/ResizableDraggableWindow'), { ssr: false });
 const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: false });
 const Brick = dynamic(() => import('@/app/components/Brick'), { ssr: false });
-const Navbar = dynamic(() => import('@/app/components/Navbar'), { ssr: false });
 
 export default function Home() {
   const [showTerminal] = useState(false);
@@ -52,27 +51,51 @@ export default function Home() {
   };
 
   return (
-    <div className={styles.mainContainer}>
-      {/* Navbar - positioned fixed at top */}
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100%',
-        zIndex: 100
-      }}>
-        <Navbar />
+    <div className={styles.mainContainer} style={{
+      minHeight: '100vh',
+      display: 'flex',
+      flexDirection: 'column',
+      paddingTop: 0,
+      boxSizing: 'border-box',
+      overflow: 'hidden',
+    }}>
+      {/* Navbar */}
+      <div style={{ height: '56px', flexShrink: 0 }}>
+        {/* If your Navbar is a component, import and render it here, e.g. <Navbar /> */}
       </div>
-      {/* 3D Emerald Brick React Component */}
-      <EmeraldBrick3D />
-      
+      {/* Brick + Quote Section */}
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          boxSizing: 'border-box',
+          minHeight: 0,
+        }}
+      >        <div className={styles.glowingQuote} style={{ marginTop: 20 }}>
+          “In the beginning, there was chaos, and from chaos came laughter. And from laughter emerged the Brick, and the Brick was green, and it was good.”
+        </div>
+        <div
+          style={{
+            marginTop: 20,
+            transform: `scale(${typeof window !== 'undefined' && window.innerHeight < 600 ? 0.32 : window.innerHeight < 800 ? 0.45 : 0.6})`,
+            transformOrigin: 'top center',
+            display: 'inline-block',
+            transition: 'transform 0.3s',
+          }}
+        >
+          <EmeraldBrick3D />
+        </div>
+
+      </div>
       {/* Main content area - now empty but could contain other components in the future */}
       <div style={{
         width: '100%',
-        height: 'calc(100% - 60px)', 
+        height: '100%',
         position: 'relative',
         zIndex: 1,
-        marginTop: '60px',
         pointerEvents: 'none' 
       }}>
         {/* This area is now empty but visible on top of the background */}

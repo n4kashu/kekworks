@@ -1,6 +1,6 @@
 // 3D Emerald Brick React Component
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './EmeraldBrick3D.module.css';
 
 // --- TextAnimator (from original HTML) ---
@@ -81,19 +81,36 @@ function populateCharacters(
 }
 
 const facesConfig = [
-  { name: 'front', width: 600, height: 1000, isVertical: false, isHorizontal: false },
-  { name: 'back', width: 600, height: 1000, isVertical: false, isHorizontal: false },
-  { name: 'left', width: 300, height: 1000, isVertical: true, isHorizontal: false },
-  { name: 'right', width: 300, height: 1000, isVertical: true, isHorizontal: false },
-  { name: 'top', width: 600, height: 300, isVertical: false, isHorizontal: true },
-  { name: 'bottom', width: 600, height: 300, isVertical: false, isHorizontal: true },
+  { name: 'front', width: 600, height: 600, isVertical: false, isHorizontal: false },
+  { name: 'back', width: 600, height: 600, isVertical: false, isHorizontal: false },
+  { name: 'left', width: 300, height: 600, isVertical: true, isHorizontal: false },
+  { name: 'right', width: 300, height: 600, isVertical: true, isHorizontal: false },
+  { name: 'top', width: 600, height: 180, isVertical: false, isHorizontal: true },
+  { name: 'bottom', width: 600, height: 180, isVertical: false, isHorizontal: true },
 ];
 
 const EmeraldBrick3D: React.FC = () => {
+
+  // Track if user is dragging (rotating)
+  const [isUserDragging, setIsUserDragging] = useState(false);
+
+  // Responsive zoom calculation
+  useEffect(() => {
+    function handleResize() {
+      const w = window.innerWidth;
+      // Example breakpoints (customize as needed)
+
+    }
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const brickRef = useRef<HTMLDivElement>(null);
+
+
   const facesRef = useRef<(SVGSVGElement | null)[]>([]);
   const animationRef = useRef<number>();
-  const rotation = useRef({ x: 15, y: 45, zoom: 0.99 });
+  const rotation = useRef({ x: 15, y: 45, zoom: 0.8 }); // zoom will be controlled by state
   const isDragging = useRef(false);
   const startCoords = useRef({ x: 0, y: 0 });
   const lastAutoRotateY = useRef(45);
@@ -166,7 +183,7 @@ const EmeraldBrick3D: React.FC = () => {
         rotation.current.y = lastAutoRotateY.current;
       }
       if (brickRef.current) {
-        brickRef.current.style.transform = `rotateX(${rotation.current.x}deg) rotateY(${rotation.current.y}deg) scale(${rotation.current.zoom})`;
+        brickRef.current.style.transform = `rotateX(${rotation.current.x}deg) rotateY(${rotation.current.y}deg)`;
       }
       animationId = requestAnimationFrame(animateBrick);
     }
@@ -181,6 +198,7 @@ const EmeraldBrick3D: React.FC = () => {
     function onMouseDown(e: MouseEvent) {
       if (!autoRotate.current) {
         isDragging.current = true;
+        setIsUserDragging(true);
         startCoords.current = { x: e.pageX - rotation.current.y, y: e.pageY - rotation.current.x };
         if (brick) {
           brick.style.cursor = 'grabbing';
@@ -193,12 +211,13 @@ const EmeraldBrick3D: React.FC = () => {
         rotation.current.x = (e.pageY - startCoords.current.y) * 0.3;
         lastAutoRotateY.current = rotation.current.y;
         if (brickRef.current) {
-          brickRef.current.style.transform = `rotateX(${rotation.current.x}deg) rotateY(${rotation.current.y}deg) scale(${rotation.current.zoom})`;
+          brickRef.current.style.transform = `rotateX(${rotation.current.x}deg) rotateY(${rotation.current.y}deg)`;
         }
       }
     }
     function onMouseUp() {
       isDragging.current = false;
+      setIsUserDragging(false);
       if (brick) brick.style.cursor = autoRotate.current ? 'default' : 'grab';
     }
     function onDblClick() {
@@ -225,7 +244,18 @@ const EmeraldBrick3D: React.FC = () => {
 
   return (
     <div className={styles.emeraldBrickContainer} style={{ userSelect: 'none' }}>
-      <div className={styles.brick} ref={brickRef} style={{ userSelect: 'none' }}>
+      <div
+        ref={brickRef}
+        className={styles.brick}
+        style={{
+          width: 600,
+          height: 1000,
+          transform: `translateY(20px) rotateX(${rotation.current.x}deg) rotateY(${rotation.current.y}deg) scale(0.4)`,
+          cursor: isUserDragging ? 'grabbing' : 'grab',
+        }}
+        tabIndex={0}
+        aria-label="3D Emerald Brick"
+      >
         {/* Front Face */}
         <div className={`${styles.face} ${styles.front}`}>
           <svg width="600" height="1000" ref={el => { facesRef.current[0] = el; }}>

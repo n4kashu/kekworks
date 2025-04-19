@@ -24,6 +24,9 @@ const Navbar: React.FC = () => {
           <Link href="/about">
             <div className={styles['nav-item']}>About</div>
           </Link>
+          <Link href="/lore">
+            <div className={styles['nav-item']}>Lore</div>
+          </Link>
           <a href="https://stampverse.io" target="_blank" rel="noopener noreferrer">
             <div className={styles['nav-item']}>Mint</div>
           </a>
