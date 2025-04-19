@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ANONs – Bitcoin-Stamped Recursive PFPs</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+      body {
+          font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+          line-height: 1.6;
+          margin: 0;
+          padding: 0;
+          background: #001800;
+          color: #32FF32;
+          min-height: 100vh;
+          position: relative;
+          overflow-x: hidden;
+      }
+      .book-container {
+          max-width: 900px;
+          margin: 2em auto;
+          padding: 2em 2.5em;
+          background: rgba(0, 32, 0, 0.92);
+          border-radius: 10px;
+          border: 2px solid #39ff14;
+          box-shadow: 0 0 32px 0 #39ff1460, 0 0 0 1px #003300;
+          backdrop-filter: blur(1.5px);
+      }
+      h1 {
+          text-align: center;
+          color: #39ff14;
+          margin-bottom: 1em;
+          font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+          text-shadow: 0 0 8px #39ff14, 0 0 2px #32FF32;
+      }
+      h2 {
+          color: #32FF32;
+          margin-top: 2em;
+          padding-bottom: 0.3em;
+          border-bottom: 2px solid #39ff14;
+          font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+          text-shadow: 0 0 6px #39ff14;
+      }
+      h3 {
+          color: #8cff8c;
+          margin-top: 1.5em;
+          margin-bottom: 0.8em;
+          font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+          text-shadow: 0 0 4px #39ff1460;
+      }
+      p {
+          margin-bottom: 1em;
+          text-align: justify;
+          color: #b6ffb6;
+      }
+      section {
+          margin-bottom: 2em;
+      }
+      pre {
+          background: #002800;
+          color: #32FF32;
+          padding: 1em;
+          border-radius: 6px;
+          overflow-x: auto;
+          border: 1px solid #39ff14;
+          box-shadow: 0 0 8px #39ff1460;
+      }
+      code {
+          font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+          font-size: 0.96em;
+          color: #39ff14;
+      }
+      ul {
+          margin-left: 2em;
+          margin-bottom: 1em;
+          color: #b6ffb6;
+          padding-left: 1em; /* Adjusted padding */
+          list-style: square; /* Changed list style */
+      }
+      li {
+          margin-bottom: 0.5em;
+      }
+      a {
+          color: #32FF32;
+          text-decoration: underline;
+          text-shadow: 0 0 4px #39ff1460;
+      }
+      strong {
+          font-weight: bold;
+          color: #39ff14;
+          text-shadow: 0 0 2px #39ff14;
+      }
+      /* Specific for book chapters/parts */
+      #chapter-title { font-size: 2em; color: #39ff14; }
+      .part-title { font-size: 1.5em; color: #8cff8c; }
+
+      /* CRT scanline effect */
+      body::before {
+          content: "";
+          pointer-events: none;
+          position: fixed;
+          left: 0; right: 0; top: 0; bottom: 0;
+          background: repeating-linear-gradient(
+              to bottom,
+              transparent, transparent 2px,
+              #003300 3px, transparent 4px
+          );
+          opacity: 0.15;
+          z-index: 9999;
+      }
+      /* Vignette effect */
+      body::after {
+          content: "";
+          pointer-events: none;
+          position: fixed;
+          left: 0; right: 0; top: 0; bottom: 0;
+          background: radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%);
+          opacity: 0.7;
+          z-index: 9999;
+      }
+
+      /* Enhanced Table Styling */
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 1.5em;
+          margin-bottom: 1.5em;
+          border: 1px solid #39ff14;
+          box-shadow: 0 0 10px #39ff1460; /* Slightly increased shadow */
+      }
+      th, td {
+          border: 1px solid #32FF32;
+          padding: 1em 1.2em; /* Increased padding */
+          text-align: left;
+          vertical-align: top;
+          color: #b6ffb6;
+      }
+      th {
+          background-color: #002800;
+          color: #39ff14;
+          font-weight: bold;
+          text-shadow: 0 0 4px #39ff14;
+          border-bottom: 2px solid #39ff14; /* Stronger bottom border for header */
+      }
+      tr:nth-child(even) { /* Subtle striping for readability */
+         background-color: rgba(0, 40, 0, 0.3);
+      }
+      td ul { /* Style lists inside table cells */
+          margin-left: 0;
+          padding-left: 1.5em; /* Indent list items slightly more */
+          margin-top: 0.5em;
+          margin-bottom: 0;
+          list-style: disc; /* Changed list style for inner lists */
+      }
+      td li {
+          margin-bottom: 0.8em; /* Increased space between list items */
+          line-height: 1.5; /* Improved line spacing within list items */
+      }
+      td strong { /* Ensure strong tag stands out in table */
+          color: #8cff8c; /* Slightly softer green for emphasis within text */
+          text-shadow: none;
+      }
+      td em { /* Style italics for titles */
+          color: #a0ffa0;
+          font-style: italic;
+      }
+/* --- Table of Contents Styling --- */
+.toc-index {
+          margin: 1.5em auto 2.5em auto; /* Adjusted margins for better spacing */
+          max-width: 700px;
+          background: rgba(0, 32, 0, 0.88); /* Slightly adjusted alpha */
+          border: 1.5px solid #39ff14;
+          border-radius: 8px;
+          box-shadow: 0 0 12px #39ff1460;
+          padding: 1.2em 2em 1.5em 2em; /* Adjusted bottom padding */
+      }
+      .toc-index h3 { /* TOC Title */
+          color: #8cff8c; /* Consistent with other h3 */
+          margin-top: 0;
+          margin-bottom: 1em; /* Increased space below title */
+          padding-bottom: 0.5em; /* Increased padding */
+          text-align: center;
+          border-bottom: 1px solid #39ff14;
+          font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+          text-shadow: 0 0 4px #39ff1460; /* Consistent shadow */
+          font-size: 1.2em; /* Slightly larger title */
+      }
+      .toc-index ul {
+          list-style: none;
+          padding-left: 0;
+          margin-top: 0;
+          margin-bottom: 0;
+      }
+      .toc-index li {
+           /* Base spacing handled by elements inside li */
+           margin: 0;
+           padding: 0;
+      }
+
+      /* Styling for Top-Level Section Headers (non-linked) */
+      .toc-index li strong {
+          display: block; /* Ensure it takes full width */
+          color: #8cff8c; /* Brighter color for headers */
+          font-weight: bold; /* Explicitly bold */
+          margin-top: 0.8em; /* Space above section headers */
+          margin-bottom: 0.3em; /* Space below header before links */
+          text-shadow: 0 0 3px #39ff1480; /* Subtle shadow */
+          padding-left: 0.2em; /* Slight indent for alignment */
+      }
+      /* Ensure the first header doesn't have extra top margin */
+      .toc-index ul > li:first-child strong {
+           margin-top: 0;
+      }
+
+      /* Styling for Subsection Links */
+      .toc-index li a {
+          display: block; /* Allow padding and block-level appearance */
+          color: #32FF32; /* Standard link color */
+          text-decoration: none; /* Remove underline by default */
+          padding: 0.3em 0 0.3em 1.5em; /* Top/Bottom padding + Left padding for indentation */
+          text-shadow: 0 0 4px #39ff1460;
+          transition: color 0.18s, text-shadow 0.18s, background-color 0.18s; /* Added background transition */
+          border-radius: 3px; /* Slight radius for hover effect */
+      }
+      .toc-index li a:hover {
+          color: #b6ffb6; /* Brighter green on hover */
+          text-shadow: 0 0 8px #b6ffb6, 0 0 2px #39ff14;
+          text-decoration: underline; /* Add underline on hover */
+          background-color: rgba(57, 255, 20, 0.1); /* Subtle glow effect */
+      }
+      /* --- End Table of Contents Styling --- */
+  </style>
+</head>
+<body>
+  <div class="book-container">
+      <h1>ANONs – Bitcoin-Stamped Recursive PFPs</h1>
+
+      <div class="toc-index">
+          <h3>Table of Contents</h3>
+          <ul>
+              <li><a href="#origins">Origins: From SynthCity to ANON Genesis</a></li>
+              <li><a href="#recursive">Recursive NFTs & On‑Chain Trait Generation</a></li>
+              <li><a href="#rarity">On-Chain Rarity & Lodge Social Strata</a></li>
+              <li><a href="#compressionism">On-Chain Permanence Through “Compressionism”</a></li>
+              <li><a href="#vision">Art & Code Fusion – Vision and Roadmap Ahead</a></li>
+          </ul>
+      </div>
+
+      <section id="origins">
+          <h2>Origins: From SynthCity to ANON Genesis</h2>
+          <p><strong>ANONs</strong> is the evolved form of the SynthCity project, beginning as a collection of 10,000 pixel-art replicants. Born on Bitcoin, the project combined unique PFPs with 222 modular traits across 10 composable layers into 25x25pixel pixelart avatars. Each ANON is both a collectible and a passport into the THISCity—a digital society where rarity, art, and technology meet. These ANONs aren't just characters; they are avatars of a futuristic story world, influenced by meme culture, cyberpunk themes, and honest decentralized ideals.</p>
+      </section>
+
+      <section id="recursive">
+          <h2>Recursive NFTs & On‑Chain Trait allocation</h2>
+          <p>The current form of ANONs introduces full recursion. Using the SRC-721r standard, each ANON is minted through a recursive program that assembles it on-chain from shared modular traits. Using advanced math and cryptography alows implementation of <strong>fully onchain random deterministic trait allocation</strong>, the trait combination is randomly selected but verifiable and reproducible solely from on-chain data. This is achieved <strong>using only ~22KB</strong> of Bitcoin data where logic and additional visual layers are stored. Each ANON references components stored in <strong>222 separate traits in 10 layers, taking ~32KB storage space</strong> , meaning the entire project—including all code and art—is <strong>preserved forever in just ~54KB of Bitcoin UTXO space</strong>. There are no servers, links, or off-chain generation logic. Every ANON is born from code, on Bitcoin, deterministically.</p>
+      </section>
+
+      <section id="rarity">
+          <h2>On-Chain Rarity & Lodge Social Strata</h2>
+          <p>Rarity is calculated on-chain based on trait occurrence, and every minted ANON inherently “knows” its rarity position. This rarity is not cosmetic—it's part of the ecosystem logic. ANONs are also categorized into <strong>Lodges</strong> based on certain traits. These Lodges represent social classes or factions within the broader universe of THIS. Lodge affiliation and rarity ranking will influence social standing and utility in upcoming chapters, including higher chances to mint rare assets, access special events, or receive bonuses. The Lodges system enhances the social gameplay embedded within the art and metadata, giving each ANON a dynamic narrative identity within a stratified digital society.</p>
+      </section>
+
+      <section id="compressionism">
+          <h2>On-Chain Permanence and “Compressionism”</h2>
+          <p>ANONs exemplify <strong>compressionism</strong> at its finest. A design philosophy focused on minimizing data size and resources used without sacrificing expressiveness.  With 10,000 NFTs occupying only ~54KB total across code and traits and mint of an ANON not being more than 200bytes of arbitrary data this certainly pushes ANON genesys among the most efficient fully on-chain PFP collections in existence, if not the most efficient one.  Unlike many NFTs that rely on URLs, external APIs, or even IPFS, ANONs are 100% on-chain via the Bitcoin STAMPS protocol. Their layered construction avoids unnecessary bloat while achieving full visual fidelity and uniqueness. The result: digital souls that are immutable, unprunable, censorship-resistant, and sustainable on Bitcoin’s conservative infrastructure. No links to break. No metadata to vanish. Pure code. Pure permanence.Pure decentralization</p>
+      </section>
+
+      <section id="vision">
+          <h2>Art & Code Fusion – Vision and Roadmap Ahead</h2>
+          <p>ANONs aren’t static collectibles—they’re programmable citizens of a growing digital world. The project roadmap includes future staking mechanics, accessory packs, recursive virtual land drops, and evolving roles for Lodges. These components will use the ANONs’ existing data—rarity (and ANON hash..), traits, and affiliations—to drive minting odds and social mechanics. The long-term vision remains: a decentralized autonomous society (DAS) where holders steer the direction. Each ANON is both art and logic, personality and passport, coded history and composable future. Through humor, myth, and tech, they stand as artifacts—and agents—of a blockchain-native civilization. Minting one is claiming a place in a recursive legend stamped on Bitcoin forever.</p>
+      </section>
+  </div>
+</body>
+</html>
