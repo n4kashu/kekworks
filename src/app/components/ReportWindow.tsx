@@ -106,123 +106,51 @@ export default function ReportWindow({ onReportOpen }: ReportWindowProps) {
   };
 
   return (
-    <div style={{ 
-      height: '100%', 
-      display: 'flex', 
-      flexDirection: 'column', 
-      gap: '12px',
-      padding: '10px',
+    <div style={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px',
+      padding: '0',
       boxSizing: 'border-box',
-      overflow: 'auto'
+      width: '100%'
     }}>
       {REPORTS.map((report) => (
-        <div 
+        <div
           key={report.id}
           style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.7)', 
-            borderRadius: '5px',
-            border: '1px solid rgba(57, 255, 20, 0.3)', 
-            padding: '15px',
             display: 'flex',
-            flexDirection: 'column',
+            alignItems: 'center',
             justifyContent: 'space-between',
-            color: 'rgba(57, 255, 20, 0.9)',
-            transition: 'all 0.3s ease',
-            position: 'relative'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(57, 255, 20, 0.1)';
-            e.currentTarget.style.boxShadow = '0 0 10px rgba(57, 255, 20, 0.3)';
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-            e.currentTarget.style.boxShadow = 'none';
+            padding: '10px 0',
+            borderBottom: '1px solid rgba(57,255,20,0.12)',
+            fontSize: '1rem',
+            color: '#32FF32',
+            cursor: 'pointer',
+            width: '100%'
           }}
         >
-          <div style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            width: '100%',
-            marginBottom: '10px'
-          }}>
-            <div style={{ 
-              display: 'flex', 
-              flexDirection: 'column',
-              flex: 1
-            }}>
-              <span style={{ 
-                fontSize: '0.8em', 
-                opacity: 0.7,
-                marginBottom: '5px'
-              }}>
-                {report.id}
-              </span>
-              <span 
-                style={windowTitleStyle}
-                onClick={() => onReportOpen(report.html)}
-              >
-                {report.title}
-              </span>
-            </div>
-
-            <div 
-              onClick={(e) => {
-                e.stopPropagation();
-                togglePlay(`/${report.audio}`);
-              }}
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '30px',
-                height: '30px',
-                marginLeft: '10px',
-                cursor: 'pointer',
-                padding: '5px',
-                borderRadius: '50%',
-                border: '1px solid rgba(57, 255, 20, 0.3)',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = 'rgba(57, 255, 20, 0.2)';
-                e.currentTarget.style.transform = 'scale(1.1)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = 'transparent';
-                e.currentTarget.style.transform = 'scale(1)';
-              }}
-            >
-              {activeAudio === `/${report.audio}` 
-                ? '⏸' 
-                : '▶'}
-            </div>
-          </div>
-
-          <div 
-            ref={(el) => {
-              if (el) progressBarRefs.current[`/${report.audio}`] = el;
+          <span
+            style={{ flex: 1, fontWeight: 500 }}
+            onClick={() => onReportOpen(report.html)}
+          >
+            {report.title}
+          </span>
+          <span
+            onClick={(e) => {
+              e.stopPropagation();
+              togglePlay(`/${report.audio}`);
             }}
-            onClick={(e) => handleProgressBarClick(`/${report.audio}`, e)}
             style={{
-              width: '100%', 
-              height: '4px', 
-              backgroundColor: 'rgba(57, 255, 20, 0.2)',
-              borderRadius: '2px',
-              overflow: 'hidden',
-              cursor: 'pointer'
+              marginLeft: '16px',
+              fontSize: '1.3em',
+              userSelect: 'none',
+              cursor: 'pointer',
+              color: activeAudio === `/${report.audio}` ? '#b6ffb6' : '#32FF32',
+              transition: 'color 0.2s'
             }}
           >
-            <div 
-              style={{
-                width: `${progress[`/${report.audio}`] || 0}%`, 
-                height: '100%', 
-                backgroundColor: 'rgba(57, 255, 20, 0.8)',
-                transition: 'width 0.1s linear'
-              }}
-            />
-          </div>
-
+            {activeAudio === `/${report.audio}` ? '⏸' : '▶'}
+          </span>
           <audio
             ref={(el) => {
               if (el) audioRefs.current[`/${report.audio}`] = el;

@@ -10,21 +10,44 @@
 @tailwind utilities;
 
 :root {
-    --background: #ffffff;
-    --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --background: #0a0a0a;
-        --foreground: #ededed;
-    }
+    --background: #001800;
+    --foreground: #32FF32;
+    --foreground-soft: #b6ffb6;
+    --highlight: #39ff14;
+    --highlight-soft: #8cff8c;
+    --mono-font: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
 }
 
 body {
     color: var(--foreground);
     background: var(--background);
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: var(--mono-font);
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    pointer-events: none;
+    position: fixed;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: repeating-linear-gradient(
+        to bottom,
+        transparent, transparent 2px,
+        #003300 3px, transparent 4px
+    );
+    opacity: 0.15;
+    z-index: 9999;
+}
+body::after {
+    content: "";
+    pointer-events: none;
+    position: fixed;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background: radial-gradient(ellipse at center, rgba(0,0,0,0) 60%, rgba(0,0,0,0.7) 100%);
+    opacity: 0.7;
+    z-index: 9999;
 }
 
 @layer utilities {

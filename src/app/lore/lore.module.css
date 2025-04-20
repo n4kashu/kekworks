@@ -1,0 +1,142 @@
+/* Styles ported from lore.html for React Lore page */
+.bookContainer {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 60px 24px 32px 24px;
+  background: rgba(0,32,0,0.92);
+  border-radius: 10px;
+  border: 2px solid #39ff14;
+  box-shadow: 0 0 18px 0 #39ff1460, 0 0 0 1px #003300;
+  font-family: var(--mono-font, 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace);
+  padding-top:24px;
+
+
+
+    background: rgba(0, 32, 0, 0.92);
+    border-radius: 10px;
+    border: 2px solid #39ff14;
+    box-shadow: 0 0 32px 0 #39ff1460, 0 0 0 1px #003300;
+    backdrop-filter: blur(1.5px);
+}
+#chapterTitle {
+    text-align: center;
+    color: #39ff14;
+    margin-bottom: 1em;
+    font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+    text-shadow: 0 0 8px #39ff14, 0 0 2px #32FF32;
+    font-size: 2em;
+}
+.partTitle {
+    font-size: 1.5em;
+    color: #8cff8c;
+    font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+    text-shadow: 0 0 6px #39ff14;
+    margin-top: 2em;
+    padding-bottom: 0.3em;
+    border-bottom: 2px solid #39ff14;
+}
+.tocIndex {
+    margin: 1.5em auto 2.5em auto;
+    max-width: 700px;
+    background: rgba(0, 32, 0, 0.88);
+    border: 1.5px solid #39ff14;
+    border-radius: 7px;
+    box-shadow: 0 0 18px 0 #39ff1460;
+    padding: 1.5em 2em 1.2em 2em;
+}
+.tocIndex h3 {
+    color: #8cff8c;
+    margin-top: 0;
+    margin-bottom: 1em;
+    font-size: 1.13em;
+    text-shadow: 0 0 4px #39ff1460;
+}
+.tocIndex ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+.tocIndex li strong {
+    display: block;
+    color: #8cff8c;
+    font-weight: bold;
+    text-shadow: 0 0 4px #39ff1460;
+}
+.tocIndex li a {
+    color: #32FF32;
+    text-decoration: underline;
+    text-shadow: 0 0 4px #39ff1460;
+    transition: color 0.18s, text-shadow 0.18s, background-color 0.18s;
+    border-radius: 3px;
+    display: block;
+    padding: 0.2em 0.5em;
+}
+.tocIndex li a:hover {
+    color: #b6ffb6;
+    text-shadow: 0 0 8px #b6ffb6, 0 0 2px #39ff14;
+    text-decoration: underline;
+    background-color: rgba(57, 255, 20, 0.1);
+}
+.introQuote, .outroQuote {
+    color: #8cff8c;
+    font-style: italic;
+    margin: 2em 0 2em 0;
+    text-align: center;
+    font-size: 1.15em;
+}
+.bookContainer p {
+    margin-bottom: 1em;
+    text-align: justify;
+    color: #b6ffb6;
+}
+.bookContainer section {
+    margin-bottom: 2em;
+}
+.bookContainer table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5em;
+    background: #002800;
+    color: #32FF32;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 8px #39ff1460;
+}
+.bookContainer th, .bookContainer td {
+    border: 1px solid #32FF32;
+    padding: 1em 1.2em;
+    text-align: left;
+    vertical-align: top;
+    color: #b6ffb6;
+}
+.bookContainer th {
+    background-color: #002800;
+    color: #39ff14;
+    font-weight: bold;
+    text-shadow: 0 0 4px #39ff14;
+    border-bottom: 2px solid #39ff14;
+}
+.bookContainer td em {
+    color: #a0ffa0;
+    font-style: italic;
+}
+.bookContainer strong {
+    font-weight: bold;
+    color: #39ff14;
+    text-shadow: 0 0 2px #39ff14;
+}
+.bookContainer ul {
+    margin-left: 2em;
+    margin-bottom: 1em;
+    color: #b6ffb6;
+    padding-left: 1em;
+    list-style: square;
+}
+.bookContainer li {
+    margin-bottom: 0.5em;
+}
+.bookContainer a {
+    color: #32FF32;
+    text-decoration: underline;
+    text-shadow: 0 0 4px #39ff1460;
+}

@@ -1,13 +1,21 @@
 .navbar {
   width: 100%;
-  background: rgba(0,0,0,0.8);
-  border-bottom: 1px solid rgba(57,255,20,0.3);
+  background: rgba(0,32,0,0.92);
+  border-bottom: 2px solid #39ff14;
+  color: #39ff14;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono-font, 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace);
+  font-size: 1rem;
+  padding: 8px 32px 8px 32px;
   box-sizing: border-box;
   position: fixed;
   top: 0;
   left: 0;
   z-index: 1000;
-  padding: 0;
+  border-radius: 0;
+  margin-bottom: 0;
 }
 
 .navbar-inner {
@@ -19,11 +27,11 @@
 }
 
 .logo {
-  font-family: monospace;
+  font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
   font-weight: bold;
-  color: rgba(57,255,20,0.9);
+  color: #39ff14;
   font-size: 1.4rem;
-  text-shadow: 0 0 10px rgba(57,255,20,0.7), 0 0 20px rgba(57,255,20,0.4);
+  text-shadow: 0 0 8px #39ff14, 0 0 2px #32FF32;
   letter-spacing: 1px;
   margin-bottom: 0.3rem;
   text-align: center;
@@ -37,14 +45,26 @@
 }
 
 .nav-item {
-  color: rgba(57,255,20,0.8);
+  color: #32FF32;
   cursor: pointer;
   padding: 5px 10px;
-  border-radius: 4px;
-  transition: all 0.3s ease;
-  border: 1px solid rgba(57,255,20,0.3);
+  border-radius: 10px;
+  transition: all 0.18s;
+  border: 3px solid #39ff14;
   font-size: 0.98rem;
   background: transparent;
+  text-shadow: 0 0 4px #39ff1460;
+  font-family: 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace;
+}
+
+.nav-item:hover {
+  background-color: rgba(57,255,20,0.1);
+  color: #b6ffb6;
+  text-shadow: 0 0 8px #b6ffb6, 0 0 2px #39ff14;
+  border-color: #8cff8c;
+  border-width: 3px;
+  box-shadow: 0 2px 8px #39ff1460;
+  text-decoration: underline;
 }
 
 .nav-item:hover {

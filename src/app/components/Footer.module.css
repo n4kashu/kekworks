@@ -1,0 +1,32 @@
+.footer {
+  margin-top: 14px;
+  width: 100%;
+  background: rgba(0,32,0,0.92);
+  border-top: 2px solid #39ff14;
+  color: #39ff14;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--mono-font, 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace);
+  font-size: 1rem;
+  padding: 18px 32px 18px 32px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 100;
+}
+.footer .left {
+  font-weight: 500;
+  letter-spacing: 1px;
+}
+.footer .right {
+  display: flex;
+  align-items: center;
+}
+.footer a {
+  color: #39ff14;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer a:hover {
+  color: #b6ffb6;
+}

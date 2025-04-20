@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
     <nav className={styles.navbar}>
       <div className={styles['navbar-inner']}>
         <div className={styles.logo}>
-          THIS - The Holistic Integration System
+          ANON Genesys
         </div>
         <div className={styles['nav-links']}>
           <Link href="/">

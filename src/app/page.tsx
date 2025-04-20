@@ -4,6 +4,8 @@ import React, { useMemo, useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import styles from './Home.module.css';
 import EmeraldBrick3D from './components/EmeraldBrick3D';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 
 const ResizableDraggableWindow = dynamic(() => import('@/app/components/ResizableDraggableWindow'), { ssr: false });
 const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: false });
@@ -71,14 +73,14 @@ export default function Home() {
       minHeight: '100vh',
       display: 'flex',
       flexDirection: 'column',
-      paddingTop: 0,
+      justifyContent: 'space-between',
+      alignItems: 'center',
       boxSizing: 'border-box',
-      overflow: 'hidden',
+      paddingTop: '56px', // navbar height
+      
     }}>
       {/* Navbar */}
-      <div style={{ height: '56px', flexShrink: 0 }}>
-        {/* If your Navbar is a component, import and render it here, e.g. <Navbar /> */}
-      </div>
+      <Navbar />
       {/* Brick + Quote Section */}
       <div
         style={{
@@ -91,9 +93,11 @@ export default function Home() {
           minHeight: 0,
         }}
       >
+    
         <div className={styles.glowingQuote} style={{ marginTop: 20 }}>
           “In the beginning, there was chaos, and from chaos came laughter. And from laughter emerged the Brick, and the Brick was green, and it was good.”
         </div>
+     
         <div
           style={{
             marginTop: 20,

@@ -1,0 +1,42 @@
+/* Matches lore and about page layout for brick research page */
+.bookContainer {
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 60px 24px 32px 24px; /* top padding for navbar */
+  background: rgba(0,32,0,0.92);
+  border-radius: 10px;
+  border: 2px solid #39ff14;
+  box-shadow: 0 0 18px 0 #39ff1460, 0 0 0 1px #003300;
+  font-family: var(--mono-font, 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace);
+  padding-top:14px;
+  padding-bottom:14px;
+}
+.crtTitle {
+  font-weight: bold;
+  color: #39ff14;
+  text-shadow: 0 0 8px #39ff14, 0 0 2px #32FF32;
+  letter-spacing: 1px;
+  font-size: 1.2em;
+  margin-bottom: 15px;
+  font-family: var(--mono-font, 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace);
+}
+.crtText {
+  color: #b6ffb6;
+  font-size: 1rem;
+  line-height: 1.6;
+  font-family: var(--mono-font, 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace);
+}
+.reportsSection {
+  margin-top: 32px;
+}
+.reportsScrollable {
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.invisible-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.invisible-scrollbar::-webkit-scrollbar {
+  display: none;
+}
