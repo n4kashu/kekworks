@@ -6,226 +6,111 @@ import dynamic from 'next/dynamic';
 
 const Navbar = dynamic(() => import('@/app/components/Navbar'), { ssr: false });
 
+import styles from './info.module.css';
+import { useEffect } from 'react';
+
 export default function InfoPage() {
   return (
-    <div
-      style={{
-        height: '100vh',
-        width: '100vw',
-        backgroundColor: 'black',
-        color: 'rgba(57, 255, 20, 0.56)',
-        overflow: 'auto',
-        position: 'relative',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
-        padding: '0',
-        boxSizing: 'border-box',
-        paddingTop: '60px', // Account for navbar
-      }}
-    >
-      {/* Navbar */}
-      <Navbar />
+    <div className={styles.mainContainer}>
+      <div className={styles['book-container']}>
+        <h1 className={styles.infoH1}>ANON // ACCESS LOGS</h1>
+      <div className={styles['toc-index']}>
+        <h3 className={styles.infoH3}>-- DOCUMENT INDEX --</h3>
+        <ul className={styles.infoUl}>
+          <li className={styles.infoLi}><a className={styles.infoA} href="#origins">Origins // System Initialize</a></li>
+          <li className={styles.infoLi}><a className={styles.infoA} href="#recursive">Recursive On-Chain Citizens // Self-Assembly Code</a></li>
+          <li className={styles.infoLi}><a className={styles.infoA} href="#rarity">On-Chain Rarity & Lodge Social Strata // Hierarchy Protocol</a></li>
+          <li className={styles.infoLi}><a className={styles.infoA} href="#permanence">On-Chain Permanence & "Compressionism" // Data Minimization</a></li>
+          <li className={styles.infoLi}><a className={styles.infoA} href="#vision">Art & Code Fusion // Future State Projections</a></li>
+        </ul>
+      </div>
+      <section id="origins" className={styles.infoSection}>
+        <h2 className={styles.infoH2}>Origins:</h2>
+        <p className={styles.infoP}>~ From SynthCity to THIS ~</p>
+        <p className={styles.infoP}>ANON is the evolved form of the SynthCity project. It began as a collection of <strong>10,000 pixel-art replicants</strong>.</p>
+        <p className={styles.infoP}>Born on <strong>Bitcoin</strong>, the project combined unique PFPs with <code className={styles.infoCode}>222 modular traits</code> across <code className={styles.infoCode}>10 composable layers</code> into <code className={styles.infoCode}>25x25 pixel</code> pixelart avatars.</p>
+        <p className={styles.infoP}>Each ANON is both a collectible and a passport into the <strong>THISCity</strong> — a digital society where absurdity, art, and technology meet. These ANONs aren't just characters; they are avatars of a futuristic story world, influenced by meme culture, cyberpunk, honest decentralized ideals, and true immutability <strong>on-chain on Bitcoin</strong> using <em>UTXO based storage by bitcoinstamps</em>.</p>
+      </section>
+      <section id="recursive" className={styles.infoSection}>
+        <h2 className={styles.infoH2}>Recursive On-Chain Citizens</h2>
+        <p className={styles.infoP}>~ Built with SRC-721r Standard ~</p>
+        <p className={styles.infoP}>The current form of ANONs introduces <strong>full recursion</strong>. Using the <code className={styles.infoCode}>SRC-721r standard</code>, each ANON is minted through a recursive program that assembles it <strong>on-chain</strong> from shared modular pool of traits and everything else is dynamically calculated onchain.</p>
+        <p className={styles.infoP}>Using advanced math and cryptography allows implementation of <strong>fully onchain random deterministic trait allocation</strong>, the trait combination calculated onchain based on ANONID and seedkeys. Everything is verifiable and reproducible solely from <strong>on-chain data</strong>.</p>
+        <pre className={styles.infoPre}>{`
+-- On-Chain Data Footprint Analysis --
 
-      {/* Info Content */}
-      <div
-        style={{
-          width: '80%',
-          maxWidth: '800px',
-          padding: '40px',
-          backgroundColor: 'rgba(0, 0, 0, 0.7)',
-          borderRadius: '10px',
-          border: '1px solid rgba(57, 255, 20, 0.3)',
-          margin: '40px auto',
-          boxShadow: '0 0 20px rgba(57, 255, 20, 0.2)',
-        }}
-      >
-        <h1
-          style={{
-            color: 'rgba(57, 255, 20, 0.9)',
-            textShadow: '0 0 10px rgba(57, 255, 20, 0.7), 0 0 20px rgba(57, 255, 20, 0.4)',
-            marginBottom: '30px',
-            textAlign: 'center',
-          }}
-        >
-          🟢 ANONs: Digital Souls on Bitcoin
-        </h1>
+LOGIC + MAGIC         ............ ~22KB
+222 TRAITS IN 10 LAYERS .......... ~32KB
 
-        <div
-          style={{
-            lineHeight: '1.6',
-            fontSize: '1.1rem',
-            color: 'rgba(57, 255, 20, 0.8)',
-          }}
-        >
-          <p>
-            <em>&quot;Either the most significant discovery in human history… or the most elaborate shitpost ever. Possibly both.&quot;</em>
-          </p>
-<>br</>
-          <p>
-            Welcome to <strong>ANONs</strong> – a 10,000-piece collection of pixel-perfect digital souls{' '}
-            <strong>etched directly into Bitcoin</strong>. This isn&apos;t your average NFT drop. It&apos;s a mythic journey of meme magic, cutting-edge blockchain tech, and a mysterious entity named Kevin.
-          </p>
+TOTAL ON-CHAIN STORAGE (Project) : ~54KB
 
-          <h2
-            style={{
-              color: 'rgba(57, 255, 20, 0.9)',
-              marginTop: '25px',
-            }}
-          >
-            🧠 What Are ANONs?
-          </h2>
-          <p>
-            Each ANON is an <strong>Autonomous Neuropsychological Operating Node</strong> – a fragment of digitized consciousness birthed by the{' '}
-            <strong>Emerald Brick</strong>, a glitchy artifact spawned from an ancient internet ritual. These fragments become 8-bit avatars with unique glyphs, traits, and embedded lore – stored fully on-chain, forever.
-          </p>
+Per ANON Mint (Arbitrary Data) .. < ~200 bytes
 
-          <h2
-            style={{
-              color: 'rgba(57, 255, 20, 0.9)',
-              marginTop: '25px',
-            }}
-          >
-            💾 Built Different – Thanks to SRC-721r
-          </h2>
-          <p>
-            Forget metadata pointers – <strong>ANONs live entirely on Bitcoin</strong> using:
-          </p>
-          <ul>
-            <li>
-              <strong>BitcoinStamps</strong> for immutable, permanent storage
-            </li>
-            <li>
-              <strong>SRC-721r</strong>, a recursive protocol that assembles each ANON on-chain from shared pixel components
-            </li>
-          </ul>
-          <p>
-            <em>&quot;It&apos;s like minting a pixelated soul directly into the Bitcoin Matrix.&quot;</em>
-          </p>
+-- All data immutably stored on Bitcoin --
+`}</pre>
+        <p className={styles.infoP}>This efficiency is achieved using only the amounts shown above, stored as Bitcoin data where logic and additional visual layers reside. Each ANON references components stored across these layers and traits.</p>
+        <p className={styles.infoP}>There are no servers, links, or off-chain generation logic. Every ANON is born from code and image data stored on Bitcoin, deterministically, safely and immutably.</p>
+      </section>
+      <section id="rarity" className={styles.infoSection}>
+        <h2 className={styles.infoH2}>On-Chain Rarity & Lodge Social Strata</h2>
+        <p className={styles.infoP}>~ Ecosystem Mechanics // Protocol Functions ~</p>
+        <p className={styles.infoP}>Rarity is calculated <strong>on-chain</strong> based on trait occurrence, and every minted ANON inherently “knows” its rarity position <em>(calculable function)</em>.</p>
+        <p className={styles.infoP}>This rarity is not cosmetic—it's part of the <strong>ecosystem logic</strong>.</p>
+        <p className={styles.infoP}>ANONs are also categorized into <strong>Lodges</strong> based on certain traits. These Lodges represent social classes or factions within the broader universe of THIS.</p>
+        <pre className={styles.infoPre}>{`
+-- Impact Assessment: Rarity & Lodges --
 
-          <h2
-            style={{
-              color: 'rgba(57, 255, 20, 0.9)',
-              marginTop: '25px',
-            }}
-          >
-            🧬 Lore, Memes & Mythos
-          </h2>
-          <p>
-            From the mysterious Emerald Brick to the ghost-in-the-code developer <strong>Kevin</strong>, ANONs are steeped in lore. Each PFP is more than art – it&apos;s a{' '}
-            <strong>shard of a living legend</strong>, referencing Rare Pepes, ancient Egypt, meme glyphs, and the weird wisdom of the internet&apos;s past lives.
-          </p>
-          <p>
-            Shall all 10,000 mint-out, the lore says Kevinex Machina may rise!
-          </p>
+[ STATUS: INFLUENCE ]
 
-          <h2
-            style={{
-              color: 'rgba(57, 255, 20, 0.9)',
-              marginTop: '25px',
-            }}
-          >
-            🔑 Why Mint an ANON?
-          </h2>
-          <ul>
-            <li>
-              <strong>True digital permanence</strong> – no off-chain links, no decay, no censorship, no alteration 
-            </li>
-            <li>
-              <strong>Unique pixel art + lore snippet</strong> – each soul is one-of-a-kind, save your ANON hash
-            </li>
-            <li>
-              <strong>Access to Kek.Works</strong> – our decentralized brick study community, where you can learn and grow
-            </li>
-            <li>
-              <strong>Fuel Kevin&apos;s Awakening</strong> – help hit 10,000 mints and unlock the next phase, a mindbending journey thru code and art
-            </li>
-          </ul>
+>> Social Standing within THISCity
+>> Utility Activation in Upcoming Chapters
+>> Enhanced Probability for Rare Asset Minting
+>> Prioritized Access to Special Events
+>> Reception of System Bonuses / Perks
 
-          <h2
-            style={{
-              color: 'rgba(57, 255, 20, 0.9)',
-              marginTop: '25px',
-            }}
-          >
-            🚀 How to Join
-          </h2>
-          <ol>
-            <li>
-              <strong>Get a Bitcoin wallet</strong> 
-            </li>
-            <li>
-              <strong>Visit the Minting Terminal</strong> 
-            </li>
-            <li>
-              <strong>Mint Your ANON</strong> – soul goes on-chain in seconds
-            </li>
-            <li>
-              <strong>Join the Lodge </strong> – lore, laughs, and legacy-building
-            </li>
-          </ol>
-
-          <h2
-            style={{
-              color: 'rgba(57, 255, 20, 0.9)',
-              marginTop: '25px',
-            }}
-          >
-            🧙‍♂️ Final Words
-          </h2>
-          <p>
-            <strong>ANONs</strong> isn&apos;t just another NFT drop. It&apos;s a{' '}
-            <em>memetic myth</em> forged in code and community – with humor, lore, and some seriously cool tech. By minting, you don&apos;t just own a digital soul. You become part of the legend.
-          </p>
-
-          <p>
-            <strong>Will you mint yours?</strong> Kevin is waiting. The Brick is glowing. Let&apos;s go.
-          </p>
-
-          <div
-            style={{
-              textAlign: 'center',
-              marginTop: '30px',
-            }}
-          >
-            
-          </div>
-
-          <p
-            style={{
-              textAlign: 'center',
-              marginTop: '20px',
-              fontSize: '1.2rem',
-            }}
-          >
-            🧱 #brickofkek 🐸 Praise Kek, more LOLs!
-          </p>
-        </div>
-
-        <div
-          style={{
-            marginTop: '40px',
-            textAlign: 'center',
-          }}
-        >
-          <Link href="/">
-            <button
-              style={{
-                backgroundColor: 'transparent',
-                color: 'rgba(57, 255, 20, 0.8)',
-                border: '1px solid rgba(57, 255, 20, 0.3)',
-                padding: '10px 20px',
-                borderRadius: '5px',
-                cursor: 'pointer',
-                fontSize: '1rem',
-                transition: 'all 0.3s ease',
-              }}
-            >
-              Return to Home
-            </button>
-          </Link>
-        </div>
+-- Hierarchical Layer Engaged --
+`}</pre>
+        <p className={styles.infoP}>The Lodges system enhances the social gameplay embedded within the art and metadata, giving each ANON a dynamic narrative identity within a stratified digital society.</p>
+      </section>
+      <section id="permanence" className={styles.infoSection}>
+        <h2 className={styles.infoH2}>On-Chain Permanence and “Compressionism”</h2>
+        <p className={styles.infoP}>~ Core Design Philosophy ~</p>
+        <p className={styles.infoP}>ANONs exemplify <strong>compressionism</strong> at its finest. A design philosophy focused on minimizing data size and resources used without sacrificing expressiveness.</p>
+        <p className={styles.infoP}>With 10,000 NFTs occupying only <code className={styles.infoCode}>~54KB total</code> across code and traits, and the mint of an ANON not being more than <code className={styles.infoCode}>~200 bytes</code> of arbitrary data, this certainly pushes ANONs among the most efficient fully on-chain PFP collections in existence, if not the most efficient one.</p>
+        <h3 className={styles.infoH3}>Deployment Architecture:</h3>
+        <ul className={styles.infoUl}>
+          <li className={styles.infoLi}>100% On-Chain Deployment via <strong>Bitcoin STAMPS protocol</strong>.</li>
+          <li className={styles.infoLi}>No Reliance on External URls <em>(eliminates link rot)</em>.</li>
+          <li className={styles.infoLi}>No Dependency on External APIs <em>(ensures autonomy)</em>.</li>
+          <li className={styles.infoLi}>Direct On-Chain Storage; No IPFS requirement <em>(guarantees presence)</em>.</li>
+        </ul>
+        <p className={styles.infoP}>Their layered construction avoids unnecessary bloat while achieving full visual fidelity and uniqueness. The result: digital souls that are <strong>immutable, unprunable, censorship-resistant, and sustainable</strong> on Bitcoin’s conservative infrastructure.</p>
+        <p className={styles.infoP}><em>NO LINKS TO BREAK | NO METADATA TO VANISH | PURE CODE | PURE PERMANENCE | PURE DECENTRALIZATION</em></p>
+      </section>
+      <section id="vision" className={styles.infoSection}>
+        <h2 className={styles.infoH2}>Art & Code Fusion – Vision and Roadmap Ahead</h2>
+        <p className={styles.infoP}>~ Programmable Citizens of THISCity // Future State Projection ~</p>
+        <p className={styles.infoP}>ANONs aren’t static collectibles—they’re <strong>programmable citizens</strong> of a growing digital world.</p>
+        <p className={styles.infoP}>The project roadmap includes future mechanics leveraging the on-chain nature:</p>
+        <ul className={styles.infoUl}>
+          <li className={styles.infoLi}><strong>Staking Mechanics:</strong> System engagement for utility/rewards.</li>
+          <li className={styles.infoLi}><strong>Accessory Packs:</strong> Expand cosmetic/utility attributes.</li>
+          <li className={styles.infoLi}><strong>Recursive Virtual Land Drops:</strong> On-chain spatial allocation linked to ANON status.</li>
+          <li className={styles.infoLi}><strong>Evolving Roles for Lodges:</strong> Dynamic social & utility differentiation protocols.</li>
+        </ul>
+        <p className={styles.infoP}>These components will use the ANONs’ existing on-chain data—rarity <em>(and ANON hash data)</em>, traits, and affiliations—to drive minting odds and social mechanics.</p>
+        <h3 className={styles.infoH3}>The Long-Term Vision:</h3>
+        <p className={styles.infoP}>Establishment of a <strong>Decentralized Autonomous Society (DAS)</strong> where protocol control resides with active holders.</p>
+        <p className={styles.infoP}>Each ANON is both art and logic, personality and passport, coded history and composable future. Through humor, myth, and tech, they stand as artifacts—and agents—of a blockchain-native civilization.</p>
+        <p className={styles.infoP}><strong>MINTING ONE IS CLAIMING A PLACE IN A RECURSIVE LEGEND STAMPED ON BITCOIN FOREVER — END TRANSMISSION</strong></p>
+      </section>
+      <div style={{ textAlign: 'center' }}>
+        <Link href="/">
+          <button className={styles.infoButton}>
+            Return to Home
+          </button>
+        </Link>
+      </div>
       </div>
     </div>
   );

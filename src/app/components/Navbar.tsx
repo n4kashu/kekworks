@@ -9,11 +9,11 @@ const Navbar: React.FC = () => {
     <nav className={styles.navbar}>
       <div className={styles['navbar-inner']}>
         <div className={styles.logo}>
-          THIS is ANON Genesis - Recursive on-chain citizens
+          
         </div>
         <div className={styles['nav-links']}>
           <Link href="/">
-            <div className={styles['nav-item']}>Home</div>
+            <div className={styles['nav-item']}>THIS</div>
           </Link>
           <Link href="/brick-research">
             <div className={styles['nav-item']}>Brick Research</div>
@@ -22,9 +22,13 @@ const Navbar: React.FC = () => {
           <Link href="/lore">
             <div className={styles['nav-item']}>Lore</div>
           </Link>
-          <Link href="/about">
-            <div className={styles['nav-item']}>About</div>
+          <Link href="/info">
+            <div className={styles['nav-item']}>Info</div>
           </Link>
+          <Link href="/about">
+            <div className={styles['nav-item']}>WhoAmI?</div>
+          </Link>
+
           <a href="https://stampverse.io" target="_blank" rel="noopener noreferrer">
             <div className={styles['nav-item']}>Mint</div>
           </a>
