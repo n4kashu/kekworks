@@ -115,12 +115,10 @@ export default function Home() {
         height: '100%',
         position: 'relative',
         zIndex: 1,
-        pointerEvents: 'none' 
+        pointerEvents: 'none'
       }}>
         {/* This area is now empty but visible on top of the background */}
       </div>
-      
-      )}
       
       {/* Full Report Overlay */}
       {selectedReport && (

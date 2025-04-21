@@ -13,7 +13,7 @@ interface ResizableDraggableWindowProps {
   style?: React.CSSProperties;
 }
 
-// ResizableDraggableWindow component removed as part of draggable window feature cleanup.
+const ResizableDraggableWindow = ({
   title,
   children,
   initialWidth = 400,
@@ -24,7 +24,7 @@ interface ResizableDraggableWindowProps {
   zIndex = 10,
   opacity = 0.8,
   style = {}
-}) => {
+}: ResizableDraggableWindowProps) => {
   const windowStyle: React.CSSProperties = {
     position: 'absolute',
     top: initialY,
