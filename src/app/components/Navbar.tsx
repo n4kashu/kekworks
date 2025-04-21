@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
     <nav className={styles.navbar}>
       <div className={styles['navbar-inner']}>
         <div className={styles.logo}>
-          ANON Genesys
+          THIS is ANON Genesis - Recursive on-chain citizens
         </div>
         <div className={styles['nav-links']}>
           <Link href="/">

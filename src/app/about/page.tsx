@@ -17,7 +17,8 @@ const tocLinks = [
 ];
 
 const AboutPage = () => (
-  <div className={styles.bookContainer} style={{ marginTop: '60px' }}>
+  <div className={styles.mainContainer}>
+    <div className={styles.bookContainer} style={{ marginTop: '60px' }}>
     <h1>ANONs – Bitcoin-Stamped Recursive PFPs</h1>
     <div className={styles.tocIndex}>
       <h3>Table of Contents</h3>
@@ -49,7 +50,8 @@ const AboutPage = () => (
       <h2>Art & Code Fusion – Vision and Roadmap Ahead</h2>
       <p>ANONs aren’t static collectibles—they’re programmable citizens of a growing digital world. The project roadmap includes future staking mechanics, accessory packs, recursive virtual land drops, and evolving roles for Lodges. These components will use the ANONs’ existing data—rarity (and ANON hash..), traits, and affiliations—to drive minting odds and social mechanics. The long-term vision remains: a decentralized autonomous society (DAS) where holders steer the direction. Each ANON is both art and logic, personality and passport, coded history and composable future. Through humor, myth, and tech, they stand as artifacts—and agents—of a blockchain-native civilization. Minting one is claiming a place in a recursive legend stamped on Bitcoin forever.</p>
     </section>
-  </div>
+    </div>
+</div>
 );
 
 export default AboutPage;

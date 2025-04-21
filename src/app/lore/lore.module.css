@@ -9,15 +9,29 @@
   box-shadow: 0 0 18px 0 #39ff1460, 0 0 0 1px #003300;
   font-family: var(--mono-font, 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace);
   padding-top:24px;
-
-
-
-    background: rgba(0, 32, 0, 0.92);
-    border-radius: 10px;
-    border: 2px solid #39ff14;
-    box-shadow: 0 0 32px 0 #39ff1460, 0 0 0 1px #003300;
-    backdrop-filter: blur(1.5px);
 }
+
+.mainContainer {
+  z-index: 1;
+}
+
+.mainContainer::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background: url('/img/combinedImage.png') center center / cover no-repeat;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.mainContainer > * {
+  position: relative;
+  z-index: 1;
+}
+
 #chapterTitle {
     text-align: center;
     color: #39ff14;

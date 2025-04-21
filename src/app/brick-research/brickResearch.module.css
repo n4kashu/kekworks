@@ -1,4 +1,26 @@
 /* Matches lore and about page layout for brick research page */
+
+.mainContainer {
+  z-index: 1;
+}
+
+.mainContainer::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  background: url('/img/combinedImage.png') center center / cover no-repeat;
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+.mainContainer > * {
+  position: relative;
+  z-index: 1;
+}
+
 .bookContainer {
   max-width: 850px;
   margin: 0 auto;

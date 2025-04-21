@@ -16,7 +16,7 @@ const tocLinks = [
 ];
 
 const LorePage = () => (
-  <>
+  <div className={styles.mainContainer}>
     <article className={styles.bookContainer} style={{ marginTop: '60px' }}>
       <h1 id="chapter-title" className={styles.chapterTitle}>
         The Legend of the Emerald Brick of Kek: A Memetic Artifact for the Ages
@@ -168,7 +168,7 @@ const LorePage = () => (
         This framework provided Kek.Works with a sustainable model for research, where creativity, rigorous analysis, and humor were in constant dialogue. The Lodges were not just divisions but living examples of what the group believed: that profound insights often came wrapped in the simplest, funniest, and most absurd ideas. The Emerald Brick was a testament to that belief, a reminder that reality itself could be both studied and reshaped—sometimes with nothing more than a well-placed joke.
       </p>
     </article>
-  </>
-);
+</div>
+  );
 
 export default LorePage;
