@@ -78,8 +78,7 @@ export default function Home() {
       paddingTop: '56px', // navbar height
       
     }}>
-      {/* Navbar */}
-      <Navbar />
+
       {/* Brick + Quote Section */}
       <div
         style={{

@@ -50,7 +50,7 @@ export default function BrickResearchPage() {
 
   return (
     <div className={styles.mainContainer}>
-      <Navbar />
+      
       <div className={styles.bookContainer} style={{ marginTop: '60px' }}>
         <div className={styles.crtTitle}>About Brick Research</div>
         <div className={styles.crtText}>
