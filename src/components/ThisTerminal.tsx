@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 
-export default function ThisTerminal() {
+// ThisTerminal component removed as part of terminal feature cleanup.
   const [input, setInput] = useState('');
   const [output, setOutput] = useState<string[]>([
     'kek.works research terminal',

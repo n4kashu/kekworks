@@ -13,7 +13,7 @@ interface ResizableDraggableWindowProps {
   style?: React.CSSProperties;
 }
 
-const ResizableDraggableWindow: React.FC<ResizableDraggableWindowProps> = ({
+// ResizableDraggableWindow component removed as part of draggable window feature cleanup.
   title,
   children,
   initialWidth = 400,

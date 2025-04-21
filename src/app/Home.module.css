@@ -1,15 +1,4 @@
-.mainContainer {
-  height: 100vh;
-  width: 100vw;
-  background: transparent;
-  color: var(--foreground-soft, #b6ffb6);
-  overflow: hidden;
-  position: relative;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: var(--mono-font, 'Fira Mono', 'Consolas', 'Menlo', 'Monaco', monospace);
-  z-index: 1;
-}
+
 
 .mainContainer::before {
   content: '';

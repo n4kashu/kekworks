@@ -7,12 +7,11 @@ import EmeraldBrick3D from './components/EmeraldBrick3D';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 
-const ResizableDraggableWindow = dynamic(() => import('@/app/components/ResizableDraggableWindow'), { ssr: false });
-const ThisTerminal = dynamic(() => import('@/components/ThisTerminal'), { ssr: false });
+
 const Brick = dynamic(() => import('@/app/components/Brick'), { ssr: false });
 
 export default function Home() {
-  const [showTerminal] = useState(false);
+
   const [showBrick] = useState(true);
   const [selectedReport, setSelectedReport] = useState<string | null>(null);
 
@@ -121,24 +120,6 @@ export default function Home() {
         {/* This area is now empty but visible on top of the background */}
       </div>
       
-      {/* Terminal (hidden) */}
-      {showTerminal && (
-        <ResizableDraggableWindow
-          key={`terminal-${windowSize.key}`}
-          title="Terminal"
-          initialWidth={Math.min(600, windowSize.width * 0.45)}
-          initialHeight={Math.min(500, windowSize.height * 0.6)}
-          initialX={windowSize.width * 0.1}
-          initialY={windowSize.height * 0.1}
-          zIndex={8}
-          style={{ 
-            width: Math.min(600, windowSize.width * 0.45),
-            height: Math.min(500, windowSize.height * 0.6),
-            margin: '0'
-          }}
-        >
-          <ThisTerminal />
-        </ResizableDraggableWindow>
       )}
       
       {/* Full Report Overlay */}

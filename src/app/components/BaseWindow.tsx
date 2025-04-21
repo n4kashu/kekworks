@@ -6,19 +6,6 @@ interface BaseWindowProps {
   title: string;
   initialPosition: { x: number; y: number };
   initialSize: { width: number; height: number };
-  children: React.ReactNode;
-  onClose?: () => void;
-  zIndex?: number;
-  opacity?: number;
-}
-
-export default function BaseWindow({
-  title,
-  initialPosition,
-  initialSize,
-  children,
-  onClose,
-  zIndex = 10,
   opacity = 1
 }: BaseWindowProps) {
   const [position, setPosition] = useState(initialPosition);
